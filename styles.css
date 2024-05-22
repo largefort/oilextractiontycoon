@@ -5,10 +5,11 @@ body, html {
     font-family: Arial, sans-serif;
     background-color: #f0f0f0;
     color: #333;
+    overflow: hidden;
 }
 
 #map {
-    height: 100%;
+    height: calc(100% - 200px);
     width: 100%;
 }
 
@@ -22,8 +23,10 @@ body, html {
     padding: 15px;
     border-radius: 10px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
-    width: 300px;
+    width: 90%;
+    max-width: 320px;
     text-align: center;
+    box-sizing: border-box;
 }
 
 /* Header */
@@ -62,15 +65,6 @@ body, html {
 
 /* Weather Info */
 .weather-info {
-    margin-top: 15px;
-    padding: 10px;
-    background: #ecf0f1;
-    border-radius: 5px;
-    text-align: center;
-}
-
-/* Resources Info */
-.resources-info {
     margin-top: 15px;
     padding: 10px;
     background: #ecf0f1;
@@ -352,3 +346,4 @@ th {
     visibility: visible;
     opacity: 1;
 }
+
