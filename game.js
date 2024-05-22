@@ -222,7 +222,7 @@ function buyOilRig() {
         alert("Drag and drop the oil rig anywhere on the map.");
         newOilRig = L.marker(map.getCenter(), {
             icon: L.icon({
-                iconUrl: 'https://img.icons8.com/ios-filled/50/000000/oil-pump.png',
+                iconUrl: 'pump.gif',
                 iconSize: [32, 32],
                 iconAnchor: [16, 32],
                 popupAnchor: [0, -32]
