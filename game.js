@@ -1,12 +1,27 @@
 // Initialize map
 var map = L.map('map').setView([37.8, -96], 4); // Centered on the USA
 
-L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    attribution: 'Map data © <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-    maxZoom: 18,
-}).addTo(map);
+// Base layers
+var baseLayers = {
+    "Street Map": L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: 'Map data © <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+        maxZoom: 18,
+    }),
+    "Satellite": L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
+        attribution: 'Map data © <a href="https://www.opentopomap.org/copyright">OpenStreetMap',
+        maxZoom: 18,
+    }),
+    "3D Map": L.tileLayer('https://maps.heigit.org/osm_tiles/{z}/{x}/{y}.png', {
+        attribution: '3D map data © <a href="https://www.heigit.org">HeiGIT</a>',
+        maxZoom: 18,
+    })
+};
+
+baseLayers["Street Map"].addTo(map);
+L.control.layers(baseLayers).addTo(map);
 
 var money = 1000;
+var oil = 0;
 var ownedLand = [];
 var oilRigs = [];
 var newOilRig;
@@ -21,7 +36,11 @@ var weatherConditions = {
     'rain': 0.7,
     'snow': 0.6,
     'clear': 1.0,
-    'clouds': 0.9
+    'clouds': 0.9,
+    'wind': 0.8,
+    'overcast': 0.7,
+    'red weather alert': 0.3,
+    'yellow weather alert': 0.5
 };
 
 // Initialize Leaflet Draw
@@ -41,6 +60,11 @@ function updateMoney() {
     document.getElementById('money').innerText = money;
 }
 
+// Function to update oil display
+function updateOil() {
+    document.getElementById('oil').innerText = oil;
+}
+
 // Function to update efficiency display
 function updateEfficiency() {
     document.getElementById('efficiency').innerText = efficiency + '%';
@@ -51,10 +75,29 @@ function updateWeather() {
     document.getElementById('weather').innerText = weather;
 }
 
+// Function to show dollar pop-up
+function showDollarPopUp(amount, latlng) {
+    var popUp = document.createElement('div');
+    popUp.className = 'dollar-pop-up';
+    popUp.style.left = (latlng.x - 20) + 'px';
+    popUp.style.top = (latlng.y - 20) + 'px';
+    popUp.innerText = `$${amount}`;
+    document.body.appendChild(popUp);
+
+    setTimeout(() => {
+        popUp.style.top = (latlng.y - 40) + 'px';
+        popUp.style.opacity = 0;
+        setTimeout(() => {
+            document.body.removeChild(popUp);
+        }, 1000);
+    }, 1000);
+}
+
 // Function to save game state
 function saveGameState() {
     var gameState = {
         money: money,
+        oil: oil,
         efficiency: efficiency,
         weather: weather,
         ownedLand: ownedLand.map(marker => marker.getLatLng()),
@@ -72,9 +115,11 @@ function loadGameState() {
     var gameState = JSON.parse(localStorage.getItem('oilExtractionGameState'));
     if (gameState) {
         money = gameState.money;
+        oil = gameState.oil;
         efficiency = gameState.efficiency;
         weather = gameState.weather;
         updateMoney();
+        updateOil();
         updateEfficiency();
         updateWeather();
         
@@ -104,12 +149,17 @@ function loadGameState() {
 
 // Function to generate revenue
 function generateRevenue() {
-    var totalRevenue = 0;
     oilRigs.forEach(rig => {
-        totalRevenue += rig.revenue * weatherImpact;
+        var revenue = rig.revenue * weatherImpact;
+        money += revenue;
+        oil += rig.level; // Oil production increases with level
+        updateMoney();
+        updateOil();
+
+        // Show dollar pop-up effect
+        var latlng = map.latLngToContainerPoint(rig.marker.getLatLng());
+        showDollarPopUp(revenue.toFixed(2), latlng);
     });
-    money += totalRevenue;
-    updateMoney();
     saveGameState();
 }
 
