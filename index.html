@@ -28,8 +28,14 @@
         .controls button {
             margin-top: 5px;
         }
-        .weather-info {
+        .weather-info, .resources-info {
             margin-top: 10px;
+        }
+        .dollar-pop-up {
+            position: absolute;
+            color: green;
+            font-weight: bold;
+            pointer-events: none;
         }
     </style>
 </head>
@@ -37,6 +43,7 @@
     <div class="controls">
         <h3>Oil Extraction Game</h3>
         <p>Money: $<span id="money">1000</span></p>
+        <p>Oil: <span id="oil">0</span> barrels</p>
         <p>Efficiency: <span id="efficiency">100%</span></p>
         <button onclick="buyLand()">Buy Land ($100)</button>
         <button onclick="buyOilRig()">Buy Oil Rig ($500)</button>
