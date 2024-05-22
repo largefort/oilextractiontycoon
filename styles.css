@@ -1,0 +1,354 @@
+/* General Styles */
+body, html {
+    height: 100%;
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
+    color: #333;
+}
+
+#map {
+    height: 100%;
+    width: 100%;
+}
+
+.controls {
+    position: absolute;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1000;
+    background: rgba(255, 255, 255, 0.9);
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+    width: 300px;
+    text-align: center;
+}
+
+/* Header */
+.controls h3 {
+    margin: 0;
+    margin-bottom: 15px;
+    font-size: 24px;
+    color: #2c3e50;
+}
+
+/* Paragraphs */
+.controls p {
+    margin: 5px 0;
+    font-size: 18px;
+    color: #34495e;
+}
+
+/* Buttons */
+.controls button {
+    display: block;
+    width: calc(100% - 20px);
+    margin: 10px auto;
+    padding: 10px;
+    font-size: 16px;
+    color: #fff;
+    background: #2980b9;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.controls button:hover {
+    background: #3498db;
+}
+
+/* Weather Info */
+.weather-info {
+    margin-top: 15px;
+    padding: 10px;
+    background: #ecf0f1;
+    border-radius: 5px;
+    text-align: center;
+}
+
+/* Resources Info */
+.resources-info {
+    margin-top: 15px;
+    padding: 10px;
+    background: #ecf0f1;
+    border-radius: 5px;
+    text-align: center;
+}
+
+/* Dollar Pop-up Effect */
+.dollar-pop-up {
+    position: absolute;
+    color: green;
+    font-weight: bold;
+    font-size: 16px;
+    pointer-events: none;
+    transition: top 1s, opacity 1s;
+}
+
+/* Oil Rig Tooltip */
+.leaflet-popup-content-wrapper {
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+}
+
+.leaflet-popup-content {
+    margin: 10px;
+    font-size: 14px;
+    color: #333;
+}
+
+.leaflet-popup-tip-container {
+    width: 40px;
+    height: 20px;
+}
+
+/* Tooltip Styles */
+.tooltip {
+    position: absolute;
+    background: rgba(0, 0, 0, 0.75);
+    color: #fff;
+    padding: 5px;
+    border-radius: 5px;
+    font-size: 12px;
+    white-space: nowrap;
+    z-index: 1000;
+}
+
+/* 3D Map Control */
+.leaflet-control-layers {
+    border: 1px solid #2980b9;
+    border-radius: 5px;
+}
+
+/* Loading Spinner */
+.spinner {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 40px;
+    height: 40px;
+    background-color: #2980b9;
+    border-radius: 100%;
+    animation: sk-scaleout 1s infinite ease-in-out;
+}
+
+@keyframes sk-scaleout {
+    0% { transform: scale(0); }
+    100% {
+        transform: scale(1);
+        opacity: 0;
+    }
+}
+
+/* Alerts */
+.alert {
+    padding: 15px;
+    background-color: #f44336;
+    color: white;
+    margin-bottom: 15px;
+    border-radius: 5px;
+}
+
+.alert-success {background-color: #4CAF50;}
+.alert-info {background-color: #2196F3;}
+.alert-warning {background-color: #ff9800;}
+
+/* Modal */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgb(0,0,0);
+    background-color: rgba(0,0,0,0.4);
+    padding-top: 60px;
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 5% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    border-radius: 10px;
+}
+
+/* Close Button */
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+/* Input Fields */
+input[type=text], select {
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+/* Form Buttons */
+input[type=submit] {
+    width: 100%;
+    background-color: #4CAF50;
+    color: white;
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+input[type=submit]:hover {
+    background-color: #45a049;
+}
+
+/* Toggle Switch */
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 60px;
+    height: 34px;
+}
+
+.switch input { 
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    transition: .4s;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 26px;
+    width: 26px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    transition: .4s;
+}
+
+input:checked + .slider {
+    background-color: #2196F3;
+}
+
+input:checked + .slider:before {
+    transform: translateX(26px);
+}
+
+/* Rounded slider */
+.slider.round {
+    border-radius: 34px;
+}
+
+.slider.round:before {
+    border-radius: 50%;
+}
+
+/* Notification Badge */
+.badge {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    padding: 10px 20px;
+    border-radius: 50%;
+    background: red;
+    color: white;
+    font-size: 14px;
+}
+
+/* Table Styles */
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+table, th, td {
+    border: 1px solid #ddd;
+}
+
+th, td {
+    padding: 8px;
+    text-align: left;
+}
+
+th {
+    background-color: #f2f2f2;
+    color: #333;
+}
+
+/* Progress Bar */
+.progress-container {
+    width: 100%;
+    background-color: #f3f3f3;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.progress-bar {
+    height: 24px;
+    background-color: #4caf50;
+    text-align: center;
+    line-height: 24px;
+    color: white;
+    width: 0;
+}
+
+/* Tooltip */
+.tooltip {
+    position: relative;
+    display: inline-block;
+    border-bottom: 1px dotted black;
+}
+
+.tooltip .tooltiptext {
+    visibility: hidden;
+    width: 120px;
+    background-color: black;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 0;
+    position: absolute;
+    z-index: 1;
+    bottom: 125%;
+    left: 50%;
+    margin-left: -60px;
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.tooltip:hover .tooltiptext {
+    visibility: visible;
+    opacity: 1;
+}
