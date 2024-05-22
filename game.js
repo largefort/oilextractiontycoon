@@ -200,7 +200,7 @@ async function fetchWeather() {
 // Function to buy land
 function buyLand() {
     if (money >= 100) {
-        alert("Click on the map to buy land.");
+        alert("Tap on the map to buy land.");
         map.once('click', function(e) {
             var latlng = e.latlng;
             var marker = L.marker(latlng).addTo(map).bindPopup('Owned Land').openPopup();
@@ -251,7 +251,7 @@ function buyOilRig() {
 // Function to upgrade oil rig
 function upgradeOilRig() {
     if (money >= 300 && oilRigs.length > 0) {
-        alert("Click on an oil rig to upgrade.");
+        alert("Tap on an oil rig to upgrade.");
         map.once('click', function(e) {
             var latlng = e.latlng;
             var rigToUpgrade = oilRigs.find(function(rig) {
@@ -266,7 +266,7 @@ function upgradeOilRig() {
                 updateMoney();
                 saveGameState();
             } else {
-                alert("You must click on an oil rig to upgrade!");
+                alert("You must tap on an oil rig to upgrade!");
             }
         });
     } else {
