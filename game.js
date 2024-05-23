@@ -297,6 +297,35 @@ function setRefreshRate() {
     }
 }
 
+// Function to limit refresh rate to 30Hz for specific browsers
+function limitRefreshRate() {
+    const userAgent = navigator.userAgent;
+    const isChrome = /Chrome/.test(userAgent) && !/Edge/.test(userAgent);
+    const isSafari = /^((?!chrome|android).)*safari/i.test(userAgent);
+    const isOpera = /OPR/.test(userAgent) || /Opera/.test(userAgent);
+    const isFirefox = /Firefox/.test(userAgent);
+    const isModernBrowser = isChrome || isSafari || isOpera || isFirefox;
+
+    if (isModernBrowser) {
+        let lastFrameTime = 0;
+        const frameInterval = 1000 / 30;
+
+        function requestAnimationFrameWithLimit(callback) {
+            const now = performance.now();
+            const elapsed = now - lastFrameTime;
+
+            if (elapsed >= frameInterval) {
+                lastFrameTime = now - (elapsed % frameInterval);
+                callback(now);
+            }
+
+            window.requestAnimationFrame(() => requestAnimationFrameWithLimit(callback));
+        }
+
+        window.requestAnimationFrame = requestAnimationFrameWithLimit;
+    }
+}
+
 // Display mobile overlay if on a mobile device
 function showMobileOverlay() {
     document.getElementById('mobile-overlay').style.display = 'block';
@@ -340,11 +369,12 @@ function toggleMarkers(show) {
 
 showMobileOverlay();
 setRefreshRate();
+limitRefreshRate();
 
 // Load game state on start
 loadGameState();
 
-// Generate revenue every 10 seconds
+// Generate revenue every 1 seconds
 setInterval(generateRevenue, 1000);
 
 // Recalculate efficiency every 30 seconds
@@ -360,3 +390,4 @@ setInterval(() => {
 
 // Initial fetch weather
 fetchWeather();
+
