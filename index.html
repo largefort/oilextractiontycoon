@@ -3,27 +3,58 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Idle Oil Extraction Game</title>
-    <link rel="stylesheet" type="text/css" href="css/styles.css">
+    <title>Idle Oil Extraction Mobile</title>
+    <link rel="stylesheet" type="text/css" href="styles.css">
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.css" />
 </head>
 <body>
-    <div class="controls">
-        <h3>Oil Extraction Game</h3>
-        <p>Money: $<span id="money">1000</span></p>
-        <p>Oil: <span id="oil">0</span> barrels</p>
-        <p>Efficiency: <span id="efficiency">100%</span></p>
-        <button onclick="buyLand()">Buy Land ($100)</button>
-        <button onclick="buyOilRig()">Buy Oil Rig ($500)</button>
-        <button onclick="upgradeOilRig()">Upgrade Oil Rig ($300)</button>
-        <div class="weather-info">
-            <p>Weather: <span id="weather">Fetching...</span></p>
+<div id="mobile-overlay" class="mobile-overlay">
+    <div class="mobile-controls">
+        <h3>Oil Extraction tycoon</h3>
+        <div class="resource-container">
+            <div class="resource">
+                <p>Money: $<span id="money-mobile">1000</span></p>
+            </div>
+            <div class="resource">
+                <p>Oil: <span id="oil-mobile">0</span> barrels</p>
+            </div>
+            <div class="resource">
+                <p>Efficiency: <span id="efficiency-mobile">100%</span></p>
+            </div>
         </div>
+        <div class="button-container">
+            <button onclick="buyLand()">Buy Land ($100)</button>
+            <button onclick="buyOilRig()">Buy Oil Rig ($500)</button>
+            <button onclick="upgradeOilRig()">Upgrade Oil Rig ($300)</button>
+        </div>
+        <div class="weather-info">
+            <p>Weather: <span id="weather-mobile">Fetching...</span></p>
+        </div>
+        <button class="settings-button" onclick="toggleSettingsModal()">⚙️</button>
     </div>
-    <div id="map"></div>
-    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.js"></script>
-    <script src="js/game.js"></script>
+</div>
+<div id="map" class="enhanced-map"></div>
+<div id="settings-modal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="toggleSettingsModal()">&times;</span>
+        <h2>Geo Map Settings</h2>
+        <label for="animation-speed">Animation Speed:</label>
+        <input type="range" id="animation-speed" name="animation-speed" min="1" max="10" value="5" onchange="updateAnimationSpeed(this.value)">
+        <label for="map-theme">Map Theme:</label>
+        <select id="map-theme" onchange="updateMapTheme(this.value)">
+            <option value="street">Street</option>
+            <option value="satellite">Satellite</option>
+            <option value="3d">3D</option>
+        </select>
+        <label for="show-markers">Show Markers:</label>
+        <input type="checkbox" id="show-markers" checked onchange="toggleMarkers(this.checked)">
+    </div>
+</div>
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.js"></script>
+<script src="https://unpkg.com/leaflet-tilelayer-pan@1.0.0/dist/leaflet-tilelayer-pan.min.js"></script>
+<script src="https://unpkg.com/leaflet.vectorgrid/dist/Leaflet.VectorGrid.bundled.js"></script>
+<script src="game.js"></script>
 </body>
 </html>

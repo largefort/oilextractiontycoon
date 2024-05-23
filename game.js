@@ -1,7 +1,15 @@
+// Helper function to format numbers in a short format (e.g., 1K, 1M)
+function shortNumberFormat(num) {
+    if (num >= 1e9) return (num / 1e9).toFixed(1) + 'B';
+    if (num >= 1e6) return (num / 1e6).toFixed(1) + 'M';
+    if (num >= 1e3) return (num / 1e3).toFixed(1) + 'K';
+    return num;
+}
+
 // Initialize map
 var map = L.map('map').setView([37.8, -96], 4); // Centered on the USA
 
-// Base layers
+// Base layers without pan animations
 var baseLayers = {
     "Street Map": L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: 'Map data © <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
@@ -57,35 +65,35 @@ map.addControl(drawControl);
 
 // Function to update money display
 function updateMoney() {
-    document.getElementById('money').innerText = money;
+    document.getElementById('money-mobile').innerText = shortNumberFormat(money);
 }
 
 // Function to update oil display
 function updateOil() {
-    document.getElementById('oil').innerText = oil;
+    document.getElementById('oil-mobile').innerText = shortNumberFormat(oil);
 }
 
 // Function to update efficiency display
 function updateEfficiency() {
-    document.getElementById('efficiency').innerText = efficiency + '%';
+    document.getElementById('efficiency-mobile').innerText = efficiency + '%';
 }
 
 // Function to update weather display
 function updateWeather() {
-    document.getElementById('weather').innerText = weather;
+    document.getElementById('weather-mobile').innerText = weather;
 }
 
 // Function to show dollar pop-up
 function showDollarPopUp(amount, latlng) {
     var popUp = document.createElement('div');
     popUp.className = 'dollar-pop-up';
-    popUp.style.left = (latlng.x - 20) + 'px';
-    popUp.style.top = (latlng.y - 20) + 'px';
-    popUp.innerText = `$${amount}`;
+    popUp.style.left = latlng.x + 'px';
+    popUp.style.top = latlng.y + 'px';
+    popUp.innerText = `$${shortNumberFormat(amount)}`;
     document.body.appendChild(popUp);
 
     setTimeout(() => {
-        popUp.style.top = (latlng.y - 40) + 'px';
+        popUp.style.transform = 'translateY(-50px)';
         popUp.style.opacity = 0;
         setTimeout(() => {
             document.body.removeChild(popUp);
@@ -122,22 +130,25 @@ function loadGameState() {
         updateOil();
         updateEfficiency();
         updateWeather();
-        
+
         gameState.ownedLand.forEach(latlng => {
-            var marker = L.marker(latlng).addTo(map).bindPopup('Owned Land').openPopup();
+            var marker = L.marker(latlng).addTo(map).bindPopup('Owned Land');
             ownedLand.push(marker);
         });
-        
+
         gameState.oilRigs.forEach(rigData => {
             var oilRig = L.marker(rigData.latlng, {
                 icon: L.icon({
-                    iconUrl: 'https://img.icons8.com/ios-filled/50/000000/oil-pump.png',
+                    iconUrl: 'pump.gif',
                     iconSize: [32, 32],
                     iconAnchor: [16, 32],
                     popupAnchor: [0, -32]
                 }),
                 draggable: true
-            }).addTo(map).bindPopup('Oil Rig (Level ' + rigData.level + ')').openPopup();
+            }).addTo(map).bindPopup('Oil Rig (Level ' + rigData.level + ')');
+            oilRig.on('click', function() {
+                upgradeOilRig(oilRig);
+            });
             oilRigs.push({
                 marker: oilRig,
                 level: rigData.level,
@@ -177,9 +188,9 @@ function calculateEfficiency() {
 
 // Function to change weather based on API data
 async function fetchWeather() {
-    var apiKey = '<AK4KJ2NGA3TSFBNHGQ2FJQEZF>';
-    var url = `https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/america?unitGroup=metric&key=AK4KJ2NGA3TSFBNHGQ2FJQEZF&contentType=json`;
-    
+    var apiKey = 'AK4KJ2NGA3TSFBNHGQ2FJQEZF';
+    var url = `https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/america?unitGroup=metric&key=${apiKey}&contentType=json`;
+
     try {
         var response = await fetch(url, {
             method: 'GET',
@@ -203,7 +214,7 @@ function buyLand() {
         alert("Tap on the map to buy land.");
         map.once('click', function(e) {
             var latlng = e.latlng;
-            var marker = L.marker(latlng).addTo(map).bindPopup('Owned Land').openPopup();
+            var marker = L.marker(latlng).addTo(map).bindPopup('Owned Land');
             ownedLand.push(marker);
             money -= 100;
             updateMoney();
@@ -238,6 +249,9 @@ function buyOilRig() {
                 level: 1,
                 revenue: 10
             });
+            newOilRig.on('click', function() {
+                upgradeOilRig(newOilRig);
+            });
             money -= 500;
             updateMoney();
             saveGameState();
@@ -249,36 +263,89 @@ function buyOilRig() {
 }
 
 // Function to upgrade oil rig
-function upgradeOilRig() {
-    if (money >= 300 && oilRigs.length > 0) {
-        alert("Tap on an oil rig to upgrade.");
-        map.once('click', function(e) {
-            var latlng = e.latlng;
-            var rigToUpgrade = oilRigs.find(function(rig) {
-                return rig.marker.getLatLng().equals(latlng);
-            });
-
-            if (rigToUpgrade) {
-                rigToUpgrade.level++;
-                rigToUpgrade.revenue = rigToUpgrade.level * 10;
-                rigToUpgrade.marker.setPopupContent('Oil Rig (Level ' + rigToUpgrade.level + ')').openPopup();
-                money -= 300;
-                updateMoney();
-                saveGameState();
-            } else {
-                alert("You must tap on an oil rig to upgrade!");
-            }
-        });
+function upgradeOilRig(oilRig) {
+    var rigToUpgrade = oilRigs.find(rig => rig.marker === oilRig);
+    if (money >= 300 && rigToUpgrade) {
+        rigToUpgrade.level++;
+        rigToUpgrade.revenue = rigToUpgrade.level * 10;
+        rigToUpgrade.marker.setPopupContent('Oil Rig (Level ' + rigToUpgrade.level + ')').openPopup();
+        money -= 300;
+        updateMoney();
+        saveGameState();
     } else {
-        alert("Not enough money or you don't have any oil rigs!");
+        alert("Not enough money to upgrade or no oil rig found!");
     }
 }
+
+// Function to handle 120Hz support for Samsung Galaxy A54 5G
+function isSamsungGalaxyA54() {
+    const userAgent = navigator.userAgent || navigator.vendor || window.opera;
+    return /SM-A546/.test(userAgent);
+}
+
+function setRefreshRate() {
+    if (isSamsungGalaxyA54()) {
+        const style = document.createElement('style');
+        style.innerHTML = `
+            @media (min-refresh-rate: 120Hz) {
+                * {
+                    scroll-behavior: smooth;
+                }
+            }
+        `;
+        document.head.appendChild(style);
+    }
+}
+
+// Display mobile overlay if on a mobile device
+function showMobileOverlay() {
+    document.getElementById('mobile-overlay').style.display = 'block';
+}
+
+// Toggle settings modal
+function toggleSettingsModal() {
+    var modal = document.getElementById('settings-modal');
+    if (modal.style.display === "none" || modal.style.display === "") {
+        modal.style.display = "block";
+    } else {
+        modal.style.display = "none";
+    }
+}
+
+// Update animation speed
+function updateAnimationSpeed(speed) {
+    console.log("Animation speed set to: " + speed);
+}
+
+// Update map theme
+function updateMapTheme(theme) {
+    for (const layer in baseLayers) {
+        map.removeLayer(baseLayers[layer]);
+    }
+    baseLayers[theme].addTo(map);
+    console.log("Map theme set to: " + theme);
+}
+
+// Toggle markers
+function toggleMarkers(show) {
+    if (show) {
+        ownedLand.forEach(marker => marker.addTo(map));
+        oilRigs.forEach(rig => rig.marker.addTo(map));
+    } else {
+        ownedLand.forEach(marker => marker.removeFrom(map));
+        oilRigs.forEach(rig => rig.marker.removeFrom(map));
+    }
+    console.log("Show markers: " + show);
+}
+
+showMobileOverlay();
+setRefreshRate();
 
 // Load game state on start
 loadGameState();
 
 // Generate revenue every 10 seconds
-setInterval(generateRevenue, 10000);
+setInterval(generateRevenue, 1000);
 
 // Recalculate efficiency every 30 seconds
 setInterval(() => {
