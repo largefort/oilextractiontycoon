@@ -342,7 +342,7 @@ limitRefreshRate();
 loadGameState();
 
 // Generate revenue every 10 seconds
-setInterval(generateRevenue, 1000);
+setInterval(generateRevenue, 10000);
 
 // Recalculate efficiency every 30 seconds
 setInterval(() => {
