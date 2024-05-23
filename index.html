@@ -5,11 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Idle Oil Extraction Mobile</title>
     <link rel="stylesheet" type="text/css" href="styles.css">
-    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.css" />
-    <link href='https://api.mapbox.com/mapbox-gl-js/v2.9.1/mapbox-gl.css' rel='stylesheet' />
-    <!-- weather.js Library -->
-    <script src="weather.js"></script>
+    <link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/v2.10.0/mapbox-gl.css" />
+    <script src="js/security.js"></script>
+    <script src="https://api.mapbox.com/mapbox-gl-js/v2.10.0/mapbox-gl.js"></script>
 </head>
 <body>
 <div id="mobile-overlay" class="mobile-overlay">
@@ -51,18 +49,6 @@
         <input type="checkbox" id="show-markers" checked onchange="toggleMarkers(this.checked)">
     </div>
 </div>
-<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.js"></script>
-<script src='https://api.mapbox.com/mapbox-gl-js/v2.9.1/mapbox-gl.js'></script>
 <script src="game.js"></script>
-    <div id='map' style='width: 400px; height: 300px;'></div>
-<script>
-  mapboxgl.accessToken = 'pk.eyJ1IjoibGFyZ2Vmb3J0IiwiYSI6ImNsd2ptZmQ0MDEyZ2sycW1teWxicjV5dDQifQ.-PAuP_bdenBUenxgYGr4PQ';
-  var map = new mapboxgl.Map({
-    container: 'map',
-    style: 'mapbox://styles/mapbox/streets-v11'
-  });
-</script>
-
 </body>
 </html>
