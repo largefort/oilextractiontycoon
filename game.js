@@ -28,6 +28,18 @@ var weatherConditions = {
     'yellow weather alert': 0.5
 };
 
+// Initialize map
+mapboxgl.accessToken = 'pk.eyJ1IjoibGFyZ2Vmb3J0IiwiYSI6ImNsd2ptZmQ0MDEyZ2sycW1teWxicjV5dDQifQ.-PAuP_bdenBUenxgYGr4PQ';
+var map = new mapboxgl.Map({
+    container: 'map',
+    style: 'mapbox://styles/mapbox/streets-v11',
+    center: [-96, 37.8],
+    zoom: 4
+});
+
+// Add zoom and rotation controls to the map.
+map.addControl(new mapboxgl.NavigationControl(), 'top-left');
+
 // Function to update money display
 function updateMoney() {
     document.getElementById('money-mobile').innerText = shortNumberFormat(money);
@@ -47,8 +59,9 @@ function updateEfficiency() {
 function showDollarPopUp(amount, lngLat) {
     var popUp = document.createElement('div');
     popUp.className = 'dollar-pop-up';
-    popUp.style.left = lngLat.x + 'px';
-    popUp.style.top = lngLat.y + 'px';
+    var point = map.project(lngLat);
+    popUp.style.left = point.x + 'px';
+    popUp.style.top = point.y + 'px';
     popUp.innerText = `$${shortNumberFormat(amount)}`;
     document.body.appendChild(popUp);
 
@@ -124,7 +137,7 @@ function generateRevenue() {
 
         // Show dollar pop-up effect
         var lngLat = rig.marker.getLngLat();
-        showDollarPopUp(revenue.toFixed(2), map.project(lngLat));
+        showDollarPopUp(revenue.toFixed(2), lngLat);
     });
     saveGameState();
 }
@@ -329,7 +342,7 @@ limitRefreshRate();
 loadGameState();
 
 // Generate revenue every 10 seconds
-setInterval(generateRevenue, 10000);
+setInterval(generateRevenue, 1000);
 
 // Recalculate efficiency every 30 seconds
 setInterval(() => {
