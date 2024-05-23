@@ -28,15 +28,6 @@ var weatherConditions = {
     'yellow weather alert': 0.5
 };
 
-// Initialize map
-mapboxgl.accessToken = 'pk.eyJ1IjoibGFyZ2Vmb3J0IiwiYSI6ImNsd2ptZmQ0MDEyZ2sycW1teWxicjV5dDQifQ.-PAuP_bdenBUenxgYGr4PQ';
-var map = new mapboxgl.Map({
-    container: 'map',
-    style: 'mapbox://styles/mapbox/streets-v11',
-    center: [-96, 37.8],
-    zoom: 4
-});
-
 // Add zoom and rotation controls to the map.
 map.addControl(new mapboxgl.NavigationControl(), 'top-left');
 
@@ -342,7 +333,7 @@ limitRefreshRate();
 loadGameState();
 
 // Generate revenue every 10 seconds
-setInterval(generateRevenue, 10000);
+setInterval(generateRevenue, 1000);
 
 // Recalculate efficiency every 30 seconds
 setInterval(() => {
