@@ -7,26 +7,13 @@ function shortNumberFormat(num) {
 }
 
 // Initialize map
-var map = L.map('map').setView([37.8, -96], 4); // Centered on the USA
-
-// Base layers without pan animations
-var baseLayers = {
-    "Street Map": L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: 'Map data © <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-        maxZoom: 18,
-    }),
-    "Satellite": L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
-        attribution: 'Map data © <a href="https://www.opentopomap.org/copyright">OpenStreetMap',
-        maxZoom: 18,
-    }),
-    "3D Map": L.tileLayer('https://maps.heigit.org/osm_tiles/{z}/{x}/{y}.png', {
-        attribution: '3D map data © <a href="https://www.heigit.org">HeiGIT</a>',
-        maxZoom: 18,
-    })
-};
-
-baseLayers["Street Map"].addTo(map);
-L.control.layers(baseLayers).addTo(map);
+mapboxgl.accessToken = 'pk.eyJ1IjoibGFyZ2Vmb3J0IiwiYSI6ImNsd2ptZmQ0MDEyZ2sycW1teWxicjV5dDQifQ.-PAuP_bdenBUenxgYGr4PQ';
+var map = new mapboxgl.Map({
+    container: 'map', // container ID
+    style: 'mapbox://styles/largefort/clwjmw2u6006y01po3fo41skh', // style URL
+    center: [-96, 37.8], // starting position [lng, lat]
+    zoom: 4 // starting zoom
+});
 
 var money = 1000;
 var oil = 0;
@@ -50,18 +37,6 @@ var weatherConditions = {
     'yellow weather alert': 0.5
 };
 
-// Initialize Leaflet Draw
-var drawnItems = new L.FeatureGroup();
-map.addLayer(drawnItems);
-
-var drawControl = new L.Control.Draw({
-    draw: false,
-    edit: {
-        featureGroup: drawnItems
-    }
-});
-map.addControl(drawControl);
-
 // Function to update money display
 function updateMoney() {
     document.getElementById('money-mobile').innerText = shortNumberFormat(money);
@@ -78,11 +53,11 @@ function updateEfficiency() {
 }
 
 // Function to show dollar pop-up
-function showDollarPopUp(amount, latlng) {
+function showDollarPopUp(amount, lngLat) {
     var popUp = document.createElement('div');
     popUp.className = 'dollar-pop-up';
-    popUp.style.left = latlng.x + 'px';
-    popUp.style.top = latlng.y + 'px';
+    popUp.style.left = lngLat.x + 'px';
+    popUp.style.top = lngLat.y + 'px';
     popUp.innerText = `$${shortNumberFormat(amount)}`;
     document.body.appendChild(popUp);
 
@@ -101,9 +76,9 @@ function saveGameState() {
         money: money,
         oil: oil,
         efficiency: efficiency,
-        ownedLand: ownedLand.map(marker => marker.getLatLng()),
+        ownedLand: ownedLand.map(marker => marker.getLngLat()),
         oilRigs: oilRigs.map(rig => ({
-            latlng: rig.marker.getLatLng(),
+            lngLat: rig.marker.getLngLat(),
             level: rig.level,
             revenue: rig.revenue
         }))
@@ -122,22 +97,20 @@ function loadGameState() {
         updateOil();
         updateEfficiency();
 
-        gameState.ownedLand.forEach(latlng => {
-            var marker = L.marker(latlng).addTo(map).bindPopup('Owned Land');
+        gameState.ownedLand.forEach(lngLat => {
+            var marker = new mapboxgl.Marker()
+                .setLngLat(lngLat)
+                .setPopup(new mapboxgl.Popup().setText('Owned Land'))
+                .addTo(map);
             ownedLand.push(marker);
         });
 
         gameState.oilRigs.forEach(rigData => {
-            var oilRig = L.marker(rigData.latlng, {
-                icon: L.icon({
-                    iconUrl: 'pump.gif',
-                    iconSize: [32, 32],
-                    iconAnchor: [16, 32],
-                    popupAnchor: [0, -32]
-                }),
-                draggable: true
-            }).addTo(map).bindPopup('Oil Rig (Level ' + rigData.level + ')');
-            oilRig.on('click', function() {
+            var oilRig = new mapboxgl.Marker({ draggable: true })
+                .setLngLat(rigData.lngLat)
+                .setPopup(new mapboxgl.Popup().setText('Oil Rig (Level ' + rigData.level + ')'))
+                .addTo(map);
+            oilRig.getElement().addEventListener('click', function() {
                 upgradeOilRig(oilRig);
             });
             oilRigs.push({
@@ -159,8 +132,8 @@ function generateRevenue() {
         updateOil();
 
         // Show dollar pop-up effect
-        var latlng = map.latLngToContainerPoint(rig.marker.getLatLng());
-        showDollarPopUp(revenue.toFixed(2), latlng);
+        var lngLat = rig.marker.getLngLat();
+        showDollarPopUp(revenue.toFixed(2), map.project(lngLat));
     });
     saveGameState();
 }
@@ -179,31 +152,7 @@ function calculateEfficiency() {
 
 // Function to set dynamic weather effects
 function setWeatherEffects(weatherType) {
-    if (window.weather) {
-        window.weather.stop();
-    }
-
-    switch (weatherType) {
-        case 'rain':
-            window.weather = new WeatherEffect(map, { type: 'rain', intensity: 0.5 });
-            break;
-        case 'snow':
-            window.weather = new WeatherEffect(map, { type: 'snow', intensity: 0.5 });
-            break;
-        case 'thunderstorm':
-            window.weather = new WeatherEffect(map, { type: 'thunderstorm', intensity: 0.5 });
-            break;
-        case 'clear':
-            // Clear any weather effects
-            break;
-        default:
-            // Clear any weather effects
-            break;
-    }
-
-    if (window.weather) {
-        window.weather.start();
-    }
+    // Implement your weather effect logic here
 }
 
 // Function to simulate weather change for testing
@@ -218,10 +167,13 @@ function simulateWeatherChange() {
 // Function to buy land
 function buyLand() {
     if (money >= 100) {
-        alert("Tap on the map to buy land.");
+        alert("Click on the map to buy land.");
         map.once('click', function(e) {
-            var latlng = e.latlng;
-            var marker = L.marker(latlng).addTo(map).bindPopup('Owned Land');
+            var lngLat = e.lngLat;
+            var marker = new mapboxgl.Marker()
+                .setLngLat(lngLat)
+                .setPopup(new mapboxgl.Popup().setText('Owned Land'))
+                .addTo(map);
             ownedLand.push(marker);
             money -= 100;
             updateMoney();
@@ -238,25 +190,20 @@ function buyLand() {
 function buyOilRig() {
     if (money >= 500) {
         alert("Drag and drop the oil rig anywhere on the map.");
-        newOilRig = L.marker(map.getCenter(), {
-            icon: L.icon({
-                iconUrl: 'pump.gif',
-                iconSize: [32, 32],
-                iconAnchor: [16, 32],
-                popupAnchor: [0, -32]
-            }),
-            draggable: true
-        }).addTo(map).bindPopup('Place this Oil Rig').openPopup();
+        newOilRig = new mapboxgl.Marker({ draggable: true })
+            .setLngLat(map.getCenter())
+            .setPopup(new mapboxgl.Popup().setText('Place this Oil Rig'))
+            .addTo(map);
 
         newOilRig.on('dragend', function() {
-            var latlng = newOilRig.getLatLng();
-            newOilRig.bindPopup('Oil Rig (Level 1)').openPopup();
+            var lngLat = newOilRig.getLngLat();
+            newOilRig.setPopup(new mapboxgl.Popup().setText('Oil Rig (Level 1)')).togglePopup();
             oilRigs.push({
                 marker: newOilRig,
                 level: 1,
                 revenue: 10
             });
-            newOilRig.on('click', function() {
+            newOilRig.getElement().addEventListener('click', function() {
                 upgradeOilRig(newOilRig);
             });
             money -= 500;
@@ -275,7 +222,7 @@ function upgradeOilRig(oilRig) {
     if (money >= 300 && rigToUpgrade) {
         rigToUpgrade.level++;
         rigToUpgrade.revenue = rigToUpgrade.level * 10;
-        rigToUpgrade.marker.setPopupContent('Oil Rig (Level ' + rigToUpgrade.level + ')').openPopup();
+        rigToUpgrade.marker.setPopup(new mapboxgl.Popup().setText('Oil Rig (Level ' + rigToUpgrade.level + ')')).togglePopup();
         money -= 300;
         updateMoney();
         saveGameState();
@@ -355,10 +302,19 @@ function updateAnimationSpeed(speed) {
 
 // Update map theme
 function updateMapTheme(theme) {
-    for (const layer in baseLayers) {
-        map.removeLayer(baseLayers[layer]);
+    let styleURL = '';
+    switch (theme) {
+        case 'street':
+            styleURL = 'mapbox://styles/mapbox/streets-v11';
+            break;
+        case 'satellite':
+            styleURL = 'mapbox://styles/mapbox/satellite-v9';
+            break;
+        case '3d':
+            styleURL = 'mapbox://styles/mapbox/mapbox-streets-v8';
+            break;
     }
-    baseLayers[theme].addTo(map);
+    map.setStyle(styleURL);
     console.log("Map theme set to: " + theme);
 }
 
@@ -368,8 +324,8 @@ function toggleMarkers(show) {
         ownedLand.forEach(marker => marker.addTo(map));
         oilRigs.forEach(rig => rig.marker.addTo(map));
     } else {
-        ownedLand.forEach(marker => marker.removeFrom(map));
-        oilRigs.forEach(rig => rig.marker.removeFrom(map));
+        ownedLand.forEach(marker => marker.remove());
+        oilRigs.forEach(rig => rig.marker.remove());
     }
     console.log("Show markers: " + show);
 }
@@ -382,7 +338,7 @@ limitRefreshRate();
 loadGameState();
 
 // Generate revenue every 10 seconds
-setInterval(generateRevenue, 1000);
+setInterval(generateRevenue, 10000);
 
 // Recalculate efficiency every 30 seconds
 setInterval(() => {
