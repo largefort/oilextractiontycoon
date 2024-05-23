@@ -6,15 +6,6 @@ function shortNumberFormat(num) {
     return num;
 }
 
-// Initialize map
-mapboxgl.accessToken = 'pk.eyJ1IjoibGFyZ2Vmb3J0IiwiYSI6ImNsd2ptZmQ0MDEyZ2sycW1teWxicjV5dDQifQ.-PAuP_bdenBUenxgYGr4PQ';
-var map = new mapboxgl.Map({
-    container: 'map', // container ID
-    style: 'mapbox://styles/largefort/clwjmw2u6006y01po3fo41skh', // style URL
-    center: [-96, 37.8], // starting position [lng, lat]
-    zoom: 4 // starting zoom
-});
-
 var money = 1000;
 var oil = 0;
 var ownedLand = [];
