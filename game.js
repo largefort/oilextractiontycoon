@@ -210,7 +210,7 @@ function loadGameState() {
         gameState.powerPlants.forEach(plantData => {
             var powerPlant = L.marker(plantData.latlng, {
                 icon: L.icon({
-                    iconUrl: 'power_plant.png',
+                    iconUrl: 'windturbine.gif',
                     iconSize: [32, 32],
                     iconAnchor: [16, 32],
                     popupAnchor: [0, -32]
