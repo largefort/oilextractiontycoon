@@ -34,7 +34,6 @@ var ownedLand = [];
 var oilRigs = [];
 var newOilRig;
 var efficiency = 100;
-var weather = 'Fetching...';
 var weatherImpact = 1.0; // Multiplier for production rate
 
 // Weather conditions and their impact
@@ -78,11 +77,6 @@ function updateEfficiency() {
     document.getElementById('efficiency-mobile').innerText = efficiency + '%';
 }
 
-// Function to update weather display
-function updateWeather() {
-    document.getElementById('weather-mobile').innerText = weather;
-}
-
 // Function to show dollar pop-up
 function showDollarPopUp(amount, latlng) {
     var popUp = document.createElement('div');
@@ -107,7 +101,6 @@ function saveGameState() {
         money: money,
         oil: oil,
         efficiency: efficiency,
-        weather: weather,
         ownedLand: ownedLand.map(marker => marker.getLatLng()),
         oilRigs: oilRigs.map(rig => ({
             latlng: rig.marker.getLatLng(),
@@ -125,11 +118,9 @@ function loadGameState() {
         money = gameState.money;
         oil = gameState.oil;
         efficiency = gameState.efficiency;
-        weather = gameState.weather;
         updateMoney();
         updateOil();
         updateEfficiency();
-        updateWeather();
 
         gameState.ownedLand.forEach(latlng => {
             var marker = L.marker(latlng).addTo(map).bindPopup('Owned Land');
@@ -186,26 +177,41 @@ function calculateEfficiency() {
     efficiency = ((totalLands - lowOilLands) / totalLands) * 100;
 }
 
-// Function to change weather based on API data
-async function fetchWeather() {
-    var apiKey = 'AK4KJ2NGA3TSFBNHGQ2FJQEZF';
-    var url = `https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/america?unitGroup=metric&key=${apiKey}&contentType=json`;
-
-    try {
-        var response = await fetch(url, {
-            method: 'GET',
-            headers: {}
-        });
-        var data = await response.json();
-        console.log(data); // Log the response for debugging purposes
-        var weatherType = data.currentConditions.conditions.toLowerCase();
-        weather = weatherType;
-        weatherImpact = weatherConditions[weatherType] || 1.0;
-        updateWeather();
-        saveGameState();
-    } catch (error) {
-        console.error('Error fetching weather data:', error);
+// Function to set dynamic weather effects
+function setWeatherEffects(weatherType) {
+    if (window.weatherEffect) {
+        window.weatherEffect.remove();
     }
+
+    switch (weatherType) {
+        case 'rain':
+            window.weatherEffect = new WeatherEffect(map, { type: 'rain', intensity: 0.5 });
+            break;
+        case 'snow':
+            window.weatherEffect = new WeatherEffect(map, { type: 'snow', intensity: 0.5 });
+            break;
+        case 'thunderstorm':
+            window.weatherEffect = new WeatherEffect(map, { type: 'thunderstorm', intensity: 0.5 });
+            break;
+        case 'clear':
+            window.weatherEffect = null;
+            break;
+        default:
+            window.weatherEffect = null;
+    }
+
+    if (window.weatherEffect) {
+        window.weatherEffect.addTo(map);
+    }
+}
+
+// Function to simulate weather change for testing
+function simulateWeatherChange() {
+    const weatherTypes = ['clear', 'rain', 'snow', 'thunderstorm'];
+    const weatherType = weatherTypes[Math.floor(Math.random() * weatherTypes.length)];
+    setWeatherEffects(weatherType);
+    weatherImpact = weatherConditions[weatherType] || 1.0;
+    saveGameState();
 }
 
 // Function to buy land
@@ -297,6 +303,35 @@ function setRefreshRate() {
     }
 }
 
+// Function to limit refresh rate to 30Hz for specific browsers
+function limitRefreshRate() {
+    const userAgent = navigator.userAgent;
+    const isChrome = /Chrome/.test(userAgent) && !/Edge/.test(userAgent);
+    const isSafari = /^((?!chrome|android).)*safari/i.test(userAgent);
+    const isOpera = /OPR/.test(userAgent) || /Opera/.test(userAgent);
+    const isFirefox = /Firefox/.test(userAgent);
+    const isModernBrowser = isChrome || isSafari || isOpera || isFirefox;
+
+    if (isModernBrowser) {
+        let lastFrameTime = 0;
+        const frameInterval = 1000 / 30;
+
+        function requestAnimationFrameWithLimit(callback) {
+            const now = performance.now();
+            const elapsed = now - lastFrameTime;
+
+            if (elapsed >= frameInterval) {
+                lastFrameTime = now - (elapsed % frameInterval);
+                callback(now);
+            }
+
+            window.requestAnimationFrame(() => requestAnimationFrameWithLimit(callback));
+        }
+
+        window.requestAnimationFrame = requestAnimationFrameWithLimit;
+    }
+}
+
 // Display mobile overlay if on a mobile device
 function showMobileOverlay() {
     document.getElementById('mobile-overlay').style.display = 'block';
@@ -340,6 +375,7 @@ function toggleMarkers(show) {
 
 showMobileOverlay();
 setRefreshRate();
+limitRefreshRate();
 
 // Load game state on start
 loadGameState();
@@ -353,10 +389,10 @@ setInterval(() => {
     updateEfficiency();
 }, 30000);
 
-// Fetch weather every 60 seconds
+// Simulate weather change every 60 seconds
 setInterval(() => {
-    fetchWeather();
+    simulateWeatherChange();
 }, 60000);
 
-// Initial fetch weather
-fetchWeather();
+// Initial weather change
+simulateWeatherChange();

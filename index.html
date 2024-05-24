@@ -11,7 +11,7 @@
 <body>
 <div id="mobile-overlay" class="mobile-overlay">
     <div class="mobile-controls">
-        <h3>Oil Extraction tycoon</h3>
+        <h3>Oil Extraction Web</h3>
         <div class="resource-container">
             <div class="resource">
                 <p>Money: $<span id="money-mobile">1000</span></p>
@@ -27,9 +27,6 @@
             <button onclick="buyLand()">Buy Land ($100)</button>
             <button onclick="buyOilRig()">Buy Oil Rig ($500)</button>
             <button onclick="upgradeOilRig()">Upgrade Oil Rig ($300)</button>
-        </div>
-        <div class="weather-info">
-            <p>Weather: <span id="weather-mobile">Fetching...</span></p>
         </div>
         <button class="settings-button" onclick="toggleSettingsModal()">⚙️</button>
     </div>
@@ -53,8 +50,9 @@
 </div>
 <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.js"></script>
-<script src="https://unpkg.com/leaflet-tilelayer-pan@1.0.0/dist/leaflet-tilelayer-pan.min.js"></script>
-<script src="https://unpkg.com/leaflet.vectorgrid/dist/Leaflet.VectorGrid.bundled.js"></script>
 <script src="game.js"></script>
+<script src="weather.js"></script>
+<script src="weather.min.js"></script>
+
 </body>
 </html>
