@@ -44,12 +44,14 @@
         <label for="map-theme">Map Theme:</label>
         <select id="map-theme" onchange="updateMapTheme(this.value)">
             <option value="street">Street</option>
-       <option value="satellite">Satellite</option>
-<option value="3d">3D</option>
-</select>
-<label for="show-markers">Show Markers:</label>
-<input type="checkbox" id="show-markers" checked onchange="toggleMarkers(this.checked)">
-</div>
+            <option value="satellite">Satellite</option>
+            <option value="3d">3D</option>
+        </select>
+        <label for="show-markers">Show Markers:</label>
+        <input type="checkbox" id="show-markers" checked onchange="toggleMarkers(this.checked)">
+        <label for="geo-map-high-fidelity">Geo Map High Fidelity:</label>
+        <input type="checkbox" id="geo-map-high-fidelity" onchange="toggleHighFidelity(this.checked)">
+    </div>
 </div>
 <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.js"></script>
