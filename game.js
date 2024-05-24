@@ -179,29 +179,30 @@ function calculateEfficiency() {
 
 // Function to set dynamic weather effects
 function setWeatherEffects(weatherType) {
-    if (window.weatherEffect) {
-        window.weatherEffect.remove();
+    if (window.weather) {
+        window.weather.stop();
     }
 
     switch (weatherType) {
         case 'rain':
-            window.weatherEffect = new WeatherEffect(map, { type: 'rain', intensity: 0.5 });
+            window.weather = new WeatherEffect(map, { type: 'rain', intensity: 0.5 });
             break;
         case 'snow':
-            window.weatherEffect = new WeatherEffect(map, { type: 'snow', intensity: 0.5 });
+            window.weather = new WeatherEffect(map, { type: 'snow', intensity: 0.5 });
             break;
         case 'thunderstorm':
-            window.weatherEffect = new WeatherEffect(map, { type: 'thunderstorm', intensity: 0.5 });
+            window.weather = new WeatherEffect(map, { type: 'thunderstorm', intensity: 0.5 });
             break;
         case 'clear':
-            window.weatherEffect = null;
+            // Clear any weather effects
             break;
         default:
-            window.weatherEffect = null;
+            // Clear any weather effects
+            break;
     }
 
-    if (window.weatherEffect) {
-        window.weatherEffect.addTo(map);
+    if (window.weather) {
+        window.weather.start();
     }
 }
 
