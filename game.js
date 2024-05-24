@@ -20,6 +20,15 @@ var baseLayers = {
 baseLayers["Street Map"].addTo(map);
 L.control.layers(baseLayers).addTo(map);
 
+// High fidelity layer
+var highFidelityLayer = L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
+    attribution: 'High fidelity map data © <a href="https://www.opentopomap.org">OpenTopoMap</a>',
+    maxZoom: 22,
+    minZoom: 4,
+    tileSize: 256,
+    zoomOffset: 0
+});
+
 var money = 1000;
 var oil = 0;
 var energy = 0;
@@ -469,6 +478,17 @@ function toggleMarkers(show) {
         powerPlants.forEach(plant => plant.marker.removeFrom(map));
     }
     console.log("Show markers: " + show);
+}
+
+// Toggle high fidelity
+function toggleHighFidelity(enable) {
+    if (enable) {
+        highFidelityLayer.addTo(map);
+        console.log("High Fidelity enabled");
+    } else {
+        map.removeLayer(highFidelityLayer);
+        console.log("High Fidelity disabled");
+    }
 }
 
 showMobileOverlay();
