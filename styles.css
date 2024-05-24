@@ -124,14 +124,22 @@ body, html {
 }
 
 /* Dollar Pop-up Effect */
-.dollar-pop-up {
-    position: fixed;
-    color: green;
+.dollar-pop-up,
+.energy-pop-up {
+    position: absolute;
     font-weight: bold;
     font-size: 16px;
     pointer-events: none;
     z-index: 2000;
     transition: transform 1s, opacity 1s;
+}
+
+.dollar-pop-up {
+    color: green;
+}
+
+.energy-pop-up {
+    color: yellow;
 }
 
 /* Tooltip Styles */

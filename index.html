@@ -11,7 +11,7 @@
 <body>
 <div id="mobile-overlay" class="mobile-overlay">
     <div class="mobile-controls">
-        <h3>Oil Extraction Tycoon web</h3>
+        <h3>Oil Extraction Tycoon Mobile</h3>
         <div class="resource-container">
             <div class="resource">
                 <p>Money: $<span id="money-mobile">1000</span></p>
@@ -20,13 +20,18 @@
                 <p>Oil: <span id="oil-mobile">0</span> barrels</p>
             </div>
             <div class="resource">
+                <p>Energy: <span id="energy-mobile">0</span> watts</p>
+            </div>
+            <div class="resource">
                 <p>Efficiency: <span id="efficiency-mobile">100%</span></p>
             </div>
         </div>
         <div class="button-container">
             <button onclick="buyLand()">Buy Land ($100)</button>
             <button onclick="buyOilRig()">Buy Oil Rig ($500)</button>
+            <button onclick="buyPowerPlant()">Buy Power Plant ($1000)</button>
             <button onclick="upgradeOilRig()">Upgrade Oil Rig ($300)</button>
+            <button onclick="upgradePowerPlant()">Upgrade Power Plant ($600)</button>
         </div>
         <div class="weather-info">
             <p>Weather: <span id="weather-mobile">Fetching...</span></p>
@@ -44,12 +49,12 @@
         <label for="map-theme">Map Theme:</label>
         <select id="map-theme" onchange="updateMapTheme(this.value)">
             <option value="street">Street</option>
-       <option value="satellite">Satellite</option>
-<option value="3d">3D</option>
-</select>
-<label for="show-markers">Show Markers:</label>
-<input type="checkbox" id="show-markers" checked onchange="toggleMarkers(this.checked)">
-</div>
+            <option value="satellite">Satellite</option>
+            <option value="3d">3D</option>
+        </select>
+        <label for="show-markers">Show Markers:</label>
+        <input type="checkbox" id="show-markers" checked onchange="toggleMarkers(this.checked)">
+    </div>
 </div>
 <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.js"></script>

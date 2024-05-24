@@ -1,15 +1,7 @@
-// Helper function to format numbers in a short format (e.g., 1K, 1M)
-function shortNumberFormat(num) {
-    if (num >= 1e9) return (num / 1e9).toFixed(1) + 'B';
-    if (num >= 1e6) return (num / 1e6).toFixed(1) + 'M';
-    if (num >= 1e3) return (num / 1e3).toFixed(1) + 'K';
-    return num;
-}
-
 // Initialize map
 var map = L.map('map').setView([37.8, -96], 4); // Centered on the USA
 
-// Base layers without pan animations
+// Base layers
 var baseLayers = {
     "Street Map": L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: 'Map data © <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
@@ -30,9 +22,12 @@ L.control.layers(baseLayers).addTo(map);
 
 var money = 1000;
 var oil = 0;
+var energy = 0;
 var ownedLand = [];
 var oilRigs = [];
+var powerPlants = [];
 var newOilRig;
+var newPowerPlant;
 var efficiency = 100;
 var weather = 'Fetching...';
 var weatherImpact = 1.0; // Multiplier for production rate
@@ -63,6 +58,22 @@ var drawControl = new L.Control.Draw({
 });
 map.addControl(drawControl);
 
+// Function to format large numbers in a short format (e.g., 1K, 1M)
+function shortNumberFormat(num) {
+    if (num >= 1e9) return (num / 1e9).toFixed(1) + 'B';
+    if (num >= 1e6) return (num / 1e6).toFixed(1) + 'M';
+    if (num >= 1e3) return (num / 1e3).toFixed(1) + 'K';
+    return num;
+}
+
+// Function to format large numbers in watts notation
+function wattsFormat(num) {
+    if (num >= 1e9) return (num / 1e9).toFixed(1) + ' GW';
+    if (num >= 1e6) return (num / 1e6).toFixed(1) + ' MW';
+    if (num >= 1e3) return (num / 1e3).toFixed(1) + ' kW';
+    return num + ' W';
+}
+
 // Function to update money display
 function updateMoney() {
     document.getElementById('money-mobile').innerText = shortNumberFormat(money);
@@ -71,6 +82,11 @@ function updateMoney() {
 // Function to update oil display
 function updateOil() {
     document.getElementById('oil-mobile').innerText = shortNumberFormat(oil);
+}
+
+// Function to update energy display
+function updateEnergy() {
+    document.getElementById('energy-mobile').innerText = wattsFormat(energy);
 }
 
 // Function to update efficiency display
@@ -101,11 +117,30 @@ function showDollarPopUp(amount, latlng) {
     }, 1000);
 }
 
+// Function to show energy pop-up
+function showEnergyPopUp(amount, latlng) {
+    var popUp = document.createElement('div');
+    popUp.className = 'energy-pop-up';
+    popUp.style.left = latlng.x + 'px';
+    popUp.style.top = latlng.y + 'px';
+    popUp.innerText = `${wattsFormat(amount)}`;
+    document.body.appendChild(popUp);
+
+    setTimeout(() => {
+        popUp.style.transform = 'translateY(-50px)';
+        popUp.style.opacity = 0;
+        setTimeout(() => {
+            document.body.removeChild(popUp);
+        }, 1000);
+    }, 1000);
+}
+
 // Function to save game state
 function saveGameState() {
     var gameState = {
         money: money,
         oil: oil,
+        energy: energy,
         efficiency: efficiency,
         weather: weather,
         ownedLand: ownedLand.map(marker => marker.getLatLng()),
@@ -113,6 +148,11 @@ function saveGameState() {
             latlng: rig.marker.getLatLng(),
             level: rig.level,
             revenue: rig.revenue
+        })),
+        powerPlants: powerPlants.map(plant => ({
+            latlng: plant.marker.getLatLng(),
+            level: plant.level,
+            production: plant.production
         }))
     };
     localStorage.setItem('oilExtractionGameState', JSON.stringify(gameState));
@@ -124,10 +164,12 @@ function loadGameState() {
     if (gameState) {
         money = gameState.money;
         oil = gameState.oil;
+        energy = gameState.energy;
         efficiency = gameState.efficiency;
         weather = gameState.weather;
         updateMoney();
         updateOil();
+        updateEnergy();
         updateEfficiency();
         updateWeather();
 
@@ -155,6 +197,26 @@ function loadGameState() {
                 revenue: rigData.revenue
             });
         });
+
+        gameState.powerPlants.forEach(plantData => {
+            var powerPlant = L.marker(plantData.latlng, {
+                icon: L.icon({
+                    iconUrl: 'power_plant.png',
+                    iconSize: [32, 32],
+                    iconAnchor: [16, 32],
+                    popupAnchor: [0, -32]
+                }),
+                draggable: true
+            }).addTo(map).bindPopup('Power Plant (Level ' + plantData.level + ')');
+            powerPlant.on('click', function() {
+                upgradePowerPlant(powerPlant);
+            });
+            powerPlants.push({
+                marker: powerPlant,
+                level: plantData.level,
+                production: plantData.production
+            });
+        });
     }
 }
 
@@ -171,6 +233,17 @@ function generateRevenue() {
         var latlng = map.latLngToContainerPoint(rig.marker.getLatLng());
         showDollarPopUp(revenue.toFixed(2), latlng);
     });
+
+    powerPlants.forEach(plant => {
+        var production = plant.production * weatherImpact;
+        energy += production;
+        updateEnergy();
+
+        // Show energy pop-up effect
+        var latlng = map.latLngToContainerPoint(plant.marker.getLatLng());
+        showEnergyPopUp(production.toFixed(2), latlng);
+    });
+
     saveGameState();
 }
 
@@ -262,6 +335,41 @@ function buyOilRig() {
     }
 }
 
+// Function to buy power plant
+function buyPowerPlant() {
+    if (money >= 1000) {
+        alert("Drag and drop the power plant anywhere on the map.");
+        newPowerPlant = L.marker(map.getCenter(), {
+            icon: L.icon({
+                iconUrl: 'windturbine.gif',
+                iconSize: [32, 32],
+                iconAnchor: [16, 32],
+                popupAnchor: [0, -32]
+            }),
+            draggable: true
+        }).addTo(map).bindPopup('Place this Power Plant').openPopup();
+
+        newPowerPlant.on('dragend', function() {
+            var latlng = newPowerPlant.getLatLng();
+            newPowerPlant.bindPopup('Power Plant (Level 1)').openPopup();
+            powerPlants.push({
+                marker: newPowerPlant,
+                level: 1,
+                production: 20
+            });
+            newPowerPlant.on('click', function() {
+                upgradePowerPlant(newPowerPlant);
+            });
+            money -= 1000;
+            updateMoney();
+            saveGameState();
+            newPowerPlant = null;
+        });
+    } else {
+        alert("Not enough money!");
+    }
+}
+
 // Function to upgrade oil rig
 function upgradeOilRig(oilRig) {
     var rigToUpgrade = oilRigs.find(rig => rig.marker === oilRig);
@@ -274,6 +382,21 @@ function upgradeOilRig(oilRig) {
         saveGameState();
     } else {
         alert("Not enough money to upgrade or no oil rig found!");
+    }
+}
+
+// Function to upgrade power plant
+function upgradePowerPlant(powerPlant) {
+    var plantToUpgrade = powerPlants.find(plant => plant.marker === powerPlant);
+    if (money >= 600 && plantToUpgrade) {
+        plantToUpgrade.level++;
+        plantToUpgrade.production = plantToUpgrade.level * 20;
+        plantToUpgrade.marker.setPopupContent('Power Plant (Level ' + plantToUpgrade.level + ')').openPopup();
+        money -= 600;
+        updateMoney();
+        saveGameState();
+    } else {
+        alert("Not enough money to upgrade or no power plant found!");
     }
 }
 
@@ -297,35 +420,6 @@ function setRefreshRate() {
     }
 }
 
-// Function to limit refresh rate to 30Hz for specific browsers
-function limitRefreshRate() {
-    const userAgent = navigator.userAgent;
-    const isChrome = /Chrome/.test(userAgent) && !/Edge/.test(userAgent);
-    const isSafari = /^((?!chrome|android).)*safari/i.test(userAgent);
-    const isOpera = /OPR/.test(userAgent) || /Opera/.test(userAgent);
-    const isFirefox = /Firefox/.test(userAgent);
-    const isModernBrowser = isChrome || isSafari || isOpera || isFirefox;
-
-    if (isModernBrowser) {
-        let lastFrameTime = 0;
-        const frameInterval = 1000 / 30;
-
-        function requestAnimationFrameWithLimit(callback) {
-            const now = performance.now();
-            const elapsed = now - lastFrameTime;
-
-            if (elapsed >= frameInterval) {
-                lastFrameTime = now - (elapsed % frameInterval);
-                callback(now);
-            }
-
-            window.requestAnimationFrame(() => requestAnimationFrameWithLimit(callback));
-        }
-
-        window.requestAnimationFrame = requestAnimationFrameWithLimit;
-    }
-}
-
 // Display mobile overlay if on a mobile device
 function showMobileOverlay() {
     document.getElementById('mobile-overlay').style.display = 'block';
@@ -343,15 +437,23 @@ function toggleSettingsModal() {
 
 // Update animation speed
 function updateAnimationSpeed(speed) {
+    // Implementation for updating animation speed
     console.log("Animation speed set to: " + speed);
 }
 
 // Update map theme
 function updateMapTheme(theme) {
-    for (const layer in baseLayers) {
-        map.removeLayer(baseLayers[layer]);
+    switch(theme) {
+        case 'street':
+            baseLayers["Street Map"].addTo(map);
+            break;
+        case 'satellite':
+            baseLayers["Satellite"].addTo(map);
+            break;
+        case '3d':
+            baseLayers["3D Map"].addTo(map);
+            break;
     }
-    baseLayers[theme].addTo(map);
     console.log("Map theme set to: " + theme);
 }
 
@@ -360,21 +462,22 @@ function toggleMarkers(show) {
     if (show) {
         ownedLand.forEach(marker => marker.addTo(map));
         oilRigs.forEach(rig => rig.marker.addTo(map));
+        powerPlants.forEach(plant => plant.marker.addTo(map));
     } else {
         ownedLand.forEach(marker => marker.removeFrom(map));
         oilRigs.forEach(rig => rig.marker.removeFrom(map));
+        powerPlants.forEach(plant => plant.marker.removeFrom(map));
     }
     console.log("Show markers: " + show);
 }
 
 showMobileOverlay();
 setRefreshRate();
-limitRefreshRate();
 
 // Load game state on start
 loadGameState();
 
-// Generate revenue every 1 seconds
+// Generate revenue every 10 seconds
 setInterval(generateRevenue, 1000);
 
 // Recalculate efficiency every 30 seconds
