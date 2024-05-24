@@ -11,7 +11,7 @@
 <body>
 <div id="mobile-overlay" class="mobile-overlay">
     <div class="mobile-controls">
-        <h3>Oil Extraction Web</h3>
+        <h3>Oil Extraction Tycoon web</h3>
         <div class="resource-container">
             <div class="resource">
                 <p>Money: $<span id="money-mobile">1000</span></p>
@@ -28,6 +28,9 @@
             <button onclick="buyOilRig()">Buy Oil Rig ($500)</button>
             <button onclick="upgradeOilRig()">Upgrade Oil Rig ($300)</button>
         </div>
+        <div class="weather-info">
+            <p>Weather: <span id="weather-mobile">Fetching...</span></p>
+        </div>
         <button class="settings-button" onclick="toggleSettingsModal()">⚙️</button>
     </div>
 </div>
@@ -41,18 +44,18 @@
         <label for="map-theme">Map Theme:</label>
         <select id="map-theme" onchange="updateMapTheme(this.value)">
             <option value="street">Street</option>
-            <option value="satellite">Satellite</option>
-            <option value="3d">3D</option>
-        </select>
-        <label for="show-markers">Show Markers:</label>
-        <input type="checkbox" id="show-markers" checked onchange="toggleMarkers(this.checked)">
-    </div>
+       <option value="satellite">Satellite</option>
+<option value="3d">3D</option>
+</select>
+<label for="show-markers">Show Markers:</label>
+<input type="checkbox" id="show-markers" checked onchange="toggleMarkers(this.checked)">
+</div>
 </div>
 <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.js"></script>
+<script src="https://unpkg.com/leaflet-tilelayer-pan@1.0.0/dist/leaflet-tilelayer-pan.min.js"></script>
+<script src="https://unpkg.com/leaflet.vectorgrid/dist/Leaflet.VectorGrid.bundled.js"></script>
 <script src="game.js"></script>
-<script src="weather.js"></script>
-<script src="weather.min.js"></script>
-
+<script src="cordova.js"></script>
 </body>
 </html>
