@@ -507,4 +507,3 @@ setInterval(() => {
 
 // Initial fetch weather
 fetchWeather();
-
