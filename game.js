@@ -429,11 +429,6 @@ function setRefreshRate() {
     }
 }
 
-// Display mobile overlay if on a mobile device
-function showOverlay() {
-    document.getElementById('Overlay').style.display = 'block';
-}
-
 // Toggle settings modal
 function toggleSettingsModal() {
     var modal = document.getElementById('settings-modal');
@@ -491,7 +486,6 @@ function toggleHighFidelity(enable) {
     }
 }
 
-showOverlay();
 setRefreshRate();
 
 // Load game state on start
