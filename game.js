@@ -85,27 +85,27 @@ function wattsFormat(num) {
 
 // Function to update money display
 function updateMoney() {
-    document.getElementById('money').innerText = shortNumberFormat(money);
+    document.getElementById('money-mobile').innerText = shortNumberFormat(money);
 }
 
 // Function to update oil display
 function updateOil() {
-    document.getElementById('oil').innerText = shortNumberFormat(oil);
+    document.getElementById('oil-mobile').innerText = shortNumberFormat(oil);
 }
 
 // Function to update energy display
 function updateEnergy() {
-    document.getElementById('energy').innerText = wattsFormat(energy);
+    document.getElementById('energy-mobile').innerText = wattsFormat(energy);
 }
 
 // Function to update efficiency display
 function updateEfficiency() {
-    document.getElementById('efficiency').innerText = efficiency + '%';
+    document.getElementById('efficiency-mobile').innerText = efficiency + '%';
 }
 
 // Function to update weather display
 function updateWeather() {
-    document.getElementById('weather').innerText = weather;
+    document.getElementById('weather-mobile').innerText = weather;
 }
 
 // Function to show dollar pop-up
@@ -491,6 +491,7 @@ function toggleHighFidelity(enable) {
     }
 }
 
+showMobileOverlay();
 setRefreshRate();
 
 // Load game state on start
