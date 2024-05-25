@@ -381,7 +381,7 @@ function buyPowerPlant() {
 
 // Function to upgrade oil rig
 function upgradeOilRig(oilRig) {
-    var rigToUpgrade = oilRigs.find(rig => rig.marker === oilRig);
+    var rigToUpgrade = oilRigs.find(rig => rig.marker._leaflet_id === oilRig._leaflet_id);
     if (money >= 300 && rigToUpgrade) {
         rigToUpgrade.level++;
         rigToUpgrade.revenue = rigToUpgrade.level * 10;
@@ -396,7 +396,7 @@ function upgradeOilRig(oilRig) {
 
 // Function to upgrade power plant
 function upgradePowerPlant(powerPlant) {
-    var plantToUpgrade = powerPlants.find(plant => plant.marker === powerPlant);
+    var plantToUpgrade = powerPlants.find(plant => plant.marker._leaflet_id === powerPlant._leaflet_id);
     if (money >= 600 && plantToUpgrade) {
         plantToUpgrade.level++;
         plantToUpgrade.production = plantToUpgrade.level * 20;
@@ -507,3 +507,4 @@ setInterval(() => {
 
 // Initial fetch weather
 fetchWeather();
+
