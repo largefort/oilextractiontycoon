@@ -431,7 +431,7 @@ function setRefreshRate() {
 
 // Display mobile overlay if on a mobile device
 function showMobileOverlay() {
-    document.getElementById('mobile-overlay').style.display = 'block';
+    document.getElementById('overlay').style.display = 'block';
 }
 
 // Toggle settings modal
