@@ -430,7 +430,7 @@ function setRefreshRate() {
 }
 
 // Display mobile overlay if on a mobile device
-function showMobileOverlay() {
+function showOverlay() {
     document.getElementById('overlay').style.display = 'block';
 }
 
@@ -491,7 +491,7 @@ function toggleHighFidelity(enable) {
     }
 }
 
-Overlay();
+showOverlay();
 setRefreshRate();
 
 // Load game state on start
