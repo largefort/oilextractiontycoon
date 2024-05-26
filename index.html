@@ -8,7 +8,6 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.css" />
     <style>
-        /* Add your custom styles here */
         body {
             font-family: Arial, sans-serif;
             margin: 0;
@@ -21,25 +20,25 @@
         #map {
             height: 100vh;
             width: 100%;
-            position: absolute; /* Ensure the map is absolutely positioned */
-            z-index: 1; /* Ensure the map is behind the overlays */
+            position: absolute;
+            z-index: 1;
         }
 
         .resource-container {
             position: absolute;
-            top: 0px;
-            left: 60%;
-            transform: translateX(-60%);
+            top: 10px;
+            left: 50%;
+            transform: translateX(-50%);
             background-color: white;
-            border: 0px solid black;
-            border-radius: 30px;
+            border: 2px solid black;
+            border-radius: 10px;
             padding: 10px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
             display: flex;
             justify-content: space-around;
             width: 60%;
             box-sizing: border-box;
-            z-index: 2; /* Ensure the resource container is above the map */
+            z-index: 2;
         }
 
         .resource-container .resource {
@@ -48,11 +47,10 @@
             text-align: center;
         }
 
-       .overlay {
+        .overlay {
             position: absolute;
-            top: 0px;
-            left: 0px;
-            bottom: 0px;
+            top: 10px;
+            left: 10px;
             width: 200px;
             background-color: rgba(255, 255, 255, 0.9);
             color: black;
@@ -60,11 +58,38 @@
             box-sizing: border-box;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
             border-radius: 10px;
-            z-index: 2; /* Ensure the overlay is above the map */
+            z-index: 2;
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .overlay.collapsed {
+            transform: translateX(-150%);
+        }
+
+        .toggle-button {
+            position: absolute;
+            top: 10px;
+            left: 210px;
+            width: 30px;
+            height: 30px;
+            background-color: rgba(255, 255, 255, 0.9);
+            border: 2px solid black;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            z-index: 3;
+        }
+
+        .toggle-button.collapsed {
+            left: 10px;
+            transform: rotate(180deg);
         }
 
         .controls {
-            display: fixed;
+            display: flex;
             flex-direction: column;
             align-items: center;
         }
@@ -103,7 +128,6 @@
             color: #000;
         }
 
-        /* Modal Styles */
         .modal {
             display: none;
             position: fixed;
@@ -140,7 +164,6 @@
             cursor: pointer;
         }
 
-        /* Dollar Pop-up Effect */
         .dollar-pop-up,
         .energy-pop-up {
             position: absolute;
@@ -159,7 +182,6 @@
             color: yellow;
         }
 
-        /* Tooltip Styles */
         .tooltip {
             position: absolute;
             background: rgba(0, 0, 0, 0.75);
@@ -171,13 +193,11 @@
             z-index: 1000;
         }
 
-        /* 3D Map Control */
         .leaflet-control-layers {
             border: 1px solid #2980b9;
             border-radius: 5px;
         }
 
-        /* Loading Spinner */
         .spinner {
             position: absolute;
             top: 50%;
@@ -197,7 +217,6 @@
             }
         }
 
-        /* Alerts */
         .alert {
             padding: 15px;
             background-color: #f44336;
@@ -210,15 +229,44 @@
         .alert-info {background-color: #2196F3;}
         .alert-warning {background-color: #ff9800;}
 
-        /* Media Queries for Mobile Devices */
         @media (max-width: 600px) {
-            .resource {
-                flex: 1 1 100%;
-                margin-bottom: 10px;
+            .resource-container {
+                top: 10px;
+                left: 50%;
+                transform: translateX(-50%);
+                width: 90%;
+                padding: 5px;
+            }
+
+            .overlay {
+                top: 10px;
+                left: 10px;
+                width: 80%;
+                padding: 5px;
+                box-shadow: none;
+            }
+
+            .toggle-button {
+                left: calc(80% + 15px);
             }
 
             .button-container button {
                 flex: 1 1 100%;
+                font-size: 12px;
+                padding: 8px;
+            }
+
+            .settings-button {
+                font-size: 20px;
+            }
+
+            .modal-content {
+                width: 90%;
+                padding: 10px;
+            }
+
+            .close {
+                font-size: 24px;
             }
         }
     </style>
@@ -255,6 +303,7 @@
             <button class="settings-button" onclick="toggleSettingsModal()">⚙️</button>
         </div>
     </div>
+    <div id="toggle-button" class="toggle-button" onclick="toggleOverlay()">➤</div>
     <div id="settings-modal" class="modal">
         <div class="modal-content">
             <span class="close" onclick="toggleSettingsModal()">&times;</span>
@@ -276,5 +325,22 @@
     <script src="https://unpkg.com/leaflet-tilelayer-pan@1.0.0/dist/leaflet-tilelayer-pan.min.js"></script>
     <script src="https://unpkg.com/leaflet.vectorgrid/dist/Leaflet.VectorGrid.bundled.js"></script>
     <script src="game.js"></script>
+    <script>
+        function toggleOverlay() {
+            const overlay = document.getElementById('overlay');
+            const toggleButton = document.getElementById('toggle-button');
+            overlay.classList.toggle('collapsed');
+            toggleButton.classList.toggle('collapsed');
+        }
+
+        function toggleSettingsModal() {
+            const modal = document.getElementById('settings-modal');
+            if (modal.style.display === "none" || modal.style.display === "") {
+                modal.style.display = "block";
+            } else {
+                modal.style.display = "none";
+            }
+        }
+    </script>
 </body>
 </html>
