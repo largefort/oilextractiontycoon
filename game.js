@@ -37,9 +37,12 @@ var oilRigs = [];
 var powerPlants = [];
 var newOilRig;
 var newPowerPlant;
+var researchLabs = [];
+var newResearchLab;
 var efficiency = 100;
 var weather = 'Fetching...';
 var weatherImpact = 1.0; // Multiplier for production rate
+var research = 0; // Research Points
 
 // Weather conditions and their impact
 var weatherConditions = {
