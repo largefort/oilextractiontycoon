@@ -175,14 +175,16 @@
             text-decoration: none;
         }
 
-        .dollar-pop-up,
-        .energy-pop-up {
+         .dollar-pop-up,
+        .energy-pop-up,
+        .research-pop-up {
             position: absolute;
-            font-weight: bold;
+            z-index: 1000;
             font-size: 16px;
+            font-weight: bold;
+            color: green;
+            transition: transform 1s ease-out, opacity 1s ease-out;
             pointer-events: none;
-            z-index: 2000;
-            transition: transform 1s, opacity 1s;
         }
 
         .dollar-pop-up {
@@ -191,6 +193,10 @@
 
         .energy-pop-up {
             color: yellow;
+        }
+        
+        .research-pop-up {
+            color: purple;
         }
 
         .tooltip {
