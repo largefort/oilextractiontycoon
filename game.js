@@ -1,5 +1,7 @@
 // Initialize map
-var map = L.map('map').setView([37.8, -96], 4); // Centered on the USA
+var map = L.map('map', {
+    zoomControl: false // Disable default zoom control
+}).setView([37.8, -96], 4); // Centered on the USA
 
 // Base layers
 var baseLayers = {
@@ -18,16 +20,6 @@ var baseLayers = {
 };
 
 baseLayers["Street Map"].addTo(map);
-L.control.layers(baseLayers).addTo(map);
-
-// High fidelity layer
-var highFidelityLayer = L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
-    attribution: 'High fidelity map data © <a href="https://www.opentopomap.org">OpenTopoMap</a>',
-    maxZoom: 22,
-    minZoom: 4,
-    tileSize: 256,
-    zoomOffset: 0
-});
 
 var money = 1000;
 var oil = 0;
@@ -55,57 +47,58 @@ var weatherConditions = {
     'yellow weather alert': 0.5
 };
 
-// Initialize Leaflet Draw
-var drawnItems = new L.FeatureGroup();
-map.addLayer(drawnItems);
-
-var drawControl = new L.Control.Draw({
-    draw: false,
-    edit: {
-        featureGroup: drawnItems
-    }
-});
-map.addControl(drawControl);
 
 // Function to format large numbers in a short format (e.g., 1K, 1M)
 function shortNumberFormat(num) {
-    if (num >= 1e9) return (num / 1e9).toFixed(1) + 'B';
-    if (num >= 1e6) return (num / 1e6).toFixed(1) + 'M';
-    if (num >= 1e3) return (num / 1e3).toFixed(1) + 'K';
+    if (num >= 1e9) {
+        return (num / 1e9).toFixed(1) + 'B';
+    }
+    if (num >= 1e6) {
+        return (num / 1e6).toFixed(1) + 'M';
+    }
+    if (num >= 1e3) {
+        return (num / 1e3).toFixed(1) + 'K';
+    }
     return num;
 }
 
 // Function to format large numbers in watts notation
 function wattsFormat(num) {
-    if (num >= 1e9) return (num / 1e9).toFixed(1) + ' GW';
-    if (num >= 1e6) return (num / 1e6).toFixed(1) + ' MW';
-    if (num >= 1e3) return (num / 1e3).toFixed(1) + ' kW';
+    if (num >= 1e9) {
+        return (num / 1e9).toFixed(1) + ' GW';
+    }
+    if (num >= 1e6) {
+        return (num / 1e6).toFixed(1) + ' MW';
+    }
+    if (num >= 1e3) {
+        return (num / 1e3).toFixed(1) + ' kW';
+    }
     return num + ' W';
 }
 
 // Function to update money display
 function updateMoney() {
-    document.getElementById('money-mobile').innerText = shortNumberFormat(money);
+    document.getElementById('money').innerText = shortNumberFormat(money);
 }
 
 // Function to update oil display
 function updateOil() {
-    document.getElementById('oil-mobile').innerText = shortNumberFormat(oil);
+    document.getElementById('oil').innerText = shortNumberFormat(oil);
 }
 
 // Function to update energy display
 function updateEnergy() {
-    document.getElementById('energy-mobile').innerText = wattsFormat(energy);
+    document.getElementById('energy').innerText = wattsFormat(energy);
 }
 
 // Function to update efficiency display
 function updateEfficiency() {
-    document.getElementById('efficiency-mobile').innerText = efficiency + '%';
+    document.getElementById('efficiency').innerText = efficiency + '%';
 }
 
 // Function to update weather display
 function updateWeather() {
-    document.getElementById('weather-mobile').innerText = weather;
+    document.getElementById('weather').innerText = weather;
 }
 
 // Function to show dollar pop-up
@@ -210,7 +203,7 @@ function loadGameState() {
         gameState.powerPlants.forEach(plantData => {
             var powerPlant = L.marker(plantData.latlng, {
                 icon: L.icon({
-                    iconUrl: 'power_plant.png',
+                    iconUrl: 'windturbine.gif',
                     iconSize: [32, 32],
                     iconAnchor: [16, 32],
                     popupAnchor: [0, -32]
@@ -381,9 +374,9 @@ function buyPowerPlant() {
 
 // Function to upgrade oil rig
 function upgradeOilRig(oilRig) {
-    var rigToUpgrade = oilRigs.find(rig => rig.marker === oilRig);
+    var rigToUpgrade = oilRigs.find(rig => rig.marker._leaflet_id === oilRig._leaflet_id);
     if (money >= 300 && rigToUpgrade) {
-        rigToUpgrade.level++;
+        rigToUpgrade.level += 1;
         rigToUpgrade.revenue = rigToUpgrade.level * 10;
         rigToUpgrade.marker.setPopupContent('Oil Rig (Level ' + rigToUpgrade.level + ')').openPopup();
         money -= 300;
@@ -396,9 +389,9 @@ function upgradeOilRig(oilRig) {
 
 // Function to upgrade power plant
 function upgradePowerPlant(powerPlant) {
-    var plantToUpgrade = powerPlants.find(plant => plant.marker === powerPlant);
+    var plantToUpgrade = powerPlants.find(plant => plant.marker._leaflet_id === powerPlant._leaflet_id);
     if (money >= 600 && plantToUpgrade) {
-        plantToUpgrade.level++;
+        plantToUpgrade.level += 1;
         plantToUpgrade.production = plantToUpgrade.level * 20;
         plantToUpgrade.marker.setPopupContent('Power Plant (Level ' + plantToUpgrade.level + ')').openPopup();
         money -= 600;
@@ -419,7 +412,7 @@ function setRefreshRate() {
     if (isSamsungGalaxyA54()) {
         const style = document.createElement('style');
         style.innerHTML = `
-            @media (min-refresh-rate: 120Hz) {
+            @media (min-refresh-rate: 60Hz) {
                 * {
                     scroll-behavior: smooth;
                 }
@@ -427,11 +420,6 @@ function setRefreshRate() {
         `;
         document.head.appendChild(style);
     }
-}
-
-// Display mobile overlay if on a mobile device
-function showMobileOverlay() {
-    document.getElementById('mobile-overlay').style.display = 'block';
 }
 
 // Toggle settings modal
@@ -457,7 +445,7 @@ function updateMapTheme(theme) {
             baseLayers["Street Map"].addTo(map);
             break;
         case 'satellite':
-            baseLayers["Satellite"].addTo(map);
+            baseLayers.Satellite.addTo(map);
             break;
         case '3d':
             baseLayers["3D Map"].addTo(map);
@@ -491,7 +479,6 @@ function toggleHighFidelity(enable) {
     }
 }
 
-showMobileOverlay();
 setRefreshRate();
 
 // Load game state on start
