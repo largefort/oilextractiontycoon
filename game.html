@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Idle Oil Extraction Tycoon Mobile</title>
+    <link rel="stylesheet" type="text/css" href="styles.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.css" />
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        #map {
+            height: calc(100vh - 50px);
+            width: 100%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1;
+        }
+
+        .resource-container {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: white;
+            border: 2px solid black;
+            border-radius: 6px;
+            padding: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: space-around;
+            width: 40%;
+            box-sizing: border-box;
+            z-index: 2;
+        }
+
+        .resource-container .resource {
+            margin: 4px;
+            width: auto;
+            text-align: center;
+        }
+
+        .tab-content {
+            display: none;
+            position: absolute;
+            top: 0;
+            bottom: 50px;
+            left: 0;
+            width: 100%;
+            padding: 10px;
+            box-sizing: border-box;
+            overflow-y: auto;
+            z-index: 2;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        #controls-tab, #settings-tab {
+            background-color: rgba(255, 255, 255, 0.9);
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            border-radius: 10px;
+        }
+
+        #world-map-tab {
+            background: none;
+            pointer-events: none;
+        }
+
+        .controls, .settings {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .button-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .button-container button {
+            flex: 1 1 45%;
+            margin: 5px;
+            padding: 10px;
+            font-size: 14px;
+            color: #fff;
+            background: #2980b9;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .button-container button:hover {
+            background: #3498db;
+        }
+
+        .settings-button {
+            font-size: 24px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            margin-top: 10px;
+            color: #000;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 10000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.4);
+            padding-top: 60px;
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 5% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            border-radius: 10px;
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            background-color: #fff;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: space-around;
+            padding: 10px 0;
+            z-index: 3;
+        }
+
+        .bottom-nav button {
+            background: none;
+            border: none;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        @media (max-width: 600px) {
+            .resource-container {
+                top: 10px;
+                left: 50%;
+                transform: translateX(-50%);
+                width: 90%;
+                padding: 5px;
+            }
+
+            .button-container button {
+                flex: 1 1 100%;
+                font-size: 12px;
+                padding: 8px;
+            }
+
+            .settings-button {
+                font-size: 20px;
+            }
+
+            .modal-content {
+                width: 90%;
+                padding: 10px;
+            }
+
+            .close {
+                font-size: 24px;
+            }
+        }
+
+        .dollar-pop-up,
+        .energy-pop-up {
+            position: absolute;
+            font-weight: bold;
+            font-size: 10px;
+            pointer-events: none;
+            z-index: 2000;
+            transition: transform 1s, opacity 1s;
+        }
+
+        .dollar-pop-up {
+            color: green;
+        }
+
+        .energy-pop-up {
+            color: yellow;
+        }
+
+        .tooltip {
+            position: absolute;
+            background: rgba(0, 0, 0, 0.75);
+            color: #fff;
+            padding: 5px;
+            border-radius: 5px;
+            font-size: 12px;
+            white-space: nowrap;
+            z-index: 1000;
+        }
+    </style>
+</head>
+<body>
+<div id="map" class="enhanced-map"></div>
+<div class="resource-container">
+    <div class="resource">
+        <p>Money: $<span id="money">1000</span></p>
+    </div>
+    <div class="resource">
+        <p>Oil: <span id="oil">0</span> barrels</p>
+    </div>
+    <div class="resource">
+        <p>Energy: <span id="energy">0</span> watts</p>
+    </div>
+    <div class="resource">
+        <p>Efficiency: <span id="efficiency">100%</span></p>
+    </div>
+</div>
+<div id="world-map-tab" class="tab-content active">
+    <!-- The map will be visible when this tab is active -->
+</div>
+<div id="controls-tab" class="tab-content">
+    <div class="controls">
+        <h3>Oil Extraction Tycoon Mobile</h3>
+        <div class="button-container">
+            <button onclick="buyLand()">Buy Land ($100)</button>
+            <button onclick="buyOilRig()">Buy Oil Rig ($500)</button>
+            <button onclick="buyPowerPlant()">Buy Power Plant ($1000)</button>
+            <button onclick="upgradeOilRig()">Upgrade Oil Rig ($300)</button>
+            <button onclick="upgradePowerPlant()">Upgrade Power Plant ($600)</button>
+        </div>
+        <div class="weather-info">
+            <p>Weather: <span id="weather">Fetching...</span></p>
+        </div>
+    </div>
+</div>
+<div id="settings-tab" class="tab-content">
+    <div class="settings">
+        <h2>Geo Map Settings</h2>
+        <label for="animation-speed">Animation Speed:</label>
+        <input type="range" id="animation-speed" name="animation-speed" min="1" max="10" value="5" onchange="updateAnimationSpeed(this.value)">
+        <label for="map-theme">Map Theme:</label>
+        <select id="map-theme" onchange="updateMapTheme(this.value)">
+            <option value="street">Street</option>
+            <option value="satellite">Satellite</option>
+            <option value="3d">3D</option>
+        </select>
+        <label for="show-markers">Show Markers:</label>
+        <input type="checkbox" id="show-markers" checked onchange="toggleMarkers(this.checked)">
+    </div>
+</div>
+<div class="bottom-nav">
+    <button onclick="showTab('world-map-tab')">World Map</button>
+    <button onclick="showTab('controls-tab')">Controls</button>
+    <button onclick="showTab('settings-tab')">Settings</button>
+</div>
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.js"></script>
+<script src="https://unpkg.com/leaflet-tilelayer-pan@1.0.0/dist/leaflet-tilelayer-pan.min.js"></script>
+<script src="https://unpkg.com/leaflet.vectorgrid/dist/Leaflet.VectorGrid.bundled.js"></script>
+<script src="game.js"></script>
+<script>
+    function showTab(tabId) {
+        document.querySelectorAll('.tab-content').forEach(tab => {
+            tab.classList.remove('active');
+        });
+        document.getElementById(tabId).classList.add('active');
+
+        // Enable pointer events on the map when World Map tab is active
+        if (tabId === 'world-map-tab') {
+            document.getElementById('map').style.pointerEvents = 'auto';
+            setTimeout(() => {
+                map.invalidateSize();
+            }, 100);
+        } else {
+            document.getElementById('map').style.pointerEvents = 'none';
+        }
+    }
+
+    // Mobile User Interface Stabilizer (MUIS)
+    function stabilizeUI() {
+        map.invalidateSize();
+        document.querySelectorAll('.tab-content').forEach(tab => {
+            tab.classList.remove('active');
+        });
+        document.getElementById('world-map-tab').classList.add('active');
+    }
+
+    map.on('movestart', function() {
+        stabilizeUI();
+    });
+
+    map.on('moveend', function() {
+        stabilizeUI();
+    });
+
+    window.addEventListener('resize', function() {
+        stabilizeUI();
+    });
+
+    window.addEventListener('orientationchange', function() {
+        stabilizeUI();
+    });
+</script>
+</body>
+</html>
