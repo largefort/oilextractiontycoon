@@ -9,12 +9,13 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.css" />
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Roboto', sans-serif;
             margin: 0;
             padding: 0;
             display: flex;
             flex-direction: column;
             align-items: center;
+            background-color: #f0f2f5;
         }
 
         #map {
@@ -29,11 +30,11 @@
             top: 10px;
             left: 50%;
             transform: translateX(-50%);
-            background-color: white;
-            border: 2px solid black;
+            background-color: rgba(255, 255, 255, 0.9);
+            border: 2px solid #2980b9;
             border-radius: 10px;
             padding: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
             display: flex;
             justify-content: space-around;
             width: 60%;
@@ -51,36 +52,39 @@
             position: absolute;
             top: 10px;
             left: 10px;
-            width: 200px;
+            width: 220px;
             background-color: rgba(255, 255, 255, 0.9);
-            color: black;
-            padding: 10px;
+            color: #333;
+            padding: 15px;
             box-sizing: border-box;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
             border-radius: 10px;
             z-index: 2;
             transition: transform 0.3s ease-in-out;
         }
 
         .overlay.collapsed {
-            transform: translateX(-150%);
+            transform: translateX(-250%);
         }
 
         .toggle-button {
             position: absolute;
             top: 10px;
-            left: 210px;
+            left: 240px;
             width: 30px;
             height: 30px;
-            background-color: rgba(255, 255, 255, 0.9);
-            border: 2px solid black;
+            background-color: #2980b9;
+            border: 2px solid #2980b9;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
             z-index: 3;
+            color: white;
+            font-weight: bold;
+            transition: left 0.3s ease-in-out, transform 0.3s ease-in-out;
         }
 
         .toggle-button.collapsed {
@@ -108,15 +112,16 @@
             padding: 10px;
             font-size: 14px;
             color: #fff;
-            background: #2980b9;
+            background: linear-gradient(145deg, #2980b9, #3498db);
             border: none;
             border-radius: 5px;
             cursor: pointer;
-            transition: background 0.3s;
+            transition: background 0.3s, transform 0.2s;
         }
 
         .button-container button:hover {
-            background: #3498db;
+            background: linear-gradient(145deg, #3498db, #2980b9);
+            transform: scale(1.05);
         }
 
         .settings-button {
@@ -125,7 +130,12 @@
             border: none;
             cursor: pointer;
             margin-top: 10px;
-            color: #000;
+            color: #2980b9;
+            transition: transform 0.2s;
+        }
+
+        .settings-button:hover {
+            transform: rotate(90deg);
         }
 
         .modal {
@@ -137,17 +147,18 @@
             width: 100%;
             height: 100%;
             overflow: auto;
-            background-color: rgba(0,0,0,0.4);
+            background-color: rgba(0,0,0,0.5);
             padding-top: 60px;
         }
 
         .modal-content {
-            background-color: #fefefe;
+            background-color: #fff;
             margin: 5% auto;
             padding: 20px;
             border: 1px solid #888;
             width: 80%;
             border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
         }
 
         .close {
@@ -155,13 +166,13 @@
             float: right;
             font-size: 28px;
             font-weight: bold;
+            cursor: pointer;
         }
 
         .close:hover,
         .close:focus {
-            color: black;
+            color: #000;
             text-decoration: none;
-            cursor: pointer;
         }
 
         .dollar-pop-up,
@@ -286,6 +297,9 @@
         <div class="resource">
             <p>Efficiency: <span id="efficiency">100%</span></p>
         </div>
+        <div class="resource">
+            <p>Research Points: <span id="research">0</span></p>
+        </div>
     </div>
     <div id="overlay" class="overlay">
         <div class="controls">
@@ -294,6 +308,7 @@
                 <button onclick="buyLand()">Buy Land ($100)</button>
                 <button onclick="buyOilRig()">Buy Oil Rig ($500)</button>
                 <button onclick="buyPowerPlant()">Buy Power Plant ($1000)</button>
+                <button onclick="buyResearchLab()">Buy Research Lab ($1500)</button>
                 <button onclick="upgradeOilRig()">Upgrade Oil Rig ($300)</button>
                 <button onclick="upgradePowerPlant()">Upgrade Power Plant ($600)</button>
             </div>
