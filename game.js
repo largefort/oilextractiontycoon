@@ -29,9 +29,12 @@ var oilRigs = [];
 var powerPlants = [];
 var newOilRig;
 var newPowerPlant;
+var researchLabs = [];
+var newResearchLab;
 var efficiency = 100;
 var weather = 'Fetching...';
 var weatherImpact = 1.0; // Multiplier for production rate
+var research = 0; // Research Points
 
 // Weather conditions and their impact
 var weatherConditions = {
@@ -101,6 +104,10 @@ function updateWeather() {
     document.getElementById('weather').innerText = weather;
 }
 
+// Function to update research points display
+function updateResearch() {
+    document.getElementById('research').innerText = research;
+
 // Function to show dollar pop-up
 function showDollarPopUp(amount, latlng) {
     var popUp = document.createElement('div');
@@ -126,6 +133,24 @@ function showEnergyPopUp(amount, latlng) {
     popUp.style.left = latlng.x + 'px';
     popUp.style.top = latlng.y + 'px';
     popUp.innerText = `${wattsFormat(amount)}`;
+    document.body.appendChild(popUp);
+
+    setTimeout(() => {
+        popUp.style.transform = 'translateY(-50px)';
+        popUp.style.opacity = 0;
+        setTimeout(() => {
+            document.body.removeChild(popUp);
+        }, 1000);
+    }, 1000);
+}
+
+// Function to show research pop-up
+function showResearchPopUp(points, latlng) {
+    var popUp = document.createElement('div');
+    popUp.className = 'research-pop-up';
+    popUp.style.left = latlng.x + 'px';
+    popUp.style.top = latlng.y + 'px';
+    popUp.innerText = `${points} RP`;
     document.body.appendChild(popUp);
 
     setTimeout(() => {
@@ -247,6 +272,18 @@ function generateRevenue() {
     });
 
     saveGameState();
+}
+
+// Function to generate research points from research labs
+function generateResearchPoints() {
+    var totalPoints = researchLabs.reduce((acc, lab) => acc + lab.points, 0);
+    research += totalPoints;
+    updateResearch();
+
+    researchLabs.forEach(lab => {
+        var latlng = map.latLngToContainerPoint(lab.marker.getLatLng());
+        showResearchPopUp(lab.points, latlng);
+    });
 }
 
 // Function to calculate efficiency
@@ -372,6 +409,31 @@ function buyPowerPlant() {
     }
 }
 
+// Function to buy research lab
+function buyResearchLab() {
+    if (money >= 1500) {
+        money -= 1500;
+        updateMoney();
+
+        map.once('click', function (e) {
+            var researchLab = L.marker(e.latlng, {
+                icon: L.icon({
+                    iconUrl: 'researchlab.gif',
+                    iconSize: [32, 32]
+                })
+            }).addTo(map).bindPopup('Research Lab');
+            researchLabs.push({
+                marker: researchLab,
+                level: 1,
+                points: 50
+            });
+            saveGameState();
+        });
+    } else {
+        alert('Not enough money to buy research lab!');
+    }
+}
+
 // Function to upgrade oil rig
 function upgradeOilRig(oilRig) {
     var rigToUpgrade = oilRigs.find(rig => rig.marker._leaflet_id === oilRig._leaflet_id);
@@ -399,6 +461,20 @@ function upgradePowerPlant(powerPlant) {
         saveGameState();
     } else {
         alert("Not enough money to upgrade or no power plant found!");
+    }
+}
+    // Function to upgrade research lab
+function upgradeResearchLab(researchLab) {
+    var labToUpgrade = researchLabs.find(lab => lab.marker._leaflet_id === researchLab._leaflet_id);
+    if (money >= 800 && labToUpgrade) {
+        labToUpgrade.level++;
+        labToUpgrade.researchPoints = labToUpgrade.level * 5; // Change this value based on your game's logic
+        labToUpgrade.marker.setPopupContent('Research Lab (Level ' + labToUpgrade.level + ')').openPopup();
+        money -= 800;
+        updateMoney();
+        saveGameState();
+    } else {
+        alert("Not enough money to upgrade or no research lab found!");
     }
 }
 
