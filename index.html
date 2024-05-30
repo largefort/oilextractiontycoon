@@ -4,6 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <title>Idle Oil Extraction Tycoon Mobile</title>
+    <link rel="stylesheet" type="text/css" href="styles.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.css" />
     <style>
         body {
             font-family: 'Roboto', sans-serif;
@@ -265,9 +268,9 @@
         <input type="range" id="animation-speed" name="animation-speed" min="1" max="10" value="5" onchange="updateAnimationSpeed(this.value)">
         <label for="map-theme">Map Theme:</label>
         <select id="map-theme" onchange="updateMapTheme(this.value)">
-            <option value="googleStreets">Street</option>
-            <option value="googleSat">Satellite</option>
-            <option value="googleHybrid">Hybrid</option>
+            <option value="street">Street</option>
+            <option value="satellite">Satellite</option>
+            <option value="3d">3D</option>
         </select>
         <label for="show-markers">Show Markers:</label>
         <input type="checkbox" id="show-markers" checked onchange="toggleMarkers(this.checked)">
@@ -300,6 +303,31 @@
             document.getElementById('map').style.pointerEvents = 'none';
         }
     }
+
+    // Mobile User Interface Stabilizer (MUIS)
+    function stabilizeUI() {
+        map.invalidateSize();
+        document.querySelectorAll('.tab-content').forEach(tab => {
+            tab.classList.remove('active');
+        });
+        document.getElementById('world-map-tab').classList.add('active');
+    }
+
+    map.on('movestart', function() {
+        stabilizeUI();
+    });
+
+    map.on('moveend', function() {
+        stabilizeUI();
+    });
+
+    window.addEventListener('resize', function() {
+        stabilizeUI();
+    });
+
+    window.addEventListener('orientationchange', function() {
+        stabilizeUI();
+    });
 </script>
 </body>
 </html>
