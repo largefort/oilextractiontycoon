@@ -23,6 +23,57 @@ document.addEventListener('deviceready', onDeviceReady, false);
 
 function onDeviceReady() {
     // Cordova is now initialized. Have fun!
+    // select the right Ad Id according to platform
+      var admobid = {};
+      if( /(android)/i.test(navigator.userAgent) ) { // for android & amazon-fireos
+        admobid = {
+          banner: 'ca-app-pub-5816082932921993/5683636470', // or DFP format "/6253334/dfp_example_ad"
+          interstitial: 'ca-app-pub-xxx/yyy'
+        };
+      } else { // for ios
+        admobid = {
+          banner: 'ca-app-pub-xxx/zzz', // or DFP format "/6253334/dfp_example_ad"
+          interstitial: 'ca-app-pub-xxx/kkk'
+        };
+      }
+
+      // it will display smart banner at top center, using the default options
+      if(AdMob) AdMob.createBanner({
+        adSize: 'FULL_BANNER',
+        adId: admobid.banner,
+        position: AdMob.AD_POSITION.BOTTOM_CENTER,
+        autoShow: true });
+
+        // use banner
+        createBanner(adId/options, success, fail);
+        removeBanner();
+        showBanner(position);
+        showBannerAtXY(x, y);
+        hideBanner();
+
+        // use interstitial
+        prepareInterstitial(adId/options, success, fail);
+        showInterstitial();
+        isInterstitialReady(function(ready){ if(ready){ } });
+
+        // use reward video
+        prepareRewardVideoAd(adId/options, success, fail);
+        showRewardVideoAd();
+
+        // set values for configuration and targeting
+        setOptions(options, success, fail);
+
+        // get user ad settings
+        getAdSettings(function(inf){ inf.adId; inf.adTrackingEnabled; }, fail);
+
+        // onAdLoaded
+        // onAdFailLoad
+        // onAdPresent
+        // onAdDismiss
+        // onAdLeaveApp
+        document.addEventListener('onAdFailLoad', function(e){
+            // handle the event
+        });
 
     console.log('Running cordova-' + cordova.platformId + '@' + cordova.version);
     document.getElementById('deviceready').classList.add('ready');
