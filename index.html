@@ -232,18 +232,28 @@
             white-space: nowrap;
             z-index: 1000;
         }
+
+        /* Version and copyright info */
+.version-info {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    text-align: right;
+    font-size: 10px; /* Smaller font size for better fit on mobile screens */
+    color: blue; /* Neon green text */
+    z-index: 1000; /* Ensuring it stays on top of other elements */
+}
+        /* Disable text selection */
+body, html {
+    -webkit-user-select: none; /* Safari */
+    -moz-user-select: none; /* Firefox */
+    -ms-user-select: none; /* IE10+/Edge */
+    user-select: none; /* Standard */
+    touch-action: none; /* Disables pinch-to-zoom */
+}
     </style>
 </head>
 <body>
-<audio id="oilRigAudio">
-    <source src="oilrig.wav" type="audio/mpeg">
-    Your browser does not support the audio element.
-</audio>
-
-<audio id="powerPlantAudio">
-    <source src="mp3" type="audio/mpeg">
-    Your browser does not support the audio element.
-</audio>
 <div id="map" class="enhanced-map"></div>
 <div class="resource-container">
     <div class="resource">
@@ -280,6 +290,10 @@
         </div>
     </div>
 </div>
+<div class="version-info">
+    <div>1.0.12</div>
+    <div>100012</div>
+</div>
 <div id="settings-tab" class="tab-content">
     <div class="settings">
         <h2>Geo Map Settings</h2>
@@ -287,9 +301,7 @@
         <input type="range" id="animation-speed" name="animation-speed" min="1" max="10" value="5" onchange="updateAnimationSpeed(this.value)">
         <label for="map-theme">Map Theme:</label>
         <select id="map-theme" onchange="updateMapTheme(this.value)">
-            <option value="street">Street</option>
-            <option value="satellite">Satellite</option>
-            <option value="3d">3D</option>
+            <option value="EsriWorldImagery">WorldImagery</option>
         </select>
         <label for="show-markers">Show Markers:</label>
         <input type="checkbox" id="show-markers" checked onchange="toggleMarkers(this.checked)">
@@ -304,7 +316,11 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.js"></script>
 <script src="https://unpkg.com/leaflet-tilelayer-pan@1.0.0/dist/leaflet-tilelayer-pan.min.js"></script>
 <script src="https://unpkg.com/leaflet.vectorgrid/dist/Leaflet.VectorGrid.bundled.js"></script>
+<script src="https://unpkg.com/leaflet-providers@latest/leaflet-providers.js"></script>
 <script src="game.js"></script>
+<script src="cordova.js"></script>
+<script src="js/index.js"></script>
+<script src="leaflet-providers.js"></script>
 <script>
     function showTab(tabId) {
         document.querySelectorAll('.tab-content').forEach(tab => {
@@ -347,6 +363,8 @@
     window.addEventListener('orientationchange', function() {
         stabilizeUI();
     });
+
+
 </script>
 </body>
 </html>
