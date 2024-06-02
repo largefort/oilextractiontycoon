@@ -399,36 +399,57 @@ function saveGameState() {
                     alert("Not enough money!");
                 }
             }
+            
+ // Fixing upgrade functions
+    function upgradeOilRig(oilRig) {
+        var rigToUpgrade = oilRigs.find(rig => rig.marker._leaflet_id === oilRig._leaflet_id);
+        if (money >= 300 && rigToUpgrade) {
+            rigToUpgrade.level += 1;
+            rigToUpgrade.revenue = rigToUpgrade.level * 10;
+            rigToUpgrade.marker.setPopupContent('Oil Rig (Level ' + rigToUpgrade.level + ')').openPopup();
+            money -= 300;
+            updateResourceCounters();
+            saveGameState();
+        } else {
+            alert("Not enough money to upgrade or no oil rig found!");
+        }
+    }
 
-            // Function to upgrade oil rig
-            function upgradeOilRig(oilRig) {
-                var rigToUpgrade = oilRigs.find(rig => rig.marker._leaflet_id === oilRig._leaflet_id);
-                if (money >= 300 && rigToUpgrade) {
-                    rigToUpgrade.level += 1;
-                    rigToUpgrade.revenue = rigToUpgrade.level * 10;
-                    rigToUpgrade.marker.setPopupContent('Oil Rig (Level ' + rigToUpgrade.level + ')').openPopup();
-                    money -= 300;
-                    updateResourceCounters();
-                    saveGameState();
-                } else {
-                    alert("Not enough money to upgrade or no oil rig found!");
-                }
-            }
+    function upgradePowerPlant(powerPlant) {
+        var plantToUpgrade = powerPlants.find(plant => plant.marker._leaflet_id === powerPlant._leaflet_id);
+        if (money >= 600 && plantToUpgrade) {
+            plantToUpgrade.level += 1;
+            plantToUpgrade.production = plantToUpgrade.level * 20;
+            plantToUpgrade.marker.setPopupContent('Power Plant (Level ' + plantToUpgrade.level + ')').openPopup();
+            money -= 600;
+            updateResourceCounters();
+            saveGameState();
+        } else {
+            alert("Not enough money to upgrade or no power plant found!");
+        }
+    }
 
-            // Function to upgrade power plant
-            function upgradePowerPlant(powerPlant) {
-                var plantToUpgrade = powerPlants.find(plant => plant.marker._leaflet_id === powerPlant._leaflet_id);
-                if (money >= 600 && plantToUpgrade) {
-                    plantToUpgrade.level += 1;
-                    plantToUpgrade.production = plantToUpgrade.level * 20;
-                    plantToUpgrade.marker.setPopupContent('Power Plant (Level ' + plantToUpgrade.level + ')').openPopup();
-                    money -= 600;
-                    updateResourceCounters();
-                    saveGameState();
-                } else {
-                    alert("Not enough money to upgrade or no power plant found!");
-                }
-            }
+    function onMarkerClick(e) {
+        var marker = e.target;
+        var relatedRig = oilRigs.find(rig => rig.marker._leaflet_id === marker._leaflet_id);
+        var relatedPlant = powerPlants.find(plant => plant.marker._leaflet_id === marker._leaflet_id);
+
+        if (relatedRig) {
+            upgradeOilRig(relatedRig);
+        } else if (relatedPlant) {
+            upgradePowerPlant(relatedPlant);
+        } else {
+            alert("No upgradeable structure found!");
+        }
+    }
+
+    oilRigs.forEach(rig => {
+        rig.marker.on('click', onMarkerClick);
+    });
+
+    powerPlants.forEach(plant => {
+        plant.marker.on('click', onMarkerClick);
+    });
             // Function to handle 120Hz support for Samsung Galaxy A54 5G
             function isSamsungGalaxyA54() {
                 const userAgent = navigator.userAgent || navigator.vendor || window.opera;
@@ -527,4 +548,3 @@ function saveGameState() {
 
             // Initial fetch weather
             fetchWeather();
-
