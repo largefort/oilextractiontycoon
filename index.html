@@ -317,8 +317,16 @@ body, html {
 <script src="https://unpkg.com/leaflet-tilelayer-pan@1.0.0/dist/leaflet-tilelayer-pan.min.js"></script>
 <script src="https://unpkg.com/leaflet.vectorgrid/dist/Leaflet.VectorGrid.bundled.js"></script>
 <script src="https://unpkg.com/leaflet-providers@latest/leaflet-providers.js"></script>
+<script src="https://cdn.trackjs.com/agent/v3/latest/t.js"></script>
+<script>
+  window.TrackJS && TrackJS.install({ 
+    token: "81e06b58c7ee472e8a6107a04262fc03"
+    // for more configuration options, see https://docs.trackjs.com
+  });
+</script>                      
 <script src="game.js"></script>
 <script src="leaflet-providers.js"></script>
+                        
 <script>
     function showTab(tabId) {
         document.querySelectorAll('.tab-content').forEach(tab => {
