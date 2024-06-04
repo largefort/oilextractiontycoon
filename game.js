@@ -299,8 +299,8 @@ function saveGameState() {
 
             // Function to change weather based on API data
 async function fetchWeather() {
-    var apiKey = 'QLBUXKGLF57F6E8YEF8R9376Z';
-    var url = `https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/iceland?unitGroup=metric&key=${apiKey}&contentType=json`;
+    var apiKey = 'WGQL3A3FAHHPJD78V4XK987HG';
+    var url = `https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/Iceland?unitGroup=us&include=events%2Cdays%2Ccurrent%2Chours%2Calerts&key=WGQL3A3FAHHPJD78V4XK987HG&contentType=json`;
 
     try {
         var response = await fetch(url, {
