@@ -47,6 +47,12 @@ var weatherConditions = {
     'yellow weather alert': 0.5
 };
 
+// Load Windy API script
+var script = document.createElement('script');
+script.src = 'https://api.windy.com/assets/map-forecast/libBoot.js';
+script.onload = initializeWindy; // Call initializeWindy function after the script is loaded
+document.head.appendChild(script);
+
 // Function to initialize Windy API
 function initializeWindy() {
     windyInit({
