@@ -297,26 +297,11 @@ function saveGameState() {
                 efficiency = ((totalLands - lowOilLands) / totalLands) * 100;
             }
 
-            // Function to change weather based on API data
-            async function fetchWeather() {
-                var apiKey = 'QLBUXKGLF57F6E8YEF8R9376Z';
-                var url = `https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/iceland?unitGroup=metric&key=QLBUXKGLF57F6E8YEF8R9376Z&contentType=json`;
-
-                try {
-                    var response = await fetch(url, {
-                        method: 'GET',
-                        headers: {}
-                    });
-                    var data = await response.json();
-                    var weatherType = data.currentConditions.conditions.toLowerCase();
-                    weather = weatherType;
-                    weatherImpact = weatherConditions[weatherType] || 1.0;
-                    updateWeather();
-                    saveGameState();
-                } catch (error) {
-                    console.error('Error fetching weather data:', error);
-                }
-            }
+ function loadWindyMap(mapElement, lat, lon) {
+  const windyApi = 'BFe5UWqrmFQkyNxcy2BIUuoSba46SVet
+  const windyKey = 'BFe5UWqrmFQkyNxcy2BIUuoSba46SVet';
+  const overlay = L.tileLayer(windyApi + 'webcams-tile/{z}/{x}/{y}.png', {
+    attribution: '© 
 
             // Function to buy land
             function buyLand() {
