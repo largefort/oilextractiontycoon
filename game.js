@@ -16,6 +16,10 @@ var baseLayers = {
     "EsriWorldImagery": L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
         attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community',
         maxZoom: 18,
+    }),
+    "Windy": L.tileLayer('https://tiles.windy.com/wind/{z}/{x}/{y}.png', {
+        attribution: 'Windy API',
+        maxZoom: 18,
     })
 };
 
