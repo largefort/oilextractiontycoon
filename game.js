@@ -47,6 +47,36 @@ var weatherConditions = {
     'yellow weather alert': 0.5
 };
 
+// Function to initialize Windy API
+function initializeWindy() {
+    windyInit({
+        key: 'BFe5UWqrmFQkyNxcy2BIUuoSba46SVet',
+        lat: 37.8,
+        lon: -96,
+        zoom: 4,
+    }, windyAPI => {
+        const { map } = windyAPI;
+
+        // Overlay layers from Windy API
+        var windLayer = L.tileLayer('https://tiles.windy.com/wind/{z}/{x}/{y}.png', {
+            attribution: 'Windy API',
+            maxZoom: 18,
+        });
+
+        // Adding windLayer to the map
+        map.addLayer(windLayer);
+
+        // Adding overlay controls to switch Windy layer
+        var overlayLayers = {
+            "Wind Layer": windLayer
+        };
+
+        L.control.layers(baseLayers, overlayLayers).addTo(map);
+    });
+}
+
+initializeWindy(); // Call the function to initialize Windy API
+
 
 // Function to format large numbers in a short format (e.g., 1K, 1M)
 function shortNumberFormat(num) {
