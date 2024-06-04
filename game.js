@@ -30,7 +30,6 @@ var powerPlants = [];
 var newOilRig;
 var newPowerPlant;
 var efficiency = 100;
-var weather = 'Fetching...';
 var weatherImpact = 1.0; // Multiplier for production rate
 
 // Weather conditions and their impact
