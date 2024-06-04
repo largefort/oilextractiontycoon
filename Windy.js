@@ -1,5 +1,5 @@
 function loadWindyMap(mapElement, lat, lon) {
   const windyApi = '***************************************
-  const windyKey = 'YOUR_WINDY_API_KEY';
+  const windyKey = 'BFe5UWqrmFQkyNxcy2BIUuoSba46SVet';
   const overlay = L.tileLayer(windyApi + 'webcams-tile/{z}/{x}/{y}.png', {
     attribution: '© 
