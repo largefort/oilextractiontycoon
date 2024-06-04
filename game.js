@@ -298,7 +298,7 @@ function saveGameState() {
             }
 
             // Function to change weather based on API data
-    async function fetchWeather() {
+async function fetchWeather() {
     var apiKey = 'QLBUXKGLF57F6E8YEF8R9376Z';
     var url = `https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/iceland?unitGroup=metric&key=${apiKey}&contentType=json`;
 
@@ -307,15 +307,22 @@ function saveGameState() {
             method: 'GET',
             headers: {}
         });
+
         if (!response.ok) {
             throw new Error('Network response was not ok');
         }
+
         var data = await response.json();
-        var weatherType = data.currentConditions.conditions.toLowerCase();
-        weather = weatherType;
-        weatherImpact = weatherConditions[weatherType] || 1.0;
-        updateWeather();
-        saveGameState();
+
+        if (data && data.currentConditions && data.currentConditions.conditions) {
+            var weatherType = data.currentConditions.conditions.toLowerCase();
+            weather = weatherType;
+            weatherImpact = weatherConditions[weatherType] || 1.0;
+            updateWeather();
+            saveGameState();
+        } else {
+            throw new Error('Unexpected data format');
+        }
     } catch (error) {
         console.error('Error fetching weather data:', error);
     }
