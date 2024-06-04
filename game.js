@@ -3,11 +3,6 @@ var map = L.map('map', {
     zoomControl: false // Disable default zoom control
 }).setView([37.8, -96], 4); // Centered on the USA
 
-function loadWindyMap(mapElement, lat, lon) {
-  const windyApi = 'BFe5UWqrmFQkyNxcy2BIUuoSba46SVet
-  const windyKey = 'BFe5UWqrmFQkyNxcy2BIUuoSba46SVet';
-  const overlay = L.tileLayer(windyApi + 'webcams-tile/{z}/{x}/{y}.png', {
-    attribution: '© 
 // Base layers
 var baseLayers = {
     "Street Map": L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
