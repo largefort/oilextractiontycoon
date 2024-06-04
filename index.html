@@ -380,6 +380,7 @@ body, html {
         <label for="map-theme">Map Theme:</label>
         <select id="map-theme" onchange="updateMapTheme(this.value)">
             <option value="EsriWorldImagery">WorldImagery</option>
+            <option value="windlayer">windy</option>
         </select>
         <label for="show-markers">Show Markers:</label>
         <input type="checkbox" id="show-markers" checked onchange="toggleMarkers(this.checked)">
@@ -401,7 +402,6 @@ body, html {
 </script>                  
 <script src="game.js"></script>
 <script src="js/index.js"></script>
-<script src="windy.js"></script>
 <script src="leaflet-providers.js"></script>          
 <script>
     function showTab(tabId) {
