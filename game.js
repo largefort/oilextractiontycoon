@@ -51,41 +51,36 @@ var weatherConditions = {
     'yellow weather alert': 0.5
 };
 
-// Load Windy API script
-var script = document.createElement('script');
-script.src = 'https://api.windy.com/assets/map-forecast/libBoot.js';
-script.onload = initializeWindy; // Call initializeWindy function after the script is loaded
-document.head.appendChild(script);
+const options = {
+    key: 'BFe5UWqrmFQkyNxcy2BIUuoSba46SVet', // REPLACE WITH YOUR KEY !!!
 
-// Function to initialize Windy API
-function initializeWindy() {
-    windyInit({
-        key: 'BFe5UWqrmFQkyNxcy2BIUuoSba46SVet',
-        lat: 37.8,
-        lon: -96,
-        zoom: 4,
-    }, windyAPI => {
-        const { map } = windyAPI;
+    // Tip: Use verbose true for nice console output
+    // verbose: true
+};
 
-        // Overlay layers from Windy API
-        var windLayer = L.tileLayer('https://tiles.windy.com/wind/{z}/{x}/{y}.png', {
-            attribution: 'Windy API',
-            maxZoom: 18,
-        });
+windyInit(options, windyAPI => {
+    const { store, broadcast } = windyAPI;
+    // broadcast is main Windy's event emmiter that
+    // let you know what is happening inside
 
-        // Adding windLayer to the map
-        map.addLayer(windLayer);
+    // Change overlays programatically
+    const overlays = ['rain', 'wind', 'temp', 'clouds'];
+    let i = 0;
 
-        // Adding overlay controls to switch Windy layer
-        var overlayLayers = {
-            "Wind Layer": windLayer
-        };
+    setInterval(() => {
+        i = i === 3 ? 0 : i + 1;
+        store.set('overlay', overlays[i]);
+    }, 800);
 
-        L.control.layers(baseLayers, overlayLayers).addTo(map);
+    // Observe the most important broadcasts
+    broadcast.on('paramsChanged', params => {
+        console.log('Params changed:', params);
     });
-}
 
-initializeWindy(); // Call the function to initialize Windy API
+    broadcast.on('redrawFinished', params => {
+        console.log('Map was rendered:', params);
+    });
+});
 
 
 // Function to format large numbers in a short format (e.g., 1K, 1M)
