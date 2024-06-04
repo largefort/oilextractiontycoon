@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    <title>Idle Oil Extraction Tycoon Mobile</title>
+    <title>Idle Oil Extraction Tycoon</title>
     <link rel="stylesheet" type="text/css" href="styles.css">
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.css" />
@@ -282,35 +282,58 @@ body, html {
 }
     </style>
 </head>
-    <div id="launchModal" class="modal">
+   <div id="launchModal" class="modal">
     <div class="modal-content">
         <span class="close" onclick="closeModal()">&times;</span>
-        <h2>Welcome to Idle Oil Extraction Tycoon Mobile</h2>
-        <p>Thank you for playing our game! Enjoy your time managing your oil empire.</p>
-        Termination of Google Play Publisher Account Due to False Violation Claims
+        <h2>Important Notice</h2>
+        <p>
+            Dear Players and Supporters,
+        </p>
+        <p>
+            I regret to inform you that my Google Play publisher account has been terminated by Google due to an alleged violation of their policies. This unfortunate event has led to the removal of all my published games, including "Idle Oil Extraction Tycoon Mobile," and the disappearance of my store listing. As a result, many of you may no longer have access to the games you enjoyed, which I poured countless hours into developing and refining.
+        </p>
+        <p>
+            The termination was sudden and unexpected. Google cited a violation of their terms and conditions, but upon reviewing the specific allegations, I am confident that the claims are false. My games have always adhered to Google's policies and guidelines. I take compliance very seriously and have consistently ensured that my content is appropriate, secure, and enjoyable for all players.
+        </p>
+        <p>
+            The specific violation mentioned was related to deceptive behavior and policy infringement. However, I have never engaged in any deceptive practices, nor have I implemented any features or mechanics that would violate user trust or Google's policies. My primary goal has always been to provide an engaging and fair gaming experience.
+        </p>
+        <p>
+            Since receiving the termination notice, I have been in contact with Google to appeal the decision. The appeal process is, unfortunately, slow and opaque. I have provided extensive documentation and evidence to support my case, including user testimonials, compliance checks, and code reviews. Despite these efforts, the reinstatement of my account remains uncertain.
+        </p>
+        <p>
+            This situation has not only impacted me as a developer but also you, the players, who have supported and enjoyed my games. The abrupt removal of the games has disrupted your gaming experience, and for that, I sincerely apologize. Your support and feedback have been the driving force behind my passion for game development, and it pains me to see my work and your enjoyment affected in this manner.
+        </p>
+        <p>
+            Moving forward, I am exploring alternative platforms to continue sharing my games with you. While this process will take time, I am committed to ensuring that my games remain accessible. Additionally, I am considering legal advice to address this unjust termination and to protect the rights of independent developers like myself.
+        </p>
+        <p>
+            In the meantime, I encourage you to stay connected through my social media channels and website, where I will provide updates on this situation and future game releases. Your continued support and understanding during this challenging time mean the world to me.
+        </p>
+        <p>
+            Thank you for being a part of this journey. I am determined to overcome this setback and continue creating games that bring joy and excitement to your lives.
+        </p>
+        <p>
+            Sincerely,
+        </p>
+        <p>
+            [Jafet]
+        </p>
+        <button onclick="closeModal()">Close</button>
+    </div>
+</div>
 
-Dear Players and Supporters,
+<script>
+    // Show the modal on page load
+    window.onload = function() {
+        document.getElementById("launchModal").style.display = "block";
+    }
 
-I regret to inform you that my Google Play publisher account has been terminated by Google due to an alleged violation of their policies. This unfortunate event has led to the removal of all my published games, including "Idle Oil Extraction Tycoon Mobile," and the disappearance of my store listing. As a result, many of you may no longer have access to the games you enjoyed, which I poured countless hours into developing and refining.
-
-The termination was sudden and unexpected. Google cited a violation of their terms and conditions, but upon reviewing the specific allegations, I am confident that the claims are false. My games have always adhered to Google's policies and guidelines. I take compliance very seriously and have consistently ensured that my content is appropriate, secure, and enjoyable for all players.
-
-The specific violation mentioned was related to deceptive behavior and policy infringement. However, I have never engaged in any deceptive practices, nor have I implemented any features or mechanics that would violate user trust or Google's policies. My primary goal has always been to provide an engaging and fair gaming experience.
-
-Since receiving the termination notice, I have been in contact with Google to appeal the decision. The appeal process is, unfortunately, slow and opaque. I have provided extensive documentation and evidence to support my case, including user testimonials, compliance checks, and code reviews. Despite these efforts, the reinstatement of my account remains uncertain.
-
-This situation has not only impacted me as a developer but also you, the players, who have supported and enjoyed my games. The abrupt removal of the games has disrupted your gaming experience, and for that, I sincerely apologize. Your support and feedback have been the driving force behind my passion for game development, and it pains me to see my work and your enjoyment affected in this manner.
-
-Moving forward, I am exploring alternative platforms to continue sharing my games with you. While this process will take time, I am committed to ensuring that my games remain accessible. Additionally, I am considering legal advice to address this unjust termination and to protect the rights of independent developers like myself.
-
-In the meantime, I encourage you to stay connected through my social media channels and website, where I will provide updates on this situation and future game releases. Your continued support and understanding during this challenging time mean the world to me.
-
-Thank you for being a part of this journey. I am determined to overcome this setback and continue creating games that bring joy and excitement to your lives.
-
-Sincerely,
-
-[JafetEgill]
-        <button onclick="closeModal()">Start Playing</button>
+    // Function to close the modal
+    function closeModal() {
+        document.getElementById("launchModal").style.display = "none";
+    }
+</script
     </div>
 </div>
 <body>
@@ -376,18 +399,10 @@ Sincerely,
 <script src="https://unpkg.com/leaflet-providers@latest/leaflet-providers.js"></script>
     <script src="https://cdn.trackjs.com/agent/v3/latest/t.js"></script>
 <script>
-  window.TrackJS && TrackJS.install({ 
-    token: "81e06b58c7ee472e8a6107a04262fc03",
-    application: "oil-extractiontycoon"
-  });
 </script>                  
 <script src="game.js"></script>
-<<<<<<< HEAD
 <script src="js/index.js"></script>
-<script src="leaflet-providers.js"></script>
-=======
-<script src="leaflet-providers.js"></script>              
->>>>>>> 116b8baa68cbeefe320d28c9262e0fd4256f2ea8
+<script src="leaflet-providers.js"></script>          
 <script>
     function showTab(tabId) {
         document.querySelectorAll('.tab-content').forEach(tab => {
@@ -430,18 +445,6 @@ Sincerely,
     window.addEventListener('orientationchange', function() {
         stabilizeUI();
     });
-
-    <script>
-    // Show the modal on page load
-    window.onload = function() {
-        document.getElementById("launchModal").style.display = "block";
-    }
-
-    // Function to close the modal
-    function closeModal() {
-        document.getElementById("launchModal").style.display = "none";
-    }
-</script>
 
 </script>
 </body>
