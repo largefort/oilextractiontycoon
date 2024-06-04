@@ -54,31 +54,38 @@ var weatherConditions = {
 const options = {
     key: 'BFe5UWqrmFQkyNxcy2BIUuoSba46SVet', // REPLACE WITH YOUR KEY !!!
 
-    // Tip: Use verbose true for nice console output
-    // verbose: true
+    // Changing Windy parameters at start-up time
+    // (recommended for faster start-up)
+    lat: 50.4,
+    lon: 14.3,
+    zoom: 5,
+
+    timestamp: Date.now() + 3 * 24 * 60 * 60 * 1000,
+
+    hourFormat: '12h',
+
+    // ...etc
 };
 
 windyInit(options, windyAPI => {
-    const { store, broadcast } = windyAPI;
-    // broadcast is main Windy's event emmiter that
-    // let you know what is happening inside
+    const { store } = windyAPI;
+    // All the params are stored in windyAPI.store
 
-    // Change overlays programatically
-    const overlays = ['rain', 'wind', 'temp', 'clouds'];
+    const levels = store.getAllowed('availLevels');
+    // levels = ['surface', '850h', ... ]
+    // Getting all available values for given key
+
     let i = 0;
-
     setInterval(() => {
-        i = i === 3 ? 0 : i + 1;
-        store.set('overlay', overlays[i]);
-    }, 800);
+        i = i === levels.length - 1 ? 0 : i + 1;
 
-    // Observe the most important broadcasts
-    broadcast.on('paramsChanged', params => {
-        console.log('Params changed:', params);
-    });
+        // Changing Windy params at runtime
+        store.set('level', levels[i]);
+    }, 500);
 
-    broadcast.on('redrawFinished', params => {
-        console.log('Map was rendered:', params);
+    // Observing change of .store value
+    store.on('level', level => {
+        console.log(`Level was changed: ${level}`);
     });
 });
 
