@@ -285,23 +285,24 @@ function saveGameState() {
                 saveGameState();
             }
 
-            // Function to calculate efficiency
-            function calculateEfficiency() {
-                var totalLands = ownedLand.length;
-                if (totalLands === 0) {
-                    efficiency = 100;
-                    return;
-                }
+            
+// Function to calculate efficiency
+function calculateEfficiency() {
+    var totalLands = ownedLand.length;
+    if (totalLands === 0) {
+        efficiency = 100;
+        return;
+    }
 
-                var lowOilLands = Math.floor(Math.random() * totalLands);
-                efficiency = ((totalLands - lowOilLands) / totalLands) * 100;
-            }
+    var lowOilLands = Math.floor(Math.random() * totalLands);
+    efficiency = ((totalLands - lowOilLands) / totalLands) * 100;
+}
 
-           // Function to change weather based on API data
+// Function to change weather based on API data
 async function fetchWeather() {
-    var apiKey = 'QLBUXKGLF57F6E8YEF8R9376Z';
-    var url = `https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/iceland?unitGroup=metric&key=QLBUXKGLF57F6E8YEF8R9376Z&contentType=json`;
-
+    var apiKey = '<WGQL3A3FAHHPJD78V4XK987HG>';
+    var url = `https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/Iceland?unitGroup=us&key=WGQL3A3FAHHPJD78V4XK987HG&contentType=json`;
+    
     try {
         var response = await fetch(url, {
             method: 'GET',
