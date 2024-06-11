@@ -366,15 +366,23 @@
     </div>
 </div>
 
-    <div class="tab-content" id="mods-tab">
-        <div class="mods">
-            <h2>Installed Mods</h2>
-            <ul id="installed-mods-list"></ul>
-            <h2>Add New Mod</h2>
-            <textarea id="new-mod-code" rows="10" placeholder="Paste your mod code here..."></textarea>
-            <button onclick="addNewMod()">Add Mod</button>
-        </div>
-    </div>
+ <div id="mods-tab" class="tab-content">
+    <h2>Installed Mods</h2>
+    <ul id="installed-mods-list"></ul>
+    
+    <h2>Create a New Mod</h2>
+    <label for="new-mod-name">Mod Name:</label>
+    <input type="text" id="new-mod-name" required>
+
+    <label for="new-mod-version">Mod Version:</label>
+    <input type="text" id="new-mod-version" required>
+
+    <label for="new-mod-code">Mod Code (JavaScript):</label>
+    <textarea id="new-mod-code" rows="10" required></textarea>
+
+    <button onclick="addNewMod()">Create Mod</button>
+</div>
+
 
     <div class="bottom-nav">
         <button onclick="showTab('world-map-tab')">
