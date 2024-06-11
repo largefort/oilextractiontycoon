@@ -13,7 +13,7 @@ class ModdingAPI {
 
         if (this.validateMod(mod)) {
             this.mods.push(mod);
-            mod.applyMod();
+            this.applyMod(mod);
             console.log(`Mod "${mod.name}" version ${mod.version} loaded successfully.`);
             this.saveModToStorage(mod);
         } else {
@@ -30,8 +30,22 @@ class ModdingAPI {
         return mod.name && mod.version && typeof mod.applyMod === 'function';
     }
 
+    applyMod(mod) {
+        if (mod.moneyProductionRate) {
+            this.moneyProductionRate += mod.moneyProductionRate;
+        }
+        if (mod.oilProductionRate) {
+            this.oilProductionRate += mod.oilProductionRate;
+        }
+        if (mod.energyProductionRate) {
+            this.energyProductionRate += mod.energyProductionRate;
+        }
+        // Update the resource container display here
+        updateResourceContainer();
+    }
+
     applyAllMods() {
-        this.mods.forEach(mod => mod.applyMod());
+        this.mods.forEach(mod => this.applyMod(mod));
     }
 
     getMods() {
@@ -84,13 +98,9 @@ class ModdingAPI {
                 {
                     name: "${modName}",
                     version: "1.0",
+                    moneyProductionRate: 100,
                     applyMod: function() {
-                        setInterval(() => {
-                            const moneyElement = document.getElementById('money');
-                            let money = parseInt(moneyElement.innerText, 10);
-                            money += 100; // Increase money by 100 every second
-                            moneyElement.innerText = money.toString();
-                        }, 1000);
+                        // Implement money production increase logic here
                     }
                 }`;
         } else if (keywords.includes('oil')) {
@@ -98,13 +108,9 @@ class ModdingAPI {
                 {
                     name: "${modName}",
                     version: "1.0",
+                    oilProductionRate: 10,
                     applyMod: function() {
-                        setInterval(() => {
-                            const oilElement = document.getElementById('oil');
-                            let oil = parseInt(oilElement.innerText, 10);
-                            oil += 10; // Increase oil by 10 every second
-                            oilElement.innerText = oil.toString();
-                        }, 1000);
+                        // Implement oil production increase logic here
                     }
                 }`;
         } else if (keywords.includes('energy')) {
@@ -112,13 +118,9 @@ class ModdingAPI {
                 {
                     name: "${modName}",
                     version: "1.0",
+                    energyProductionRate: 5,
                     applyMod: function() {
-                        setInterval(() => {
-                            const energyElement = document.getElementById('energy');
-                            let energy = parseInt(energyElement.innerText, 10);
-                            energy += 5; // Increase energy by 5 every second
-                            energyElement.innerText = energy.toString();
-                        }, 1000);
+                        // Implement energy production increase logic here
                     }
                 }`;
         }
