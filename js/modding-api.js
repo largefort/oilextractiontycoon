@@ -2,9 +2,15 @@ class ModdingAPI {
     constructor() {
         this.mods = [];
         this.loadModsFromStorage();
+        this.authorizedDomains = ['geotycoon.online']; // Update with your actual domain
     }
 
     loadMod(mod) {
+        if (!this.isAuthorizedDomain()) {
+            console.error('Unauthorized domain.');
+            return;
+        }
+
         if (this.validateMod(mod)) {
             this.mods.push(mod);
             mod.applyMod();
@@ -15,11 +21,13 @@ class ModdingAPI {
         }
     }
 
+    isAuthorizedDomain() {
+        const currentDomain = window.location.hostname;
+        return this.authorizedDomains.includes(currentDomain);
+    }
+
     validateMod(mod) {
-        if (!mod.name || !mod.version || typeof mod.applyMod !== 'function') {
-            return false;
-        }
-        return true;
+        return mod.name && mod.version && typeof mod.applyMod === 'function';
     }
 
     applyAllMods() {
@@ -67,7 +75,7 @@ class ModdingAPI {
                 name: "${modName}",
                 version: "1.0",
                 applyMod: function() {
-                    // Your mod code here
+                    console.log("Mod ${modName} is applied!");
                 }
             }`;
 
