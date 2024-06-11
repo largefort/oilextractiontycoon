@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="https://js.arcgis.com/4.29/esri/themes/light/main.css" />
-  <style>
+    <style>
         body {
             font-family: 'Roboto', sans-serif;
             margin: 0;
@@ -107,7 +107,7 @@
             display: block;
         }
 
-        #controls-tab, #settings-tab {
+        #controls-tab, #settings-tab, #mods-tab {
             background-color: rgba(255, 255, 255, 0.9);
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
             border-radius: 10px;
@@ -120,7 +120,7 @@
             pointer-events: none;
         }
 
-        .controls, .settings {
+        .controls, .settings, .mods {
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -311,10 +311,7 @@
         }
 
         body, html {
-            -webkit-user-select: none;
-            -moz-user-select: none;
-            -ms-user-select: none;
-            user-select: none;
+            overflow: hidden;
         }
     </style>
 </head>
@@ -368,32 +365,52 @@
         <input type="checkbox" id="show-markers" checked onchange="toggleMarkers(this.checked)">
     </div>
 </div>
-<div class="bottom-nav">
-    <button onclick="showTab('world-map-tab')">
-        <i class="fas fa-globe"></i>
-        World Map
-    </button>
-    <button onclick="showTab('controls-tab')">
-        <i class="fas fa-cogs"></i>
-        Controls
-    </button>
-    <button onclick="showTab('settings-tab')">
-        <i class="fas fa-sliders-h"></i>
-        Settings
-    </button>
-</div>
-<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.js"></script>
-<script src="https://unpkg.com/leaflet-tilelayer-pan@1.0.0/dist/leaflet-tilelayer-pan.min.js"></script>
-<script src="https://unpkg.com/leaflet.vectorgrid/dist/Leaflet.VectorGrid.bundled.js"></script>
-<script src="https://unpkg.com/leaflet-providers@latest/leaflet-providers.js"></script>
-<script src="https://cdn.trackjs.com/agent/v3/latest/t.js"></script>
-<script src="https://js.arcgis.com/4.29/"></script>
-<script src="game.js"></script>
-<script src="js/index.js"></script>
-<script src="leaflet-providers.js"></script>
-<script>
-    function showTab(tabId) {
+
+    <div class="tab-content" id="mods-tab">
+        <div class="mods">
+            <h2>Installed Mods</h2>
+            <ul id="installed-mods-list"></ul>
+            <h2>Add New Mod</h2>
+            <textarea id="new-mod-code" rows="10" placeholder="Paste your mod code here..."></textarea>
+            <button onclick="addNewMod()">Add Mod</button>
+        </div>
+    </div>
+
+    <div class="bottom-nav">
+        <button onclick="showTab('world-map-tab')">
+            <i class="fas fa-globe"></i>
+            <span>World Map</span>
+        </button>
+        <button onclick="showTab('controls-tab')">
+            <i class="fas fa-cogs"></i>
+            <span>Controls</span>
+        </button>
+        <button onclick="showTab('settings-tab')">
+            <i class="fas fa-sliders-h"></i>
+            <span>Settings</span>
+        </button>
+        <button onclick="showTab('mods-tab')">
+            <i class="fas fa-puzzle-piece"></i>
+            <span>Mods</span>
+        </button>
+    </div>
+
+    <div class="version-info">
+        Version: 1.0
+    </div>
+
+    <!-- Include the Modding API script -->
+    <script src="js/modding-api.js"></script>
+
+    <!-- Include the game scripts -->
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.js"></script>
+    <script src="https://js.arcgis.com/4.29/"></script>
+    <script src="js/game.js"></script>
+    <script src="js/index.js"></script>
+
+    <script>
+        function showTab(tabId) {
         document.querySelectorAll('.tab-content').forEach(tab => {
             tab.classList.remove('active');
         });
@@ -434,6 +451,47 @@
     window.addEventListener('orientationchange', function() {
         stabilizeUI();
     });
-</script>
+
+        function displayInstalledMods() {
+            const modsList = document.getElementById('installed-mods-list');
+            modsList.innerHTML = '';
+            ModAPI.getMods().forEach(mod => {
+                const li = document.createElement('li');
+                li.textContent = `${mod.name} (v${mod.version})`;
+                modsList.appendChild(li);
+            });
+        }
+
+        function addNewMod() {
+            const modCode = document.getElementById('new-mod-code').value;
+            try {
+                const mod = new Function(`return ${modCode}`)();
+                ModAPI.loadMod(mod);
+                displayInstalledMods();
+            } catch (e) {
+                alert('Failed to load mod: ' + e.message);
+            }
+        }
+
+        // Initialize the mod list on page load
+        document.addEventListener('DOMContentLoaded', displayInstalledMods);
+
+        // Load a sample mod
+        const exampleMod = {
+            name: 'Money Boost',
+            version: '1.0',
+            applyMod: function () {
+                setInterval(() => {
+                    const moneyElement = document.getElementById('money');
+                    let money = parseInt(moneyElement.innerText, 10);
+                    money += 10; // Increase money by 10 every second
+                    moneyElement.innerText = money.toString();
+                }, 1000);
+            }
+        };
+
+        ModAPI.loadMod(exampleMod);
+        displayInstalledMods();
+    </script>
 </body>
 </html>
