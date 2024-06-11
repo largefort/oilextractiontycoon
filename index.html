@@ -462,16 +462,24 @@
             });
         }
 
-        function addNewMod() {
-            const modCode = document.getElementById('new-mod-code').value;
-            try {
-                const mod = new Function(`return ${modCode}`)();
-                ModAPI.loadMod(mod);
-                displayInstalledMods();
-            } catch (e) {
-                alert('Failed to load mod: ' + e.message);
-            }
-        }
+    function addNewMod() {
+    const modName = document.getElementById('new-mod-name').value;
+    const modVersion = document.getElementById('new-mod-version').value;
+    const modCode = document.getElementById('new-mod-code').value;
+
+    try {
+        const mod = {
+            name: modName,
+            version: modVersion,
+            applyMod: eval(`(${modCode})`)
+        };
+        
+        ModAPI.loadMod(mod);
+        displayInstalledMods();
+    } catch (e) {
+        alert('Failed to load mod: ' + e.message);
+    }
+}
 
         // Initialize the mod list on page load
         document.addEventListener('DOMContentLoaded', displayInstalledMods);
