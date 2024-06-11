@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    <title>Idle Oil Extraction Tycoon Mobile</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Idle Oil Extraction Tycoon</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap">
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.css" />
@@ -18,11 +18,10 @@
             flex-direction: column;
             align-items: center;
             background-color: #f0f2f5;
-            overflow-x: hidden;
         }
 
         #map {
-            height: 100vh;
+            height: calc(100vh - 70px);
             width: 100%;
             position: fixed;
             top: 0;
@@ -33,7 +32,7 @@
 
         .resource-container {
             position: fixed;
-            top: 0px;
+            top: 10px;
             left: 50%;
             transform: translateX(-50%);
             background-color: rgba(33, 33, 33, 0.95);
@@ -65,31 +64,9 @@
 
         .resource-container .resource span {
             font-weight: bold;
-            color: #ffd700;
+            color: #ffd700; /* Gold color for better visibility */
         }
 
-        @media (max-width: 600px) {
-            .resource-container {
-                padding: 10px;
-                width: 90%;
-                max-width: 100%;
-                top: 0;
-                left: 50%;
-                transform: translateX(-50%);
-            }
-
-            .resource-container .resource {
-                margin: 5px 0;
-                width: 100%;
-                text-align: center;
-            }
-
-            .resource-container .resource p {
-                font-size: 14px;
-            }
-        }
-
-        
         .tab-content {
             display: none;
             position: absolute;
@@ -114,12 +91,6 @@
             padding: 20px;
             margin: 10px;
         }
-
-        #world-map-tab {
-            background: none;
-            pointer-events: none;
-        }
-
 
         .controls, .settings {
             display: flex;
@@ -199,7 +170,7 @@
         }
 
         .bottom-nav {
-            position: fixed;
+            position: absolute;
             bottom: 0;
             width: 100%;
             background-color: #ffffff;
@@ -207,7 +178,7 @@
             justify-content: space-around;
             padding: 10px 0;
             box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
-            z-index: 4;
+            z-index: 3;
         }
 
         .bottom-nav button {
@@ -229,32 +200,6 @@
         .bottom-nav button i {
             font-size: 24px;
             margin-bottom: 4px;
-        }
-
-        @media (max-width: 600px) {
-            .resource-container {
-                width: 100%;
-                padding: 5px;
-            }
-
-            .button-container button {
-                flex: 1 1 100%;
-                font-size: 14px;
-                padding: 10px;
-            }
-
-            .settings-button {
-                font-size: 24px;
-            }
-
-            .modal-content {
-                width: 90%;
-                padding: 10px;
-            }
-
-            .close {
-                font-size: 24px;
-            }
         }
 
         .dollar-pop-up, .energy-pop-up {
@@ -316,34 +261,35 @@
             -moz-user-select: none;
             -ms-user-select: none;
             user-select: none;
+            touch-action: none;
         }
-
     </style>
 </head>
 <body>
-    <div id="map"></div>
+    <div id="map" class="enhanced-map"></div>
     <div class="resource-container">
         <div class="resource">
-            <p>Money: $<span id="money">0</span></p>
+            <p>Money: $<span id="money">1000</span></p>
+            <p><span id="money-production">0</span> $/s</p>
         </div>
         <div class="resource">
             <p>Oil: <span id="oil">0</span> barrels</p>
             <p><span id="oil-rig-production">0</span> barrels/s</p>
         </div>
         <div class="resource">
-            <p>Energy: <span id="energy">0</p>
-            <p><span id="power-plant-production">0</p>
+            <p>Energy: <span id="energy">0</span></p>
+            <p><span id="power-plant-production">0</span> MW</p>
         </div>
         <div class="resource">
             <p>Efficiency: <span id="efficiency">100%</span></p>
         </div>
     </div>
-    <div id="world-map-tab" class="tab-content active" style="background: none; pointer-events: none;">
+    <div id="world-map-tab" class="tab-content active">
         <!-- The map will be visible when this tab is active -->
     </div>
     <div id="controls-tab" class="tab-content">
         <div class="controls">
-            <h3>Oil Extraction Tycoon Mobile</h3>
+            <h3>Oil Extraction Tycoon</h3>
             <div class="button-container">
                 <button onclick="buyLand()">Buy Land ($100)</button>
                 <button onclick="buyOilRig()">Buy Oil Rig ($500)</button>
@@ -390,56 +336,58 @@
     <script src="https://unpkg.com/leaflet-providers@latest/leaflet-providers.js"></script>
     <script src="https://cdn.trackjs.com/agent/v3/latest/t.js"></script>
     <script src="https://js.arcgis.com/4.29/"></script>
-    <script src="game.js"></script>
-    <script src="js/index.js"></script>
-    <script src="leaflet-providers.js"></script>
-    <script>
-        window.TrackJS && TrackJS.install({
-            token: "81e06b58c7ee472e8a6107a04262fc03",
-            application: "oil-extractiontycoon"
+ <script>
+    window.TrackJS && TrackJS.install({
+      token: "81e06b58c7ee472e8a6107a04262fc03",
+      application: "oil-extractiontycoon"
+    });
+</script>
+<script src="game.js"></script>
+<script src="js/index.js"></script>
+<script src="leaflet-providers.js"></script>
+<script>
+    function showTab(tabId) {
+        document.querySelectorAll('.tab-content').forEach(tab => {
+            tab.classList.remove('active');
         });
+        document.getElementById(tabId).classList.add('active');
 
-        function showTab(tabId) {
-            document.querySelectorAll('.tab-content').forEach(tab => {
-                tab.classList.remove('active');
-            });
-            document.getElementById(tabId).classList.add('active');
-
-            // Enable pointer events on the map when World Map tab is active
-            if (tabId === 'world-map-tab') {
-                document.getElementById('world-map-tab').style.pointerEvents = 'auto';
-                setTimeout(() => {
-                    map.invalidateSize();
-                }, 100);
-            } else {
-                document.getElementById('world-map-tab').style.pointerEvents = 'none';
-            }
+        // Enable pointer events on the map when World Map tab is active
+        if (tabId === 'world-map-tab') {
+            document.getElementById('map').style.pointerEvents = 'auto';
+            setTimeout(() => {
+                map.invalidateSize();
+            }, 100);
+        } else {
+            document.getElementById('map').style.pointerEvents = 'none';
         }
+    }
 
-        // Mobile User Interface Stabilizer (MUIS)
-        function stabilizeUI() {
-            map.invalidateSize();
-            document.querySelectorAll('.tab-content').forEach(tab => {
-                tab.classList.remove('active');
-            });
-            document.getElementById('world-map-tab').classList.add('active');
-        }
-
-        map.on('movestart', function() {
-            stabilizeUI();
+    // Mobile User Interface Stabilizer (MUIS)
+    function stabilizeUI() {
+        map.invalidateSize();
+        document.querySelectorAll('.tab-content').forEach(tab => {
+            tab.classList.remove('active');
         });
+        document.getElementById('world-map-tab').classList.add('active');
+    }
 
-        map.on('moveend', function() {
-            stabilizeUI();
-        });
+    map.on('movestart', function() {
+        stabilizeUI();
+    });
 
-        window.addEventListener('resize', function() {
-            stabilizeUI();
-        });
+    map.on('moveend', function() {
+        stabilizeUI();
+    });
 
-        window.addEventListener('orientationchange', function() {
-            stabilizeUI();
-        });
-    </script>
+    window.addEventListener('resize', function() {
+        stabilizeUI();
+    });
+
+    window.addEventListener('orientationchange', function() {
+        stabilizeUI();
+    });
+
+</script>
 </body>
 </html>
