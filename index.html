@@ -453,7 +453,7 @@
         stabilizeUI();
     });
 
-        function displayInstalledMods() {
+         function displayInstalledMods() {
             const modsList = document.getElementById('installed-mods-list');
             modsList.innerHTML = '';
             ModAPI.getMods().forEach(mod => {
@@ -463,43 +463,19 @@
             });
         }
 
-    function addNewMod() {
-    const modName = document.getElementById('new-mod-name').value;
-    const modVersion = document.getElementById('new-mod-version').value;
-    const modCode = document.getElementById('new-mod-code').value;
-
-    try {
-        const mod = {
-            name: modName,
-            version: modVersion,
-            applyMod: eval(`(${modCode})`)
-        };
-        
-        ModAPI.loadMod(mod);
-        displayInstalledMods();
-    } catch (e) {
-        alert('Failed to load mod: ' + e.message);
-    }
-}
+        function addNewMod() {
+            const modCode = document.getElementById('new-mod-code').value;
+            try {
+                const mod = new Function(`return ${modCode}`)();
+                ModAPI.loadMod(mod);
+                displayInstalledMods();
+            } catch (e) {
+                alert('Failed to load mod: ' + e.message);
+            }
+        }
 
         // Initialize the mod list on page load
         document.addEventListener('DOMContentLoaded', displayInstalledMods);
-
-        // Load a sample mod
-        const exampleMod = {
-            name: 'Money Boost',
-            version: '1.0',
-            applyMod: function () {
-                setInterval(() => {
-                    const moneyElement = document.getElementById('money');
-                    let money = parseInt(moneyElement.innerText, 10);
-                    money += 10; // Increase money by 10 every second
-                    moneyElement.innerText = money.toString();
-                }, 1000);
-            }
-        };
-
-        ModAPI.loadMod(exampleMod);
         displayInstalledMods();
     </script>
 </body>
