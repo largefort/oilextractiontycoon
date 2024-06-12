@@ -319,125 +319,130 @@ async function fetchWeather() {
         console.error('Error fetching weather data:', error);
     }
 }
-            // Function to buy land
-            function buyLand() {
-                if (money >= 100) {
-                    alert("Tap on the map to buy land.");
-                    map.once('click', function(e) {
-                        var latlng = e.latlng;
-                        var marker = L.marker(latlng).addTo(map).bindPopup('Owned Land');
-                        ownedLand.push(marker);
-                        money -= 100;
-                        calculateEfficiency();
-                        updateResourceCounters();
-                        saveGameState();
-                    });
-                } else {
-                    alert("Not enough money!");
-                }
-            }
+         // Function to buy land
+function buyLand() {
+    if (money >= 100) {
+        alert("Tap on the map to buy land.");
+        map.once('click', function(e) {
+            var latlng = e.latlng;
+            var marker = L.marker(latlng).addTo(map).bindPopup('Owned Land');
+            ownedLand.push(marker);
+            money -= 100;
+            calculateEfficiency();
+            updateResourceCounters();
+            saveGameState();
+            updateAchievements(); // Check achievements
+        });
+    } else {
+        alert("Not enough money!");
+    }
+}
 
-           // Function to buy oil rig
-           function buyOilRig() {
-               if (money >= 500) {
-                   alert("Drag and drop the oil rig anywhere on the map.");
-                   newOilRig = L.marker(map.getCenter(), {
-                       icon: L.icon({
-                           iconUrl: 'pump.gif',
-                           iconSize: [32, 32],
-                           iconAnchor: [16, 32],
-                           popupAnchor: [0, -32]
-                       }),
-                       draggable: true
-                   }).addTo(map).bindPopup('Place this Oil Rig').openPopup();
+// Function to buy oil rig
+function buyOilRig() {
+    if (money >= 500) {
+        alert("Drag and drop the oil rig anywhere on the map.");
+        newOilRig = L.marker(map.getCenter(), {
+            icon: L.icon({
+                iconUrl: 'pump.gif',
+                iconSize: [32, 32],
+                iconAnchor: [16, 32],
+                popupAnchor: [0, -32]
+            }),
+            draggable: true
+        }).addTo(map).bindPopup('Place this Oil Rig').openPopup();
 
-                   newOilRig.on('dragend', function() {
-                       var latlng = newOilRig.getLatLng();
-                       newOilRig.bindPopup('Oil Rig (Level 1)').openPopup();
-                       oilRigs.push({
-                           marker: newOilRig,
-                           level: 1,
-                           revenue: 10
-                       });
-                       money -= 500;
-                       updateResourceCounters();
-                       saveGameState();
-                       newOilRig = null;
-                   });
+        newOilRig.on('dragend', function() {
+            var latlng = newOilRig.getLatLng();
+            newOilRig.bindPopup('Oil Rig (Level 1)').openPopup();
+            oilRigs.push({
+                marker: newOilRig,
+                level: 1,
+                revenue: 10
+            });
+            money -= 500;
+            updateResourceCounters();
+            saveGameState();
+            updateAchievements(); // Check achievements
+            newOilRig = null;
+        });
 
-                   newOilRig.on('click', function() {
-                       upgradeOilRig(newOilRig);
-                   });
-               } else {
-                   alert("Not enough money!");
-               }
-           }
+        newOilRig.on('click', function() {
+            upgradeOilRig(newOilRig);
+        });
+    } else {
+        alert("Not enough money!");
+    }
+}
 
-           // Function to buy power plant
-           function buyPowerPlant() {
-               if (money >= 1000) {
-                   alert("Drag and drop the power plant anywhere on the map.");
-                   newPowerPlant = L.marker(map.getCenter(), {
-                       icon: L.icon({
-                           iconUrl: 'windturbine.gif',
-                           iconSize: [32, 32],
-                           iconAnchor: [16, 32],
-                           popupAnchor: [0, -32]
-                       }),
-                       draggable: true
-                   }).addTo(map).bindPopup('Place this Power Plant').openPopup();
+// Function to buy power plant
+function buyPowerPlant() {
+    if (money >= 1000) {
+        alert("Drag and drop the power plant anywhere on the map.");
+        newPowerPlant = L.marker(map.getCenter(), {
+            icon: L.icon({
+                iconUrl: 'windturbine.gif',
+                iconSize: [32, 32],
+                iconAnchor: [16, 32],
+                popupAnchor: [0, -32]
+            }),
+            draggable: true
+        }).addTo(map).bindPopup('Place this Power Plant').openPopup();
 
-                   newPowerPlant.on('dragend', function() {
-                       var latlng = newPowerPlant.getLatLng();
-                       newPowerPlant.bindPopup('Power Plant (Level 1)').openPopup();
-                       powerPlants.push({
-                           marker: newPowerPlant,
-                           level: 1,
-                           production: 20
-                       });
-                       money -= 1000;
-                       updateResourceCounters();
-                       saveGameState();
-                       newPowerPlant = null;
-                   });
+        newPowerPlant.on('dragend', function() {
+            var latlng = newPowerPlant.getLatLng();
+            newPowerPlant.bindPopup('Power Plant (Level 1)').openPopup();
+            powerPlants.push({
+                marker: newPowerPlant,
+                level: 1,
+                production: 20
+            });
+            money -= 1000;
+            updateResourceCounters();
+            saveGameState();
+            updateAchievements(); // Check achievements
+            newPowerPlant = null;
+        });
 
-                   newPowerPlant.on('click', function() {
-                       upgradePowerPlant(newPowerPlant);
-                   });
-               } else {
-                   alert("Not enough money!");
-               }
-           }
+        newPowerPlant.on('click', function() {
+            upgradePowerPlant(newPowerPlant);
+        });
+    } else {
+        alert("Not enough money!");
+    }
+}
 
-           // Function to upgrade oil rig
-           function upgradeOilRig(oilRig) {
-               var rigToUpgrade = oilRigs.find(rig => rig.marker._leaflet_id === oilRig._leaflet_id);
-               if (rigToUpgrade && money >= 300) {
-                   rigToUpgrade.level += 1;
-                   rigToUpgrade.revenue = rigToUpgrade.level * 10;
-                   rigToUpgrade.marker.setPopupContent('Oil Rig (Level ' + rigToUpgrade.level + ')').openPopup();
-                   money -= 300;
-                   updateResourceCounters();
-                   saveGameState();
-               } else {
-                   alert("Not enough money to upgrade or no oil rig found!");
-               }
-           }
+// Function to upgrade oil rig
+function upgradeOilRig(oilRig) {
+    var rigToUpgrade = oilRigs.find(rig => rig.marker._leaflet_id === oilRig._leaflet_id);
+    if (rigToUpgrade && money >= 300) {
+        rigToUpgrade.level += 1;
+        rigToUpgrade.revenue = rigToUpgrade.level * 10;
+        rigToUpgrade.marker.setPopupContent('Oil Rig (Level ' + rigToUpgrade.level + ')').openPopup();
+        money -= 300;
+        updateResourceCounters();
+        saveGameState();
+        updateAchievements(); // Check achievements
+    } else {
+        alert("Not enough money to upgrade or no oil rig found!");
+    }
+}
 
-           // Function to upgrade power plant
-           function upgradePowerPlant(powerPlant) {
-               var plantToUpgrade = powerPlants.find(plant => plant.marker._leaflet_id === powerPlant._leaflet_id);
-               if (plantToUpgrade && money >= 600) {
-                   plantToUpgrade.level += 1;
-                   plantToUpgrade.production = plantToUpgrade.level * 20;
-                   plantToUpgrade.marker.setPopupContent('Power Plant (Level ' + plantToUpgrade.level + ')').openPopup();
-                   money -= 600;
-                   updateResourceCounters();
-                   saveGameState();
-               } else {
-                   alert("Not enough money to upgrade or no power plant found!");
-               }
-           }
+// Function to upgrade power plant
+function upgradePowerPlant(powerPlant) {
+    var plantToUpgrade = powerPlants.find(plant => plant.marker._leaflet_id === powerPlant._leaflet_id);
+    if (plantToUpgrade && money >= 600) {
+        plantToUpgrade.level += 1;
+        plantToUpgrade.production = plantToUpgrade.level * 20;
+        plantToUpgrade.marker.setPopupContent('Power Plant (Level ' + plantToUpgrade.level + ')').openPopup();
+        money -= 600;
+        updateResourceCounters();
+        saveGameState();
+        updateAchievements(); // Check achievements
+    } else {
+        alert("Not enough money to upgrade or no power plant found!");
+    }
+}
             // Function to handle 120Hz support for Samsung Galaxy A54 5G
             function isSamsungGalaxyA54() {
                 const userAgent = navigator.userAgent || navigator.vendor || window.opera;
