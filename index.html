@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    <title>Idle Oil Extraction Tycoon Mobile</title>
+    <title>Idle Oil Extraction Tycoon 2</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap">
     <link rel="stylesheet" type="text/css" href="styles.css">
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
@@ -18,12 +18,11 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            background-color: #f0f2f5;
-            overflow-x: hidden;
+            background-color: #e0e0e0;
         }
 
         #map {
-            height: 100vh;
+            height: calc(100vh - 70px);
             width: 100%;
             position: fixed;
             top: 0;
@@ -34,7 +33,7 @@
 
         .resource-container {
             position: fixed;
-            top: 0px;
+            top: 10px;
             left: 50%;
             transform: translateX(-50%);
             background-color: rgba(33, 33, 33, 0.95);
@@ -66,23 +65,24 @@
 
         .resource-container .resource span {
             font-weight: bold;
-            color: #ffd700;
+            color: #ffd700; /* Gold color for better visibility */
         }
 
         @media (max-width: 600px) {
             .resource-container {
+                flex-direction: column;
                 padding: 10px;
                 width: 90%;
                 max-width: 100%;
-                top: 0;
+                position: absolute;
+                top: 50%;
                 left: 50%;
-                transform: translateX(-50%);
+                transform: translate(-50%, -50%);
             }
 
             .resource-container .resource {
                 margin: 5px 0;
                 width: 100%;
-                text-align: center;
             }
 
             .resource-container .resource p {
@@ -107,7 +107,7 @@
             display: block;
         }
 
-        #controls-tab, #settings-tab, #mods-tab {
+        #controls-tab, #settings-tab {
             background-color: rgba(255, 255, 255, 0.9);
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
             border-radius: 10px;
@@ -120,7 +120,7 @@
             pointer-events: none;
         }
 
-        .controls, .settings, .mods {
+        .controls, .settings {
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -198,7 +198,7 @@
         }
 
         .bottom-nav {
-            position: fixed;
+            position: absolute;
             bottom: 0;
             width: 100%;
             background-color: #ffffff;
@@ -206,7 +206,7 @@
             justify-content: space-around;
             padding: 10px 0;
             box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
-            z-index: 4;
+            z-index: 3;
         }
 
         .bottom-nav button {
@@ -311,7 +311,61 @@
         }
 
         body, html {
-            overflow: hidden;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            touch-action: none;
+        }
+
+        .achievement-popup {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #333;
+            color: #fff;
+            padding: 15px 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            display: none;
+            z-index: 1000;
+            transition: bottom 0.3s ease-in-out, opacity 0.3s ease-in-out;
+        }
+
+        .achievement-popup.show {
+            display: block;
+            bottom: 40px;
+            opacity: 1;
+        }
+
+        /* Achievement List Styling */
+        .achievement-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .achievement-list li {
+            background-color: #333;
+            color: #fff;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .achievement-list li.completed {
+            background-color: #28a745;
+        }
+
+        .achievement-list li .achievement-title {
+            font-weight: bold;
+            display: block;
+        }
+
+        .achievement-list li .achievement-description {
+            font-size: 12px;
         }
     </style>
 </head>
@@ -339,7 +393,7 @@
 </div>
 <div id="controls-tab" class="tab-content">
     <div class="controls">
-        <h3>Oil Extraction Tycoon Mobile</h3>
+        <h3>Oil Extraction Tycoon 2</h3>
         <div class="button-container">
             <button onclick="buyLand()">Buy Land ($100)</button>
             <button onclick="buyOilRig()">Buy Oil Rig ($500)</button>
@@ -365,59 +419,53 @@
         <input type="checkbox" id="show-markers" checked onchange="toggleMarkers(this.checked)">
     </div>
 </div>
-
- <div id="mods-tab" class="tab-content">
-    <h2>Installed Mods</h2>
-    <ul id="installed-mods-list"></ul>
-    
-    <h2>Paste Your Mod Code</h2>
-    <textarea id="new-mod-code" rows="10" required></textarea>
-
-    <button onclick="addNewMod()">Load Mod</button>
+<div class="bottom-nav">
+    <button onclick="showTab('world-map-tab')">
+        <i class="fas fa-globe"></i>
+        World Map
+    </button>
+    <button onclick="showTab('controls-tab')">
+        <i class="fas fa-cogs"></i>
+        Controls
+    </button>
+    <button onclick="showTab('settings-tab')">
+        <i class="fas fa-sliders-h"></i>
+        Settings
+    </button>
+    <button onclick="showAchievements()">
+        <i class="fas fa-trophy"></i>
+        Achievements
+    </button>
 </div>
-
-
-    <div class="bottom-nav">
-        <button onclick="showTab('world-map-tab')">
-            <i class="fas fa-globe"></i>
-            <span>World Map</span>
-        </button>
-        <button onclick="showTab('controls-tab')">
-            <i class="fas fa-cogs"></i>
-            <span>Controls</span>
-        </button>
-        <button onclick="showTab('settings-tab')">
-            <i class="fas fa-sliders-h"></i>
-            <span>Settings</span>
-        </button>
-        <button onclick="showTab('mods-tab')">
-            <i class="fas fa-puzzle-piece"></i>
-            <span>Mods</span>
-        </button>
+<div class="achievement-popup" id="achievement-popup">
+    <p id="achievement-message">Achievement Unlocked!</p>
+</div>
+<div id="achievements-modal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeAchievementsModal()">&times;</span>
+        <h2>Achievements</h2>
+        <ul id="achievement-list" class="achievement-list"></ul>
     </div>
+</div>
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.js"></script>
+<script src="https://unpkg.com/leaflet-tilelayer-pan@1.0.0/dist/leaflet-tilelayer-pan.min.js"></script>
+<script src="https://unpkg.com/leaflet.vectorgrid/dist/Leaflet.VectorGrid.bundled.js"></script>
+<script src="https://unpkg.com/leaflet-providers@latest/leaflet-providers.js"></script>
+<script src="https://cdn.trackjs.com/agent/v3/latest/t.js"></script>
+<script src="https://js.arcgis.com/4.29/"></script>
+<script>
+    window.TrackJS && TrackJS.install({
+      token: "81e06b58c7ee472e8a6107a04262fc03",
+      application: "oil-extractiontycoon"
+    });
 
-    <div class="version-info">
-        Version: 1.0
-    </div>
-
-    <!-- Include the Modding API script -->
-    <script src="js/modding-api.js"></script>
-
-    <!-- Include the game scripts -->
-    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.js"></script>
-    <script src="https://js.arcgis.com/4.29/"></script>
-    <script src="game.js"></script>
-    <script src="index.js"></script>
-
-    <script>
-        function showTab(tabId) {
+    function showTab(tabId) {
         document.querySelectorAll('.tab-content').forEach(tab => {
             tab.classList.remove('active');
         });
         document.getElementById(tabId).classList.add('active');
 
-        // Enable pointer events on the map when World Map tab is active
         if (tabId === 'world-map-tab') {
             document.getElementById('map').style.pointerEvents = 'auto';
             setTimeout(() => {
@@ -428,7 +476,6 @@
         }
     }
 
-    // Mobile User Interface Stabilizer (MUIS)
     function stabilizeUI() {
         map.invalidateSize();
         document.querySelectorAll('.tab-content').forEach(tab => {
@@ -437,46 +484,194 @@
         document.getElementById('world-map-tab').classList.add('active');
     }
 
-    map.on('movestart', function() {
-        stabilizeUI();
+    map.on('movestart', stabilizeUI);
+    map.on('moveend', stabilizeUI);
+    window.addEventListener('resize', stabilizeUI);
+    window.addEventListener('orientationchange', stabilizeUI);
+
+   function showAchievement(message) {
+    const achievementPopup = document.getElementById('achievement-popup');
+    document.getElementById('achievement-message').innerText = message;
+    achievementPopup.classList.add('show');
+    setTimeout(() => {
+        achievementPopup.classList.remove('show');
+    }, 3000);
+}
+
+function showAchievements() {
+    const modal = document.getElementById('achievements-modal');
+    modal.style.display = "block";
+    loadAchievements();
+}
+
+function closeAchievementsModal() {
+    const modal = document.getElementById('achievements-modal');
+    modal.style.display = "none";
+}
+
+function loadAchievements() {
+    const achievements = getAchievements();
+    const achievementList = document.getElementById('achievement-list');
+    achievementList.innerHTML = '';
+
+    achievements.forEach(achievement => {
+        const li = document.createElement('li');
+        li.className = achievement.completed ? 'completed' : '';
+        li.innerHTML = `
+            <span class="achievement-title">${achievement.title}</span>
+            <span class="achievement-description">${achievement.description}</span>
+        `;
+        achievementList.appendChild(li);
     });
+}
 
-    map.on('moveend', function() {
-        stabilizeUI();
-    });
+// Sample achievements array (should be dynamic)
+const achievements = [
+    { title: 'Beginner Landowner', description: 'Buy your first piece of land.', completed: false },
+    { title: 'Rookie Tycoon', description: 'Earn your first $1,000.', completed: false },
+    { title: 'First Rig', description: 'Buy your first oil rig.', completed: false },
+    { title: 'First Plant', description: 'Buy your first power plant.', completed: false },
+    { title: 'Oil Baron', description: 'Own 5 oil rigs.', completed: false },
+    { title: 'Energy Mogul', description: 'Own 5 power plants.', completed: false },
+    { title: 'Land Collector', description: 'Own 10 pieces of land.', completed: false },
+    { title: 'Efficient Operator', description: 'Reach 100% efficiency.', completed: false },
+    { title: 'Upgrader', description: 'Upgrade an oil rig.', completed: false },
+    { title: 'Power Boost', description: 'Upgrade a power plant.', completed: false },
+    { title: 'Millionaire', description: 'Earn $1,000,000.', completed: false },
+    { title: 'Tycoon Master', description: 'Own 10 oil rigs.', completed: false },
+    { title: 'Energy Leader', description: 'Own 10 power plants.', completed: false },
+    { title: 'Landlord', description: 'Own 20 pieces of land.', completed: false },
+    { title: 'Oil Magnate', description: 'Upgrade 5 oil rigs to level 5.', completed: false },
+    { title: 'Powerhouse', description: 'Upgrade 5 power plants to level 5.', completed: false },
+    { title: 'Super Efficient', description: 'Reach 200% efficiency.', completed: false },
+    { title: 'Oil King', description: 'Own 20 oil rigs.', completed: false },
+    { title: 'Energy Emperor', description: 'Own 20 power plants.', completed: false },
+    { title: 'Land Tycoon', description: 'Own 50 pieces of land.', completed: false },
+    { title: 'Industrialist', description: 'Upgrade 10 oil rigs to level 10.', completed: false },
+    { title: 'Power Tycoon', description: 'Upgrade 10 power plants to level 10.', completed: false },
+    { title: 'Billionaire', description: 'Earn $1,000,000,000.', completed: false },
+    { title: 'Oil Empire', description: 'Own 50 oil rigs.', completed: false },
+    { title: 'Energy Dynasty', description: 'Own 50 power plants.', completed: false },
+    { title: 'Real Estate Mogul', description: 'Own 100 pieces of land.', completed: false },
+    { title: 'Ultimate Operator', description: 'Upgrade 20 oil rigs to level 20.', completed: false },
+    { title: 'Energy Titan', description: 'Upgrade 20 power plants to level 20.', completed: false },
+    { title: 'Trillionaire', description: 'Earn $1,000,000,000,000.', completed: false },
+    { title: 'Legendary Tycoon', description: 'Complete all achievements.', completed: false },
+];
 
-    window.addEventListener('resize', function() {
-        stabilizeUI();
-    });
+function getAchievements() {
+    return achievements;
+}
 
-    window.addEventListener('orientationchange', function() {
-        stabilizeUI();
-    });
-
-         function displayInstalledMods() {
-            const modsList = document.getElementById('installed-mods-list');
-            modsList.innerHTML = '';
-            ModAPI.getMods().forEach(mod => {
-                const li = document.createElement('li');
-                li.textContent = `${mod.name} (v${mod.version})`;
-                modsList.appendChild(li);
-            });
-        }
-
-        function addNewMod() {
-            const modCode = document.getElementById('new-mod-code').value;
-            try {
-                const mod = new Function(`return ${modCode}`)();
-                ModAPI.loadMod(mod);
-                displayInstalledMods();
-            } catch (e) {
-                alert('Failed to load mod: ' + e.message);
+function updateAchievements() {
+    achievements.forEach(achievement => {
+        if (!achievement.completed) {
+            // Check conditions to complete achievements
+            if (achievement.title === 'First Oil Rig' && oilRigs.length > 0) {
+                achievement.completed = true;
+                showAchievement(achievement.title);
+            }
+            if (achievement.title === 'First Power Plant' && powerPlants.length > 0) {
+                achievement.completed = true;
+                showAchievement(achievement.title);
+            }
+            if (achievement.title === 'Land Baron' && landOwned >= 10) {
+                achievement.completed = true;
+                showAchievement(achievement.title);
+            }
+            if (achievement.title === 'Energy Mogul' && totalEnergyProduced >= 1000) {
+                achievement.completed = true;
+                showAchievement(achievement.title);
+            }
+            if (achievement.title === 'Oil Tycoon' && totalOilProduced >= 5000) {
+                achievement.completed = true;
+                showAchievement(achievement.title);
+            }
+            // Add more achievement checks here
+            // Example for additional achievements
+            if (achievement.title === 'Millionaire' && money >= 1000000) {
+                achievement.completed = true;
+                showAchievement(achievement.title);
+            }
+            if (achievement.title === 'Tycoon Master' && oilRigs.length >= 10) {
+                achievement.completed = true;
+                showAchievement(achievement.title);
+            }
+            if (achievement.title === 'Energy Leader' && powerPlants.length >= 10) {
+                achievement.completed = true;
+                showAchievement(achievement.title);
+            }
+            if (achievement.title === 'Landlord' && landOwned >= 20) {
+                achievement.completed = true;
+                showAchievement(achievement.title);
+            }
+            if (achievement.title === 'Oil Magnate' && oilRigs.filter(rig => rig.level >= 5).length >= 5) {
+                achievement.completed = true;
+                showAchievement(achievement.title);
+            }
+            if (achievement.title === 'Powerhouse' && powerPlants.filter(plant => plant.level >= 5).length >= 5) {
+                achievement.completed = true;
+                showAchievement(achievement.title);
+            }
+            if (achievement.title === 'Super Efficient' && efficiency >= 200) {
+                achievement.completed = true;
+                showAchievement(achievement.title);
+            }
+            if (achievement.title === 'Oil King' && oilRigs.length >= 20) {
+                achievement.completed = true;
+                showAchievement(achievement.title);
+            }
+            if (achievement.title === 'Energy Emperor' && powerPlants.length >= 20) {
+                achievement.completed = true;
+                showAchievement(achievement.title);
+            }
+            if (achievement.title === 'Land Tycoon' && landOwned >= 50) {
+                achievement.completed = true;
+                showAchievement(achievement.title);
+            }
+            if (achievement.title === 'Industrialist' && oilRigs.filter(rig => rig.level >= 10).length >= 10) {
+                achievement.completed = true;
+                showAchievement(achievement.title);
+            }
+            if (achievement.title === 'Power Tycoon' && powerPlants.filter(plant => plant.level >= 10).length >= 10) {
+                achievement.completed = true;
+                showAchievement(achievement.title);
+            }
+            if (achievement.title === 'Billionaire' && money >= 1000000000) {
+                achievement.completed = true;
+                showAchievement(achievement.title);
+            }
+            if (achievement.title === 'Oil Empire' && oilRigs.length >= 50) {
+                achievement.completed = true;
+                showAchievement(achievement.title);
+            }
+            if (achievement.title === 'Energy Dynasty' && powerPlants.length >= 50) {
+                achievement.completed = true;
+                showAchievement(achievement.title);
+            }
+            if (achievement.title === 'Real Estate Mogul' && landOwned >= 100) {
+                achievement.completed = true;
+                showAchievement(achievement.title);
+            }
+            if (achievement.title === 'Ultimate Operator' && oilRigs.filter(rig => rig.level >= 20).length >= 20) {
+                achievement.completed = true;
+                showAchievement(achievement.title);
+            }
+            if (achievement.title === 'Energy Titan' && powerPlants.filter(plant => plant.level >= 20).length >= 20) {
+                achievement.completed = true;
+                showAchievement(achievement.title);
+            }
+            if (achievement.title === 'Trillionaire' && money >= 1000000000000) {
+                achievement.completed = true;
+                showAchievement(achievement.title);
+            }
+            if (achievement.title === 'Legendary Tycoon' && achievements.every(a => a.completed)) {
+                achievement.completed = true;
+                showAchievement(achievement.title);
             }
         }
-
-        // Initialize the mod list on page load
-        document.addEventListener('DOMContentLoaded', displayInstalledMods);
-        displayInstalledMods();
-    </script>
+    });
+}
+</script>
 </body>
 </html>
