@@ -19,7 +19,15 @@ var baseLayers = {
     })
 };
 
+// Weather layer
+var apiKey = 'd84afbbe625f95c7ac07c52f081f1da6';
+var weatherLayer = L.tileLayer(`https://tile.openweathermap.org/map/precipitation_new/{z}/{x}/{y}.png?appid=${apiKey}`, {
+    attribution: '&copy; <a href="https://www.openweathermap.org/">OpenWeatherMap</a>',
+    maxZoom: 18
+});
+
 baseLayers["EsriWorldImagery"].addTo(map);
+weatherLayer.addTo(map); // Add weather layer to the map
 
 var money = 1000;
 var oil = 0;
@@ -564,5 +572,3 @@ function upgradePowerPlant(powerPlant) {
 
             // Initial fetch weather
             fetchWeather();
-
-
