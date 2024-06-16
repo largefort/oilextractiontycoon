@@ -351,6 +351,39 @@
     </button>
 </div>
 
+    <div id="button-guide" class="container-fluid text-white bg-dark rounded shadow-sm py-2">
+    <div class="row justify-content-center">
+        <div class="col text-center">
+            <img src="images/cross.png" alt="Cross Button">
+            <p>Buy Land</p>
+        </div>
+        <div class="col text-center">
+            <img src="images/circle.png" alt="Circle Button">
+            <p>Buy Oil Rig</p>
+        </div>
+        <div class="col text-center">
+            <img src="images/triangle.png" alt="Triangle Button">
+            <p>Buy Power Plant</p>
+        </div>
+        <div class="col text-center">
+            <img src="images/square.png" alt="Square Button">
+            <p>Upgrade Oil Rig</p>
+        </div>
+        <div class="col text-center">
+            <img src="images/l1.png" alt="L1 Button">
+            <p>Upgrade Power Plant</p>
+        </div>
+        <div class="col text-center">
+            <img src="images/r1.png" alt="R1 Button">
+            <p>Next Tab</p>
+        </div>
+        <div class="col text-center">
+            <img src="images/r2.png" alt="R2 Button">
+            <p>Previous Tab</p>
+        </div>
+    </div>
+</div>
+
 <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.js"></script>
 <script src="https://unpkg.com/leaflet-tilelayer-pan@1.0.0/dist/leaflet-tilelayer-pan.min.js"></script>
@@ -432,7 +465,10 @@
         });
     }
     
-     let gamepadIndex = null;
+    <script>
+    let gamepadIndex = null;
+    let currentTab = 'world-map-tab';
+    const tabs = ['world-map-tab', 'controls-tab', 'settings-tab'];
 
     window.addEventListener('gamepadconnected', (event) => {
         gamepadIndex = event.gamepad.index;
@@ -456,20 +492,26 @@
                 if (button.pressed) {
                     // Handle specific button actions
                     switch (index) {
-                        case 0:
+                        case 0:  // Cross button
                             buyLand();
                             break;
-                        case 1:
+                        case 1:  // Circle button
                             buyOilRig();
                             break;
-                        case 2:
+                        case 2:  // Triangle button
                             buyPowerPlant();
                             break;
-                        case 3:
+                        case 3:  // Square button
                             upgradeOilRig();
                             break;
-                        case 4:
+                        case 4:  // L1 button
                             upgradePowerPlant();
+                            break;
+                        case 5:  // R1 button
+                            nextTab();
+                            break;
+                        case 6:  // L2 button
+                            previousTab();
                             break;
                         // Add more cases for other buttons if needed
                     }
@@ -488,8 +530,23 @@
         requestAnimationFrame(handleGamepadInput);
     }
 
+    function nextTab() {
+        const currentIndex = tabs.indexOf(currentTab);
+        const nextIndex = (currentIndex + 1) % tabs.length;
+        showTab(tabs[nextIndex]);
+        currentTab = tabs[nextIndex];
+    }
+
+    function previousTab() {
+        const currentIndex = tabs.indexOf(currentTab);
+        const previousIndex = (currentIndex - 1 + tabs.length) % tabs.length;
+        showTab(tabs[previousIndex]);
+        currentTab = tabs[previousIndex];
+    }
+
     // Start the gamepad input handling loop
     handleGamepadInput();
+</script>
 </script>
 </body>
 </html>
