@@ -369,6 +369,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/three@0.136.0/build/three.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/dexie@3.0.3/dist/dexie.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gamepad-plus/dist/gamepad-plus.min.js"></script>
 <script src="game.js"></script>
 <script src="cdv-electron-main.js"></script>
 <script src="cdv-electron-preload.js"></script>
@@ -430,6 +431,65 @@
             });
         });
     }
+    
+     let gamepadIndex = null;
+
+    window.addEventListener('gamepadconnected', (event) => {
+        gamepadIndex = event.gamepad.index;
+        console.log('Gamepad connected at index %d: %s. %d buttons, %d axes.',
+            event.gamepad.index, event.gamepad.id,
+            event.gamepad.buttons.length, event.gamepad.axes.length);
+    });
+
+    window.addEventListener('gamepaddisconnected', (event) => {
+        console.log('Gamepad disconnected from index %d: %s',
+            event.gamepad.index, event.gamepad.id);
+        gamepadIndex = null;
+    });
+
+    function handleGamepadInput() {
+        if (gamepadIndex !== null) {
+            const gamepad = navigator.getGamepads()[gamepadIndex];
+
+            // Handle buttons
+            gamepad.buttons.forEach((button, index) => {
+                if (button.pressed) {
+                    // Handle specific button actions
+                    switch (index) {
+                        case 0:
+                            buyLand();
+                            break;
+                        case 1:
+                            buyOilRig();
+                            break;
+                        case 2:
+                            buyPowerPlant();
+                            break;
+                        case 3:
+                            upgradeOilRig();
+                            break;
+                        case 4:
+                            upgradePowerPlant();
+                            break;
+                        // Add more cases for other buttons if needed
+                    }
+                }
+            });
+
+            // Handle axes (e.g., for map panning)
+            const threshold = 0.1;  // Adjust this threshold as needed
+            if (Math.abs(gamepad.axes[0]) > threshold || Math.abs(gamepad.axes[1]) > threshold) {
+                const deltaX = gamepad.axes[0] * 10;  // Adjust the multiplier as needed
+                const deltaY = gamepad.axes[1] * 10;  // Adjust the multiplier as needed
+                map.panBy([deltaX, deltaY]);
+            }
+        }
+
+        requestAnimationFrame(handleGamepadInput);
+    }
+
+    // Start the gamepad input handling loop
+    handleGamepadInput();
 </script>
 </body>
 </html>
