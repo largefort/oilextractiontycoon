@@ -351,39 +351,6 @@
     </button>
 </div>
 
-    <div id="button-guide" class="container-fluid text-white bg-dark rounded shadow-sm py-2">
-    <div class="row justify-content-center">
-        <div class="col text-center">
-            <img src="images/cross.png" alt="Cross Button">
-            <p>Buy Land</p>
-        </div>
-        <div class="col text-center">
-            <img src="images/circle.png" alt="Circle Button">
-            <p>Buy Oil Rig</p>
-        </div>
-        <div class="col text-center">
-            <img src="images/triangle.png" alt="Triangle Button">
-            <p>Buy Power Plant</p>
-        </div>
-        <div class="col text-center">
-            <img src="images/square.png" alt="Square Button">
-            <p>Upgrade Oil Rig</p>
-        </div>
-        <div class="col text-center">
-            <img src="images/l1.png" alt="L1 Button">
-            <p>Upgrade Power Plant</p>
-        </div>
-        <div class="col text-center">
-            <img src="images/r1.png" alt="R1 Button">
-            <p>Next Tab</p>
-        </div>
-        <div class="col text-center">
-            <img src="images/r2.png" alt="R2 Button">
-            <p>Previous Tab</p>
-        </div>
-    </div>
-</div>
-
 <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.js"></script>
 <script src="https://unpkg.com/leaflet-tilelayer-pan@1.0.0/dist/leaflet-tilelayer-pan.min.js"></script>
@@ -402,7 +369,6 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/three@0.136.0/build/three.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/dexie@3.0.3/dist/dexie.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/gamepad-plus/dist/gamepad-plus.min.js"></script>
 <script src="game.js"></script>
 <script src="cdv-electron-main.js"></script>
 <script src="cdv-electron-preload.js"></script>
@@ -464,89 +430,6 @@
             });
         });
     }
-    
-    <script>
-    let gamepadIndex = null;
-    let currentTab = 'world-map-tab';
-    const tabs = ['world-map-tab', 'controls-tab', 'settings-tab'];
-
-    window.addEventListener('gamepadconnected', (event) => {
-        gamepadIndex = event.gamepad.index;
-        console.log('Gamepad connected at index %d: %s. %d buttons, %d axes.',
-            event.gamepad.index, event.gamepad.id,
-            event.gamepad.buttons.length, event.gamepad.axes.length);
-    });
-
-    window.addEventListener('gamepaddisconnected', (event) => {
-        console.log('Gamepad disconnected from index %d: %s',
-            event.gamepad.index, event.gamepad.id);
-        gamepadIndex = null;
-    });
-
-    function handleGamepadInput() {
-        if (gamepadIndex !== null) {
-            const gamepad = navigator.getGamepads()[gamepadIndex];
-
-            // Handle buttons
-            gamepad.buttons.forEach((button, index) => {
-                if (button.pressed) {
-                    // Handle specific button actions
-                    switch (index) {
-                        case 0:  // Cross button
-                            buyLand();
-                            break;
-                        case 1:  // Circle button
-                            buyOilRig();
-                            break;
-                        case 2:  // Triangle button
-                            buyPowerPlant();
-                            break;
-                        case 3:  // Square button
-                            upgradeOilRig();
-                            break;
-                        case 4:  // L1 button
-                            upgradePowerPlant();
-                            break;
-                        case 5:  // R1 button
-                            nextTab();
-                            break;
-                        case 6:  // L2 button
-                            previousTab();
-                            break;
-                        // Add more cases for other buttons if needed
-                    }
-                }
-            });
-
-            // Handle axes (e.g., for map panning)
-            const threshold = 0.1;  // Adjust this threshold as needed
-            if (Math.abs(gamepad.axes[0]) > threshold || Math.abs(gamepad.axes[1]) > threshold) {
-                const deltaX = gamepad.axes[0] * 10;  // Adjust the multiplier as needed
-                const deltaY = gamepad.axes[1] * 10;  // Adjust the multiplier as needed
-                map.panBy([deltaX, deltaY]);
-            }
-        }
-
-        requestAnimationFrame(handleGamepadInput);
-    }
-
-    function nextTab() {
-        const currentIndex = tabs.indexOf(currentTab);
-        const nextIndex = (currentIndex + 1) % tabs.length;
-        showTab(tabs[nextIndex]);
-        currentTab = tabs[nextIndex];
-    }
-
-    function previousTab() {
-        const currentIndex = tabs.indexOf(currentTab);
-        const previousIndex = (currentIndex - 1 + tabs.length) % tabs.length;
-        showTab(tabs[previousIndex]);
-        currentTab = tabs[previousIndex];
-    }
-
-    // Start the gamepad input handling loop
-    handleGamepadInput();
-</script>
 </script>
 </body>
 </html>
