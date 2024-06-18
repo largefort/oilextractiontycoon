@@ -98,29 +98,34 @@
     }
 
     .tab-content {
-        display: none;
-        position: fixed;
-        top: 70px;
-        left: 50%;
-        transform: translateX(-50%);
-        width: 90%;
-        height: calc(100vh - 80px);
-        background-color: rgba(255, 255, 255, 0.9);
-        border-radius: 10px;
-        padding: 20px;
-        box-sizing: border-box;
-        overflow-y: auto;
-        z-index: 3;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-    }
+            display: none;
+            position: absolute;
+            bottom: -60px;
+            top: -10px;
+            left: -10px;
+            width: 100%;
+            padding: 10px;
+            box-sizing: border-box;
+            overflow-y: auto;
+            z-index: 2;
+        }
 
-    .tab-content.active {
-        display: block;
-    }
+        .tab-content.active {
+            display: block;
+        }
 
-    #world-map-tab .tab-content {
-        display: none !important;
-    }
+        #world-map-tab {
+            background: none;
+            pointer-events: none;
+        }
+
+        #controls-tab, #settings-tab {
+            background-color: rgba(255, 255, 255, 0.9);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            padding: 15px;
+            margin:  10px;
+        }
 
     .button-container {
         display: flex;
