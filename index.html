@@ -73,7 +73,7 @@
         color: #ffd700;
     }
 
-      .tab-content {
+           .tab-content {
             display: none;
             position: absolute;
             bottom: -60px;
@@ -86,9 +86,22 @@
             z-index: 2;
         }
 
-    .tab-content.active {
-        display: block;
-    }
+        .tab-content.active {
+            display: block;
+        }
+
+        #world-map-tab {
+            background: none;
+            pointer-events: none;
+        }
+
+        #controls-tab, #settings-tab {
+            background-color: rgba(255, 255, 255, 0.9);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            padding: 15px;
+            margin:  10px;
+        }
 
     .button-container {
         display: flex;
