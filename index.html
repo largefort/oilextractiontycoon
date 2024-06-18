@@ -73,21 +73,18 @@
         color: #ffd700;
     }
 
-    .tab-content {
-        display: none;
-        position: absolute;
-        top: 60px;
-        left: 50%;
-        transform: translateX(-50%);
-        width: 90%;
-        background-color: rgba(255, 255, 255, 0.9);
-        border-radius: 10px;
-        padding: 20px;
-        box-sizing: border-box;
-        overflow-y: auto;
-        z-index: 3;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-    }
+      .tab-content {
+            display: none;
+            position: absolute;
+            bottom: -60px;
+            top: -10px;
+            left: -10px;
+            width: 100%;
+            padding: 10px;
+            box-sizing: border-box;
+            overflow-y: auto;
+            z-index: 2;
+        }
 
     .tab-content.active {
         display: block;
