@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="https://js.arcgis.com/4.29/esri/themes/light/main.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
   <link rel="stylesheet" href="css/index.css">
- <style>
+<style>
     body {
         font-family: 'Roboto', sans-serif;
         background-color: #f0f2f5;
@@ -40,7 +40,7 @@
         position: fixed;
         top: 10px;
         left: 50%;
-        transform: translateX(-50%) perspective(1000px);
+        transform: translateX(-50%);
         background-color: rgba(0, 0, 0, 0.75);
         border-radius: 10px;
         padding: 15px;
@@ -73,11 +73,35 @@
         color: #ffd700;
     }
 
+    .tab-container {
+        display: flex;
+        justify-content: center;
+        margin: 20px 0;
+    }
+
+    .tab {
+        background-color: #3498db;
+        border-radius: 10px;
+        padding: 15px;
+        margin: 10px;
+        color: #fff;
+        cursor: pointer;
+        text-align: center;
+        transition: background 0.3s, transform 0.3s;
+        display: inline-block;
+        min-width: 100px;
+    }
+
+    .tab:hover {
+        background-color: #2980b9;
+        transform: scale(1.05);
+    }
+
     .tab-content {
         display: none;
-        position: absolute;
-        top: 0px;
-        left: 0%;
+        position: fixed;
+        top: 70px;
+        left: 50%;
         transform: translateX(-50%);
         width: 90%;
         height: calc(100vh - 80px);
@@ -92,24 +116,6 @@
 
     .tab-content.active {
         display: block;
-    }
-
-    .tab {
-        background-color: #3498db;
-        border-radius: 10px;
-        padding: 15px;
-        margin: 10px;
-        color: #fff;
-        cursor: pointer;
-        text-align: center;
-        transition: background 0.3s, transform 0.3s;
-        display: inline-block;
-        min-width: 100px; /* Ensures tabs have a minimum width */
-    }
-
-    .tab:hover {
-        background-color: #2980b9;
-        transform: scale(1.05);
     }
 
     #world-map-tab .tab-content {
