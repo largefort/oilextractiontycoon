@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="https://js.arcgis.com/4.29/esri/themes/light/main.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
   <link rel="stylesheet" href="css/index.css">
-  <style>
+ <style>
     body {
         font-family: 'Roboto', sans-serif;
         background-color: #f0f2f5;
@@ -75,11 +75,12 @@
 
     .tab-content {
         display: none;
-        position: absolute;
-        top: 60px;
+        position: fixed;
+        top: 70px;
         left: 50%;
         transform: translateX(-50%);
         width: 90%;
+        height: calc(100vh - 80px);
         background-color: rgba(255, 255, 255, 0.9);
         border-radius: 10px;
         padding: 20px;
@@ -109,6 +110,10 @@
     .tab:hover {
         background-color: #2980b9;
         transform: scale(1.05);
+    }
+
+    #world-map-tab .tab-content {
+        display: none !important;
     }
 
     .button-container {
