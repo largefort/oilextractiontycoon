@@ -392,59 +392,72 @@
 <script src="weatherlayer.js"></script>
 <script src="js/index.js"></script>
 <script src="leaflet-providers.js"></script>
+<canvas id="webgl-canvas"></canvas>
 <script>
-    function showTab(tabId) {
-        document.querySelectorAll('.tab-content').forEach(tab => {
-            tab.classList.remove('active');
-        });
-        document.getElementById(tabId).classList.add('active');
-
-        // Enable pointer events on the map when World Map tab is active
-        if (tabId === 'world-map-tab') {
-            document.getElementById('map').style.pointerEvents = 'auto';
-            setTimeout(() => {
-                map.invalidateSize();
-            }, 100);
-        } else {
-            document.getElementById('map').style.pointerEvents = 'none';
+    // Vertex Shader
+    const vertexShader = `
+        varying vec2 vUv;
+        void main() {
+            vUv = uv;
+            gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
         }
+    `;
+
+    // Fragment Shader
+    const fragmentShader = `
+        uniform float time;
+        uniform sampler2D mapTexture;
+        varying vec2 vUv;
+
+        void main() {
+            vec2 uv = vUv;
+            uv.y += sin(uv.x * 10.0 + time * 2.0) * 0.01;
+            uv.x += sin(uv.y * 10.0 + time * 2.0) * 0.01;
+            gl_FragColor = texture2D(mapTexture, uv);
+        }
+    `;
+
+    // Initialize WebGL renderer, scene, and camera
+    const canvas = document.getElementById('webgl-canvas');
+    const renderer = new THREE.WebGLRenderer({ canvas, alpha: true });
+    const scene = new THREE.Scene();
+    const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
+
+    // Create a plane geometry and add the shader material
+    const geometry = new THREE.PlaneGeometry(2, 2);
+    const mapTexture = new THREE.TextureLoader().load('path/to/your/map-image.jpg'); // Load your map texture if needed
+    const uniforms = {
+        time: { value: 0 },
+        mapTexture: { value: mapTexture }
+    };
+    const material = new THREE.ShaderMaterial({
+        vertexShader,
+        fragmentShader,
+        uniforms
+    });
+    const plane = new THREE.Mesh(geometry, material);
+    scene.add(plane);
+
+    // Animation loop
+    function animate() {
+        uniforms.time.value += 0.05;
+        renderer.render(scene, camera);
+        requestAnimationFrame(animate);
     }
 
-    // Mobile User Interface Stabilizer (MUIS)
-    function stabilizeUI() {
-        map.invalidateSize();
-        document.querySelectorAll('.tab-content').forEach(tab => {
-            tab.classList.remove('active');
-        });
-        document.getElementById('world-map-tab').classList.add('active');
+    // Adjust canvas size
+    function onWindowResize() {
+        const width = window.innerWidth;
+        const height = window.innerHeight;
+        canvas.width = width;
+        canvas.height = height;
+        renderer.setSize(width, height);
     }
 
-    map.on('movestart', function() {
-        stabilizeUI();
-    });
-
-    map.on('moveend', function() {
-        stabilizeUI();
-    });
-
-    window.addEventListener('resize', function() {
-        stabilizeUI();
-    });
-
-    window.addEventListener('orientationchange', function() {
-        stabilizeUI();
-    });
-
-    // PWA Service Worker Registration
-    if ('serviceWorker' in navigator) {
-        window.addEventListener('load', () => {
-            navigator.serviceWorker.register('/service-worker.js').then(registration => {
-                console.log('ServiceWorker registration successful with scope: ', registration.scope);
-            }, error => {
-                console.log('ServiceWorker registration failed: ', error);
-            });
-        });
-    }
+    window.addEventListener('resize', onWindowResize);
+    onWindowResize();
+    animate();
 </script>
+
 </body>
 </html>
