@@ -10,66 +10,66 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="https://js.arcgis.com/4.29/esri/themes/light/main.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-  <link rel="stylesheet" href="css/index.css">
-<style>
-    body {
-        font-family: 'Roboto', sans-serif;
-        background-color: #f0f2f5;
-        overflow-x: hidden;
-        margin: 0;
-        padding: 0;
-    }
+    <link rel="stylesheet" href="css/index.css">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f0f2f5;
+            overflow-x: hidden;
+            margin: 0;
+            padding: 0;
+        }
 
-    #map {
-        height: 100vh;
-        width: 100%;
-        position: fixed;
-        top: 0;
-        left: 0;
-        z-index: 1;
-        filter: brightness(150%);
-        transform: perspective(1000px);
-        transition: transform 0.3s ease-in-out;
-    }
+        #map {
+            height: 100vh;
+            width: 100%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1;
+            filter: brightness(150%);
+            transform: perspective(1000px);
+            transition: transform 0.3s ease-in-out;
+        }
 
-    .resource-container {
-        position: fixed;
-        top: 10px;
-        left: 50%;
-        transform: translateX(-50%);
-        background-color: rgba(0, 0, 0, 0.75);
-        border-radius: 10px;
-        padding: 15px;
-        display: flex;
-        justify-content: space-around;
-        align-items: center;
-        width: 80%;
-        box-sizing: border-box;
-        z-index: 2;
-        color: #fff;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-        transition: transform 0.3s ease-in-out;
-    }
+        .resource-container {
+            position: fixed;
+            top: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: rgba(0, 0, 0, 0.75);
+            border-radius: 10px;
+            padding: 15px;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            width: 80%;
+            box-sizing: border-box;
+            z-index: 2;
+            color: #fff;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease-in-out;
+        }
 
-    .resource {
-        margin: 0 10px;
-        text-align: center;
-        flex: 1;
-        font-size: 14px;
-    }
+        .resource {
+            margin: 0 10px;
+            text-align: center;
+            flex: 1;
+            font-size: 14px;
+        }
 
-    .resource p {
-        margin: 5px 0;
-        font-size: 14px;
-        line-height: 1.4;
-    }
+        .resource p {
+            margin: 5px 0;
+            font-size: 14px;
+            line-height: 1.4;
+        }
 
-    .resource span {
-        font-weight: bold;
-        color: #ffd700;
-    }
+        .resource span {
+            font-weight: bold;
+            color: #ffd700;
+        }
 
-    .tab-content {
+        .tab-content {
             display: none;
             position: absolute;
             bottom: -60px;
@@ -96,195 +96,206 @@
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
             border-radius: 10px;
             padding: 15px;
-            margin:  10px;
+            margin: 10px;
         }
 
-    .button-container {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: space-around;
-        width: 100%;
-        box-sizing: border-box;
-    }
-
-    .button-container button {
-        flex: 1 1 45%;
-        margin: 10px;
-        padding: 15px;
-        font-size: 16px;
-        color: #fff;
-        background: linear-gradient(45deg, #3498db, #2980b9);
-        border: none;
-        border-radius: 10px;
-        cursor: pointer;
-        transition: background 0.3s, transform 0.3s;
-    }
-
-    .button-container button:focus, .button-container button:hover {
-        background: linear-gradient(45deg, #3cb0fd, #3498db);
-        transform: scale(1.05);
-    }
-
-    .modal {
-        display: none;
-        position: fixed;
-        z-index: 10000;
-        left: 0;
-        top: 0;
-        width: 100%;
-        height: 100%;
-        overflow: auto;
-        background-color: rgba(0,0,0,0.7);
-        padding-top: 60px;
-    }
-
-    .modal-content {
-        background-color: #fefefe;
-        margin: 5% auto;
-        padding: 20px;
-        border: 1px solid #888;
-        width: 80%;
-        border-radius: 10px;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-    }
-
-    .close {
-        color: #aaa;
-        float: right;
-        font-size: 28px;
-        font-weight: bold;
-    }
-
-    .close:hover,
-    .close:focus {
-        color: black;
-        text-decoration: none;
-        cursor: pointer;
-    }
-
-    .bottom-nav {
-        position: fixed;
-        bottom: 0;
-        width: 100%;
-        background-color: #ffffff;
-        display: flex;
-        justify-content: space-around;
-        padding: 15px 0;
-        box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
-        z-index: 4;
-    }
-
-    .bottom-nav button {
-        background: none;
-        border: none;
-        font-size: 18px;
-        cursor: pointer;
-        color: #333;
-        transition: color 0.3s, transform 0.3s;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-    }
-
-    .bottom-nav button:focus, .bottom-nav button:hover {
-        color: #3498db;
-        transform: scale(1.1);
-    }
-
-    .bottom-nav button i {
-        font-size: 24px;
-        margin-bottom: 4px;
-    }
-
-    .dollar-pop-up, .energy-pop-up {
-        position: absolute;
-        font-weight: bold;
-        font-size: 12px;
-        pointer-events: none;
-        z-index: 2000;
-        transition: transform 0.5s ease-out, opacity 0.5s ease-out;
-        filter: brightness(150%);
-        padding: 5px;
-        transform: translateY(-20px) scale(1);
-        opacity: 0;
-        animation: pop-up-animation 1s forwards;
-    }
-
-    @keyframes pop-up-animation {
-        0% {
-            transform: translateY(0) scale(0.8);
-            opacity: 0;
+        .button-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            width: 100%;
+            box-sizing: border-box;
         }
-        100% {
+
+        .button-container button {
+            flex: 1 1 45%;
+            margin: 10px;
+            padding: 15px;
+            font-size: 16px;
+            color: #fff;
+            background: linear-gradient(45deg, #3498db, #2980b9);
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background 0.3s, transform 0.3s;
+        }
+
+        .button-container button:focus, .button-container button:hover {
+            background: linear-gradient(45deg, #3cb0fd, #3498db);
+            transform: scale(1.05);
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 10000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.7);
+            padding-top: 60px;
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 5% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            background-color: #ffffff;
+            display: flex;
+            justify-content: space-around;
+            padding: 15px 0;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+            z-index: 4;
+        }
+
+        .bottom-nav button {
+            background: none;
+            border: none;
+            font-size: 18px;
+            cursor: pointer;
+            color: #333;
+            transition: color 0.3s, transform 0.3s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .bottom-nav button:focus, .bottom-nav button:hover {
+            color: #3498db;
+            transform: scale(1.1);
+        }
+
+        .bottom-nav button i {
+            font-size: 24px;
+            margin-bottom: 4px;
+        }
+
+        .dollar-pop-up, .energy-pop-up {
+            position: absolute;
+            font-weight: bold;
+            font-size: 12px;
+            pointer-events: none;
+            z-index: 2000;
+            transition: transform 0.5s ease-out, opacity 0.5s ease-out;
+            filter: brightness(150%);
+            padding: 5px;
             transform: translateY(-20px) scale(1);
-            opacity: 1;
+            opacity: 0;
+            animation: pop-up-animation 1s forwards;
         }
-    }
 
-    .dollar-pop-up {
-        color: green;
-    }
+        @keyframes pop-up-animation {
+            0% {
+                transform: translateY(0) scale(0.8);
+                opacity: 0;
+            }
+            100% {
+                transform: translateY(-20px) scale(1);
+                opacity: 1;
+            }
+        }
 
-    .energy-pop-up {
-        color: yellow;
-    }
+        .dollar-pop-up {
+            color: green;
+        }
 
-    .tooltip {
-        position: absolute;
-        display: none;
-        background-color: #333;
-        color: #fff;
-        padding: 5px;
-        border-radius: 4px;
-        font-size: 12px;
-    }
+        .energy-pop-up {
+            color: yellow;
+        }
 
-    .tooltip::after {
-        content: '';
-        position: absolute;
-        border-style: solid;
-        border-width: 5px;
-        border-color: #333 transparent transparent transparent;
-        bottom: 100%;
-        left: 50%;
-        transform: translateX(-50%);
-    }
+        .tooltip {
+            position: absolute;
+            display: none;
+            background-color: #333;
+            color: #fff;
+            padding: 5px;
+            border-radius: 4px;
+            font-size: 12px;
+        }
 
-    .tooltip.show {
-        display: block;
-    }
+        .tooltip::after {
+            content: '';
+            position: absolute;
+            border-style: solid;
+            border-width: 5px;
+            border-color: #333 transparent transparent transparent;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+        }
 
-    .tooltip-content {
-        position: absolute;
-        background-color: rgba(0, 0, 0, 0.75);
-        color: #fff;
-        padding: 5px;
-        border-radius: 8px;
-        font-size: 12px;
-        white-space: nowrap;
-        z-index: 1000;
-    }
+        .tooltip.show {
+            display: block;
+        }
 
-    .version-info {
-        position: fixed;
-        top: 10px;
-        right: 10px;
-        text-align: right;
-        font-size: 10px;
-        color: blue;
-        z-index: 1000;
-    }
+        .tooltip-content {
+            position: absolute;
+            background-color: rgba(0, 0, 0, 0.75);
+            color: #fff;
+            padding: 5px;
+            border-radius: 8px;
+            font-size: 12px;
+            white-space: nowrap;
+            z-index: 1000;
+        }
 
-    body, html {
-        -webkit-user-select: none;
-        -moz-user-select: none;
-        -ms-user-select: none;
-        user-select: none;
-    }
-</style>
+        .version-info {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            text-align: right;
+            font-size: 10px;
+            color: blue;
+            z-index: 1000;
+        }
+
+        body, html {
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+
+        #webgl-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1000;
+        }
+    </style>
 </head>
 <body>
 <div id="map" class="enhanced-map"></div>
+<canvas id="webgl-canvas"></canvas>
 <div class="container-fluid">
     <div class="resource-container row justify-content-center align-items-center text-white bg-dark rounded shadow-sm py-2">
         <div class="resource col text-center">
