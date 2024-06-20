@@ -1,80 +1,126 @@
-/*
- * Licensed to the Apache Software Foundation (ASF) under one
- * or more contributor license agreements.  See the NOTICE file
- * distributed with this work for additional information
- * regarding copyright ownership.  The ASF licenses this file
- * to you under the Apache License, Version 2.0 (the
- * "License"); you may not use this file except in compliance
- * with the License.  You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an
- * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- * KIND, either express or implied.  See the License for the
- * specific language governing permissions and limitations
- * under the License.
- */
-
-// Wait for the deviceready event before using any of Cordova's device APIs.
-// See https://cordova.apache.org/docs/en/latest/cordova/events/events.html#deviceready
-document.addEventListener('deviceready', onDeviceReady, false);
-
-function onDeviceReady() {
-    // Cordova is now initialized. Have fun!
-    // select the right Ad Id according to platform
-      var admobid = {};
-      if( /(android)/i.test(navigator.userAgent) ) { // for android & amazon-fireos
-        admobid = {
-          banner: 'ca-app-pub-5816082932921993/5683636470', // or DFP format "/6253334/dfp_example_ad"
-          interstitial: 'ca-app-pub-xxx/yyy'
-        };
-      } else { // for ios
-        admobid = {
-          banner: 'ca-app-pub-xxx/zzz', // or DFP format "/6253334/dfp_example_ad"
-          interstitial: 'ca-app-pub-xxx/kkk'
-        };
-      }
-
-      // it will display smart banner at top center, using the default options
-      if(AdMob) AdMob.createBanner({
-        adSize: 'FULL_BANNER',
-        adId: admobid.banner,
-        position: AdMob.AD_POSITION.BOTTOM_CENTER,
-        autoShow: true });
-
-        // use banner
-        createBanner(adId/options, success, fail);
-        removeBanner();
-        showBanner(position);
-        showBannerAtXY(x, y);
-        hideBanner();
-
-        // use interstitial
-        prepareInterstitial(adId/options, success, fail);
-        showInterstitial();
-        isInterstitialReady(function(ready){ if(ready){ } });
-
-        // use reward video
-        prepareRewardVideoAd(adId/options, success, fail);
-        showRewardVideoAd();
-
-        // set values for configuration and targeting
-        setOptions(options, success, fail);
-
-        // get user ad settings
-        getAdSettings(function(inf){ inf.adId; inf.adTrackingEnabled; }, fail);
-
-        // onAdLoaded
-        // onAdFailLoad
-        // onAdPresent
-        // onAdDismiss
-        // onAdLeaveApp
-        document.addEventListener('onAdFailLoad', function(e){
-            // handle the event
+document.addEventListener('DOMContentLoaded', function() {
+    const translations = {
+        en: {
+            title: "Oil Extraction Tycoon Mobile",
+            oil: "Oil:",
+            energy: "Energy:",
+            efficiency: "Efficiency:",
+            weather: "Fetching...",
+            buyLand: "Buy Land ($100)",
+            buyOilRig: "Buy Oil Rig ($500)",
+            buyPowerPlant: "Buy Power Plant ($1000)",
+            upgradeOilRig: "Upgrade Oil Rig ($300)",
+            upgradePowerPlant: "Upgrade Power Plant ($600)",
+            worldMap: "World Map",
+            controls: "Controls",
+            settings: "Settings",
+            settingsTitle: "Geo Map Settings",
+            animationSpeed: "Animation Speed:",
+            mapTheme: "Map Theme:",
+            showMarkers: "Show Markers",
+            language: "Language:"
+        },
+        es: {
+            title: "Magnate de Extracción de Petróleo",
+            oil: "Petróleo:",
+            energy: "Energía:",
+            efficiency: "Eficiencia:",
+            weather: "Obteniendo...",
+            buyLand: "Comprar Terreno ($100)",
+            buyOilRig: "Comprar Plataforma Petrolífera ($500)",
+            buyPowerPlant: "Comprar Planta de Energía ($1000)",
+            upgradeOilRig: "Mejorar Plataforma Petrolífera ($300)",
+            upgradePowerPlant: "Mejorar Planta de Energía ($600)",
+            worldMap: "Mapa Mundial",
+            controls: "Controles",
+            settings: "Configuraciones",
+            settingsTitle: "Configuraciones de Mapa",
+            animationSpeed: "Velocidad de Animación:",
+            mapTheme: "Tema del Mapa:",
+            showMarkers: "Mostrar Marcadores",
+            language: "Idioma:"
+        },
+        no: {
+            title: "Oljeutvinningsmagnat",
+            oil: "Olje:",
+            energy: "Energi:",
+            efficiency: "Effektivitet:",
+            weather: "Henter...",
+            buyLand: "Kjøp Land ($100)",
+            buyOilRig: "Kjøp Oljebor ($500)",
+            buyPowerPlant: "Kjøp Kraftverk ($1000)",
+            upgradeOilRig: "Oppgrader Oljebor ($300)",
+            upgradePowerPlant: "Oppgrader Kraftverk ($600)",
+            worldMap: "Verdenskart",
+            controls: "Kontroller",
+            settings: "Innstillinger",
+            settingsTitle: "Geo Kartinnstillinger",
+            animationSpeed: "Animasjonshastighet:",
+            mapTheme: "Karttema:",
+            showMarkers: "Vis Markører",
+            language: "Språk:"
+        },
+        he: {
+            title: "מנהל מיצוי נפט",
+            oil: "נפט:",
+            energy: "אנרגיה:",
+            efficiency: ":יעילות",
+            weather: "טוען...",
+            buyLand: "קנה קרקע ($100)",
+            buyOilRig: "קנה מתקן קידוח ($500)",
+            buyPowerPlant: "קנה תחנת כוח ($1000)",
+            upgradeOilRig: "שדרג מתקן קידוח ($300)",
+            upgradePowerPlant: "שדרג תחנת כוח ($600)",
+            worldMap: "מפת העולם",
+            controls: "בקרות",
+            settings: "הגדרות",
+            settingsTitle: "הגדרות מפת גיאו",
+            animationSpeed: "מהירות אנימציה:",
+            mapTheme: "נושא מפה:",
+            showMarkers: "הצג סמנים",
+            language: "שפה:"
+        },
+        is: {
+            title: "Olíuútdráttarmógúll",
+            oil: "Olía:",
+            energy: "Orka:",
+            efficiency: "Skilvirkni:",
+            weather: "Sækir...",
+            buyLand: "Kaupa Land ($100)",
+            buyOilRig: "Kaupa Olíubor ($500)",
+            buyPowerPlant: "Kaupa Orkuver ($1000)",
+            upgradeOilRig: "Uppfæra Olíubor ($300)",
+            upgradePowerPlant: "Uppfæra Orkuver ($600)",
+            worldMap: "Heimskort",
+            controls: "Stýringar",
+            settings: "Stillingar",
+            settingsTitle: "Stillingskort",
+            animationSpeed: "Animasíuhraði:",
+            mapTheme: "Kortþema:",
+            showMarkers: "Sýna Merki",
+            language: "Tungumál:"
+        }
+    };
+    function changeLanguage(language) {
+        const selectedTranslations = translations[language];
+        document.querySelectorAll('[data-translate]').forEach(element => {
+            const key = element.getAttribute('data-translate');
+            element.innerText = selectedTranslations[key];
         });
 
-    console.log('Running cordova-' + cordova.platformId + '@' + cordova.version);
-    document.getElementById('deviceready').classList.add('ready');
-}
+        // Save selected language to local storage
+        localStorage.setItem('selectedLanguage', language);
+    }
+
+    // Retrieve saved language from local storage or set default language to English
+    const savedLanguage = localStorage.getItem('selectedLanguage') || 'en';
+    changeLanguage(savedLanguage);
+
+    // Set the language select dropdown to the saved language
+    document.getElementById('language-select').value = savedLanguage;
+
+    // Language selection event listener
+    document.getElementById('language-select').addEventListener('change', function() {
+        changeLanguage(this.value);
+    });
+});
