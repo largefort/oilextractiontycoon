@@ -309,7 +309,7 @@ function calculateEfficiency() {
 // Function to change weather based on API data
 async function fetchWeather() {
     var apiKey = '<WGQL3A3FAHHPJD78V4XK987HG>';
-    var url = `https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/Iceland?unitGroup=us&key=WGQL3A3FAHHPJD78V4XK987HG&contentType=json`;
+   https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/Iceland?unitGroup=us&key=WGQL3A3FAHHPJD78V4XK987HG&contentType=json
 
     try {
         var response = await fetch(url, {
