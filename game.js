@@ -86,34 +86,27 @@ function wattsFormat(num) {
 
 // Function to update money display
 function updateMoney() {
-    var moneyElement = document.getElementById('money');
-    if (moneyElement) {
-        moneyElement.innerText = shortNumberFormat(money);
-    }
+    document.getElementById('money').innerText = shortNumberFormat(money);
 }
 
 // Function to update oil display
 function updateOil() {
-    var oilElement = document.getElementById('oil');
-    if (oilElement) {
-        oilElement.innerText = shortNumberFormat(oil);
-    }
+    document.getElementById('oil').innerText = shortNumberFormat(oil);
 }
 
 // Function to update energy display
 function updateEnergy() {
-    var energyElement = document.getElementById('energy');
-    if (energyElement) {
-        energyElement.innerText = wattsFormat(energy);
-    }
+    document.getElementById('energy').innerText = wattsFormat(energy);
 }
 
 // Function to update efficiency display
 function updateEfficiency() {
-    var efficiencyElement = document.getElementById('efficiency');
-    if (efficiencyElement) {
-        efficiencyElement.innerText = efficiency + '%';
-    }
+    document.getElementById('efficiency').innerText = efficiency + '%';
+}
+
+// Function to update weather display
+function updateWeather() {
+    document.getElementById('weather').innerText = weather;
 }
 
 // Function to update money production display
