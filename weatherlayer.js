@@ -6,7 +6,7 @@
 
             // Fetch current weather for a given location (latitude and longitude)
             function fetchWeather(lat, lon) {
-                fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}`)
+                fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${f52197cb49fedd10a64f42c877e939f8}`)
                     .then(response => response.json())
                     .then(data => {
                         var condition = data.weather[0].main.toLowerCase();
