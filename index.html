@@ -31,30 +31,27 @@
         }
 
         .resource-container {
-            position: fixed;
-            top: 0%;
+            position: absolute;
+            top: 0;
             left: 50%;
             transform: translateX(-50%);
-            background-color: rgba(33, 33, 33, 0.95);
-            padding: 20px;
-            display: fixed;
+            background-color: white;
+            border: 2px solid black;
+            border-radius: 6px;
+            padding: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            display: flex;
             justify-content: space-around;
-            align-items: center;
             width: 40%;
             box-sizing: border-box;
             z-index: 2;
-            color: #fff;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            transition: top 0.3s ease-in-out;
         }
 
-        .resource {
-            margin: 0 5px;
+        .resource-container .resource {
+            margin: 4px;
+            width: auto;
             text-align: center;
-            flex: 1;
-            font-size: 12px;
         }
-
         .resource p {
             margin: 4px 0;
             font-size: 12px;
