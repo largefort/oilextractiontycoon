@@ -3,6 +3,8 @@
     .resource-container {
         width: 100%;
         padding: 5px;
+        left: 0px;
+        right: 0px;
     }
 
     .button-container button {
