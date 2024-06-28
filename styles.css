@@ -1,43 +1,31 @@
-/* Base styles for mobile screens */
 @media (max-width: 600px) {
-     .resource-container {
-                top: 10px;
-                left: 50%;
-                transform: translateX(-50%);
-                width: 90%;
+            .resource-container {
+                width: 100%;
                 padding: 5px;
             }
 
-    .button-container button {
-        flex: 1 1 100%;
-        font-size: 14px;
-        padding: 10px;
-    }
+            .button-container button {
+                flex: 1 1 100%;
+                font-size: 14px;
+                padding: 10px;
+            }
 
-    .settings-button {
-        font-size: 24px;
-    }
+            .settings-button {
+                font-size: 24px;
+            }
 
-    .modal-content {
-        width: 90%;
-        padding: 10px;
-    }
+            .modal-content {
+                width: 90%;
+                padding: 10px;
+            }
 
-    .close {
-        font-size: 24px;
-    }
+            .close {
+                font-size: 24px;
+            }
+        }
 
-    .version-info {
-        font-size: 10px;
-    }
-
-    body, html {
-        overflow: auto;
-    }
-}
-
-/* Pop-up styles */
-.dollar-pop-up, .energy-pop-up {
+        .dollar-pop-up,
+.energy-pop-up {
     position: absolute;
     font-weight: bold;
     font-size: 14px;
@@ -70,30 +58,45 @@
     color: yellow;
 }
 
-/* Tooltip styles */
-.tooltip {
-    position: absolute;
-    background: rgba(0, 0, 0, 0.75);
-    color: #fff;
-    padding: 8px;
-    border-radius: 8px;
-    font-size: 14px;
-    white-space: nowrap;
-    z-index: 1000;
-}
 
-/* Version info styles */
+        .tooltip {
+            position: absolute;
+            background: rgba(0, 0, 0, 0.75);
+            color: #fff;
+            padding: 8px;
+            border-radius: 8px;
+            font-size: 14px;
+            white-space: nowrap;
+            z-index: 1000;
+        }
+
+        /* Version and copyright info */
 .version-info {
     position: fixed;
     top: 10px;
     right: 10px;
     text-align: right;
-    font-size: 10px;
-    color: blue;
-    z-index: 1000;
+    font-size: 10px; /* Smaller font size for better fit on mobile screens */
+    color: blue; /* Neon green text */
+    z-index: 1000; /* Ensuring it stays on top of other elements */
 }
-
-/* Base styles for all devices */
+        /* Disable text selection */
 body, html {
-    overflow: hidden;
+    -webkit-user-select: none; /* Safari */
+    -moz-user-select: none; /* Firefox */
+    -ms-user-select: none; /* IE10+/Edge */
+    user-select: none; /* Standard */
+    touch-action: none; /* Disables pinch-to-zoom */
+}
+        .modal {
+    display: none;
+    position: fixed;
+    z-index: 10000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.4);
+    padding-top: 60px;
 }
