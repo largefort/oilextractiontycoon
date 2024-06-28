@@ -1,17 +1,20 @@
 @media (max-width: 600px) {
             .resource-container {
+                top: 0px;
+                left: 50%;
+                transform: translateX(-50%);
                 width: 100%;
                 padding: 5px;
             }
 
             .button-container button {
                 flex: 1 1 100%;
-                font-size: 14px;
-                padding: 10px;
+                font-size: 12px;
+                padding: 8px;
             }
 
             .settings-button {
-                font-size: 24px;
+                font-size: 20px;
             }
 
             .modal-content {
@@ -25,78 +28,30 @@
         }
 
         .dollar-pop-up,
-.energy-pop-up {
-    position: absolute;
-    font-weight: bold;
-    font-size: 14px;
-    pointer-events: none;
-    z-index: 2000;
-    transition: transform 0.5s ease-out, opacity 0.5s ease-out;
-    filter: brightness(150%);
-    padding: 5px 10px;
-    transform: translateY(-20px) scale(1);
-    opacity: 0;
-    animation: pop-up-animation 1s forwards;
-}
+        .energy-pop-up {
+            position: absolute;
+            font-weight: bold;
+            font-size: 10px;
+            pointer-events: none;
+            z-index: 2000;
+            transition: transform 1s, opacity 1s;
+        }
 
-@keyframes pop-up-animation {
-    0% {
-        transform: translateY(0) scale(0.8);
-        opacity: 0;
-    }
-    100% {
-        transform: translateY(-20px) scale(1);
-        opacity: 1;
-    }
-}
+        .dollar-pop-up {
+            color: green;
+        }
 
-.dollar-pop-up {
-    color: green;
-}
-
-.energy-pop-up {
-    color: yellow;
-}
-
+        .energy-pop-up {
+            color: yellow;
+        }
 
         .tooltip {
             position: absolute;
             background: rgba(0, 0, 0, 0.75);
             color: #fff;
-            padding: 8px;
-            border-radius: 8px;
-            font-size: 14px;
+            padding: 5px;
+            border-radius: 5px;
+            font-size: 12px;
             white-space: nowrap;
             z-index: 1000;
         }
-
-        /* Version and copyright info */
-.version-info {
-    position: fixed;
-    top: 10px;
-    right: 10px;
-    text-align: right;
-    font-size: 10px; /* Smaller font size for better fit on mobile screens */
-    color: blue; /* Neon green text */
-    z-index: 1000; /* Ensuring it stays on top of other elements */
-}
-        /* Disable text selection */
-body, html {
-    -webkit-user-select: none; /* Safari */
-    -moz-user-select: none; /* Firefox */
-    -ms-user-select: none; /* IE10+/Edge */
-    user-select: none; /* Standard */
-    touch-action: none; /* Disables pinch-to-zoom */
-}
-        .modal {
-    display: none;
-    position: fixed;
-    z-index: 10000;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    overflow: auto;
-    background-color: rgba(0,0,0,0.4);
-    padding-top: 60px;
-}
