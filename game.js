@@ -327,8 +327,7 @@ async function fetchWeather() {
         console.error('Error fetching weather data:', error);
     }
 }
-
-// Function to buy land
+         // Function to buy land
 function buyLand() {
     if (money >= 100) {
         alert("Tap on the map to buy land.");
@@ -552,7 +551,9 @@ function upgradePowerPlant(powerPlant) {
                 }
             }
 
-           // Load game state on start
+            setRefreshRate();
+
+            // Load game state on start
             loadGameState();
 
             // Generate revenue every 10 seconds
