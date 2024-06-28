@@ -273,6 +273,63 @@
             -ms-user-select: none;
             user-select: none;
         }
+        @media (max-width: 600px) {
+            .resource-container {
+                top: 0px;
+                left: 50%;
+                transform: translateX(-50%);
+                width: 100%;
+                padding: 5px;
+            }
+
+            .button-container button {
+                flex: 1 1 100%;
+                font-size: 12px;
+                padding: 8px;
+            }
+
+            .settings-button {
+                font-size: 20px;
+            }
+
+            .modal-content {
+                width: 90%;
+                padding: 10px;
+            }
+
+            .close {
+                font-size: 24px;
+            }
+        }
+
+        .dollar-pop-up,
+        .energy-pop-up {
+            position: absolute;
+            font-weight: bold;
+            font-size: 10px;
+            pointer-events: none;
+            z-index: 2000;
+            transition: transform 1s, opacity 1s;
+        }
+
+        .dollar-pop-up {
+            color: green;
+        }
+
+        .energy-pop-up {
+            color: yellow;
+        }
+
+        .tooltip {
+            position: absolute;
+            background: rgba(0, 0, 0, 0.75);
+            color: #fff;
+            padding: 5px;
+            border-radius: 5px;
+            font-size: 12px;
+            white-space: nowrap;
+            z-index: 1000;
+        }
     </style>
     </head>
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1121046817578421"
