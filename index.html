@@ -288,53 +288,28 @@
         <button onclick="showTab('controls-tab')">Controls</button>
         <button onclick="showTab('settings-tab')">Settings</button>
     </div>
-    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.js"></script>
-    <script src="https://unpkg.com/leaflet-tilelayer-pan@1.0.0/dist/leaflet-tilelayer-pan.min.js"></script>
-    <script src="https://unpkg.com/leaflet.vectorgrid/dist/Leaflet.VectorGrid.bundled.js"></script>
-    <script src="game.js"></script>
-    <script>
-        function showTab(tabId) {
-            document.querySelectorAll('.tab-content').forEach(tab => {
-                tab.classList.remove('active');
-            });
-            document.getElementById(tabId).classList.add('active');
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.js"></script>
+<script src="https://unpkg.com/leaflet-tilelayer-pan@1.0.0/dist/leaflet-tilelayer-pan.min.js"></script>
+<script src="https://unpkg.com/leaflet.vectorgrid/dist/Leaflet.VectorGrid.bundled.js"></script>
+<script src="game.js"></script>
+<script>
+    function showTab(tabId) {
+        document.querySelectorAll('.tab-content').forEach(tab => {
+            tab.classList.remove('active');
+        });
+        document.getElementById(tabId).classList.add('active');
 
-            // Enable pointer events on the map when World Map tab is active
-            if (tabId === 'world-map-tab') {
-                document.getElementById('map').style.pointerEvents = 'auto';
-                setTimeout(() => {
-                    map.invalidateSize();
-                }, 100);
-            } else {
-                document.getElementById('map').style.pointerEvents = 'none';
-            }
+        // Enable pointer events on the map when World Map tab is active
+        if (tabId === 'world-map-tab') {
+            document.getElementById('map').style.pointerEvents = 'auto';
+            setTimeout(() => {
+                map.invalidateSize();
+            }, 100);
+        } else {
+            document.getElementById('map').style.pointerEvents = 'none';
         }
-
-        // Mobile User Interface Stabilizer (MUIS)
-        function stabilizeUI() {
-            map.invalidateSize();
-            document.querySelectorAll('.tab-content').forEach(tab => {
-                tab.classList.remove('active');
-            });
-            document.getElementById('world-map-tab').classList.add('active');
-        }
-
-        map.on('movestart', function() {
-            stabilizeUI();
-        });
-
-        map.on('moveend', function() {
-            stabilizeUI();
-        });
-
-        window.addEventListener('resize', function() {
-            stabilizeUI();
-        });
-
-        window.addEventListener('orientationchange', function() {
-            stabilizeUI();
-        });
-    </script>
+    }
+</script>
 </body>
 </html>
