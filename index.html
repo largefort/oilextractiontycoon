@@ -11,17 +11,13 @@
     <link rel="stylesheet" href="https://js.arcgis.com/4.29/esri/themes/light/main.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
-       body, html {
-    font-family: 'Roboto', sans-serif;
-    background-color: #f0f2f5;
-    overflow-x: hidden;
-    margin: 0;
-    padding: 0;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-}
+     body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f0f2f5;
+            overflow-x: hidden;
+            margin: 0;
+            padding: 0;
+        }
 
 #map-container {
     position: relative;
@@ -72,18 +68,18 @@
     color: #ffd700;
 }
 
-.tab-content {
-    display: none;
-    position: absolute;
-    bottom: 0;
-    top: 50px;
-    left: 0;
-    width: 100%;
-    padding: 10px;
-    box-sizing: border-box;
-    overflow-y: auto;
-    z-index: 2;
-}
+ .tab-content {
+            display: none;
+            position: absolute;
+            bottom: -60px;
+            top: -10px;
+            left: -10px;
+            width: 100%;
+            padding: 10px;
+            box-sizing: border-box;
+            overflow-y: auto;
+            z-index: 2;
+        }
 
 .tab-content.active {
     display: block;
