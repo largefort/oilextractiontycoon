@@ -236,6 +236,7 @@
 </head>
 <body>
     <div id="map" class="enhanced-map"></div>
+    <canvas id="clouds"></canvas>
     <div class="resource-container">
         <div class="resource">
             <p>Money: $<span id="money">1000</span></p>
@@ -288,6 +289,7 @@
         <button onclick="showTab('controls-tab')">Controls</button>
         <button onclick="showTab('settings-tab')">Settings</button>
     </div>
+<script>
 <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.js"></script>
 <script src="https://unpkg.com/leaflet-tilelayer-pan@1.0.0/dist/leaflet-tilelayer-pan.min.js"></script>
@@ -311,7 +313,6 @@
 <script src="weather.js"></script>
 <script src="weather.min.js"></script>
 <script src="weatherlayer.js"></script>
-<script src="js/index.js"></script>
 <script src="leaflet-providers.js"></script>
     <script>
         function showTab(tabId) {
