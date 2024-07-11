@@ -1,126 +1,64 @@
-document.addEventListener('DOMContentLoaded', function() {
-    const translations = {
-        en: {
-            title: "Oil Extraction Tycoon Mobile",
-            oil: "Oil:",
-            energy: "Energy:",
-            efficiency: "Efficiency:",
-            weather: "Fetching...",
-            buyLand: "Buy Land ($100)",
-            buyOilRig: "Buy Oil Rig ($500)",
-            buyPowerPlant: "Buy Power Plant ($1000)",
-            upgradeOilRig: "Upgrade Oil Rig ($300)",
-            upgradePowerPlant: "Upgrade Power Plant ($600)",
-            worldMap: "World Map",
-            controls: "Controls",
-            settings: "Settings",
-            settingsTitle: "Geo Map Settings",
-            animationSpeed: "Animation Speed:",
-            mapTheme: "Map Theme:",
-            showMarkers: "Show Markers",
-            language: "Language:"
-        },
-        es: {
-            title: "Magnate de Extracción de Petróleo",
-            oil: "Petróleo:",
-            energy: "Energía:",
-            efficiency: "Eficiencia:",
-            weather: "Obteniendo...",
-            buyLand: "Comprar Terreno ($100)",
-            buyOilRig: "Comprar Plataforma Petrolífera ($500)",
-            buyPowerPlant: "Comprar Planta de Energía ($1000)",
-            upgradeOilRig: "Mejorar Plataforma Petrolífera ($300)",
-            upgradePowerPlant: "Mejorar Planta de Energía ($600)",
-            worldMap: "Mapa Mundial",
-            controls: "Controles",
-            settings: "Configuraciones",
-            settingsTitle: "Configuraciones de Mapa",
-            animationSpeed: "Velocidad de Animación:",
-            mapTheme: "Tema del Mapa:",
-            showMarkers: "Mostrar Marcadores",
-            language: "Idioma:"
-        },
-        no: {
-            title: "Oljeutvinningsmagnat",
-            oil: "Olje:",
-            energy: "Energi:",
-            efficiency: "Effektivitet:",
-            weather: "Henter...",
-            buyLand: "Kjøp Land ($100)",
-            buyOilRig: "Kjøp Oljebor ($500)",
-            buyPowerPlant: "Kjøp Kraftverk ($1000)",
-            upgradeOilRig: "Oppgrader Oljebor ($300)",
-            upgradePowerPlant: "Oppgrader Kraftverk ($600)",
-            worldMap: "Verdenskart",
-            controls: "Kontroller",
-            settings: "Innstillinger",
-            settingsTitle: "Geo Kartinnstillinger",
-            animationSpeed: "Animasjonshastighet:",
-            mapTheme: "Karttema:",
-            showMarkers: "Vis Markører",
-            language: "Språk:"
-        },
-        he: {
-            title: "מנהל מיצוי נפט",
-            oil: "נפט:",
-            energy: "אנרגיה:",
-            efficiency: ":יעילות",
-            weather: "טוען...",
-            buyLand: "קנה קרקע ($100)",
-            buyOilRig: "קנה מתקן קידוח ($500)",
-            buyPowerPlant: "קנה תחנת כוח ($1000)",
-            upgradeOilRig: "שדרג מתקן קידוח ($300)",
-            upgradePowerPlant: "שדרג תחנת כוח ($600)",
-            worldMap: "מפת העולם",
-            controls: "בקרות",
-            settings: "הגדרות",
-            settingsTitle: "הגדרות מפת גיאו",
-            animationSpeed: "מהירות אנימציה:",
-            mapTheme: "נושא מפה:",
-            showMarkers: "הצג סמנים",
-            language: "שפה:"
-        },
-        is: {
-            title: "Olíuútdráttarmógúll",
-            oil: "Olía:",
-            energy: "Orka:",
-            efficiency: "Skilvirkni:",
-            weather: "Sækir...",
-            buyLand: "Kaupa Land ($100)",
-            buyOilRig: "Kaupa Olíubor ($500)",
-            buyPowerPlant: "Kaupa Orkuver ($1000)",
-            upgradeOilRig: "Uppfæra Olíubor ($300)",
-            upgradePowerPlant: "Uppfæra Orkuver ($600)",
-            worldMap: "Heimskort",
-            controls: "Stýringar",
-            settings: "Stillingar",
-            settingsTitle: "Stillingskort",
-            animationSpeed: "Animasíuhraði:",
-            mapTheme: "Kortþema:",
-            showMarkers: "Sýna Merki",
-            language: "Tungumál:"
-        }
-    };
-    function changeLanguage(language) {
-        const selectedTranslations = translations[language];
-        document.querySelectorAll('[data-translate]').forEach(element => {
-            const key = element.getAttribute('data-translate');
-            element.innerText = selectedTranslations[key];
-        });
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
 
-        // Save selected language to local storage
-        localStorage.setItem('selectedLanguage', language);
-    }
+// Wait for the deviceready event before using any of Cordova's device APIs.
+// See https://cordova.apache.org/docs/en/latest/cordova/events/events.html#deviceready
+document.addEventListener("deviceready", onDeviceReady, false);
+function onDeviceReady() {
+    console.log(device.cordova);
+}
+// Depending on the device, a few examples are:
+//   - "Android"
+//   - "browser"
+//   - "iOS"
+//
+var devicePlatform = device.platform;
+// Android: Pixel 4             returns "Pixel 4"
+//          Motorola Moto G3    returns "MotoG3"
+// Browser: Google Chrome       returns "Chrome"
+//          Safari              returns "Safari"
+// iOS:     iPad Mini           returns "iPad2,5"
+//          iPhone 5            returns "iPhone5,1"
+// See https://www.theiphonewiki.com/wiki/Models
+// OS X:                        returns "x86_64"
+//
+var model = device.model;
+// Android: Returns a random 64-bit integer (as a string, again!)
+//
+// iOS: (Paraphrased from the UIDevice Class documentation)
+//         Returns the [UIDevice identifierForVendor] UUID which is unique and the same for all apps installed by the same vendor. However the UUID can be different if the user deletes all apps from the vendor and then reinstalls it.
+//
+var deviceID = device.uuid;
+// Android:    Froyo OS would return "2.2"
+//             Eclair OS would return "2.1", "2.0.1", or "2.0"
+//             Version can also return update level "2.1-update1"
+//
+// Browser:    Returns version number for the browser
+//
+// iOS:     iOS 3.2 returns "3.2"
+//
+var deviceVersion = device.version;
+// Android:    Motorola XT1032 would return "motorola"
+// iOS:     returns "Apple"
+//
+var deviceManufacturer = device.manufacturer;
 
-    // Retrieve saved language from local storage or set default language to English
-    const savedLanguage = localStorage.getItem('selectedLanguage') || 'en';
-    changeLanguage(savedLanguage);
-
-    // Set the language select dropdown to the saved language
-    document.getElementById('language-select').value = savedLanguage;
-
-    // Language selection event listener
-    document.getElementById('language-select').addEventListener('change', function() {
-        changeLanguage(this.value);
-    });
-});
+    console.log('Running cordova-' + cordova.platformId + '@' + cordova.version);
+    document.getElementById('deviceready').classList.add('ready');
+}

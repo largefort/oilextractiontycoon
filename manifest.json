@@ -1,11 +1,11 @@
 {
   "background_color": "#FFF",
   "display": "standalone",
-  "name": "OilExtractionTycoon",
-  "short_name": "OilExtractionTycoon",
-  "version": "com.jafetegill.oilgame.mobile",
+  "orientation": "any",
+  "start_url": "index.html",
+  "name": "GeoTycoon",
+  "short_name": "GeoTycoon",
+  "version": "com.fjordrgames.geotycoon.electron",
   "description": "Sample Apache Cordova App",
-  "author": "Apache Cordova Team",
-  "icons": [],
-  "start_url": "index.html"
+  "author": "Apache Cordova Team"
 }
