@@ -13,7 +13,7 @@
     <link rel="stylesheet" href="src/leaflet-radar.css"></script>
     <link rel="stylesheet" href="css/index.css">
     <style>
-      body {
+    body {
     font-family: 'Roboto', sans-serif;
     background-color: #1a1a1a;
     color: #eaeaea;
@@ -82,6 +82,11 @@
     flex-direction: column;
     align-items: center;
     padding-top: 20px;
+    transition: transform 0.3s ease-in-out;
+}
+
+.sidebar.hidden {
+    transform: translateX(-100%);
 }
 
 .sidebar button {
@@ -105,6 +110,12 @@
 .sidebar button:hover,
 .sidebar button:focus {
     color: #007bff;
+    background-color: #3a3a3a;
+}
+
+.close-sidebar {
+    align-self: flex-end;
+    padding: 15px;
     background-color: #3a3a3a;
 }
 
@@ -267,7 +278,10 @@
     </div>
 
     <!-- Sidebar -->
-    <div class="sidebar bg-light shadow-sm">
+    <div class="sidebar bg-light shadow-sm" id="sidebar">
+        <button class="btn close-sidebar" onclick="toggleSidebar()">
+            <i class="fas fa-chevron-left"></i>
+        </button>
         <button class="btn" onclick="showTab('world-map-tab')">
             <i class="fas fa-globe"></i>
             World Map
@@ -320,6 +334,8 @@
             </div>
         </div>
     </div>
+
+    <script src="sidebar.js"></script>
 </body>
 <script src="https://unpkg.com/leaflet@latest/dist/leaflet.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.js"></script>
