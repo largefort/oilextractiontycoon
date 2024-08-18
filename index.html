@@ -69,13 +69,69 @@
     color: #ffcc00;
 }
 
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: #1a1a1a;
+    color: #eaeaea;
+    overflow-x: hidden;
+    margin: 0;
+    padding: 0;
+    display: flex;
+}
+
+#map {
+    height: 100vh;
+    width: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1;
+}
+
+.resource-container {
+    position: fixed;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: rgba(40, 40, 40, 0.95);
+    border-radius: 15px;
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    width: 80%;
+    box-sizing: border-box;
+    z-index: 2;
+    color: #fff;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+    transition: top 0.3s ease-in-out;
+}
+
+.resource {
+    margin: 0 10px;
+    text-align: center;
+    flex: 1;
+    font-size: 12px;
+}
+
+.resource p {
+    margin: 2px 0;
+    font-size: 12px;
+    line-height: 1.2;
+}
+
+.resource span {
+    font-weight: bold;
+    color: #ffcc00;
+}
+
 .sidebar {
     position: fixed;
     top: 0;
     left: 0;
     height: 100vh;
     width: 220px;
-    background-color: #2d2d2d;
+    background-color: #2b2b2b;
     box-shadow: 2px 0 8px rgba(0, 0, 0, 0.3);
     z-index: 4;
     display: flex;
@@ -95,7 +151,7 @@
     width: 100%;
     padding: 15px 0;
     font-size: 18px;
-    color: #ddd;
+    color: #f1f1f1;
     text-align: center;
     cursor: pointer;
     transition: color 0.3s, background 0.3s;
@@ -105,11 +161,12 @@
     display: block;
     margin-bottom: 5px;
     font-size: 24px;
+    color: #f1f1f1;
 }
 
 .sidebar button:hover,
 .sidebar button:focus {
-    color: #007bff;
+    color: #00aaff;
     background-color: #3a3a3a;
 }
 
@@ -117,6 +174,164 @@
     align-self: flex-end;
     padding: 15px;
     background-color: #3a3a3a;
+    color: #f1f1f1;
+}
+
+.reopen-sidebar {
+    position: fixed;
+    top: 50%;
+    left: 0;
+    transform: translateY(-50%);
+    background-color: #2b2b2b;
+    padding: 10px;
+    border-radius: 0 5px 5px 0;
+    cursor: pointer;
+    z-index: 5;
+    display: none;
+}
+
+.reopen-sidebar i {
+    color: #f1f1f1;
+}
+
+.tab-content {
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 220px;
+    width: calc(100% - 220px);
+    height: 100vh;
+    padding: 20px;
+    box-sizing: border-box;
+    overflow-y: auto;
+    background-color: rgba(40, 40, 40, 0.95);
+    color: #eaeaea;
+    z-index: 3;
+    border-radius: 0 15px 15px 0;
+    box-shadow: -8px 0 16px rgba(0, 0, 0, 0.3);
+    transition: transform 0.3s ease-in-out;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+#world-map-tab {
+    background-color: transparent;
+    padding: 0;
+    box-shadow: none;
+    border-radius: 0;
+    overflow: hidden;
+}
+
+.button-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.button-container button {
+    flex: 1 1 45%;
+    margin: 10px;
+    padding: 15px;
+    font-size: 16px;
+    color: #fff;
+    background: linear-gradient(45deg, #007bff, #0056b3);
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background 0.3s, transform 0.3s;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.button-container button:focus, .button-container button:hover {
+    background: linear-gradient(45deg, #0096ff, #007bff);
+    transform: scale(1.05);
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 10000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.8);
+    padding-top: 60px;
+}
+
+.modal-content {
+    background-color: #333;
+    margin: 5% auto;
+    padding: 20px;
+    border-radius: 10px;
+    width: 80%;
+    max-width: 600px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+    color: #fff;
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: #fff;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.brightness-contrast {
+    filter: brightness(0.8) contrast(1.2);
+}
+
+.shadow-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0.8) 100%);
+    pointer-events: none;
+}
+
+@keyframes wave {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
+}
+
+.wave-effect {
+    background: linear-gradient(90deg, rgba(255, 255, 255, 0) 50%, rgba(255, 255, 255, 0.5) 50%);
+    background-size: 200% 100%;
+    animation: wave 2s infinite;
+}
+
+.tutorial-arrow {
+    position: absolute;
+    width: 50px;
+    height: 50px;
+    background: url('arrow.png') no-repeat center center;
+    background-size: contain;
+    z-index: 9999;
+    animation: bounce 1s infinite;
+    display: none;
+}
+
+@keyframes bounce {
+    0%, 100% {
+        transform: translateY(-10%);
+    }
+    50% {
+        transform: translateY(10%);
+    }
 }
 
 .tab-content {
@@ -263,7 +478,6 @@
     </style>
 </head>
 <script src="https://sdk.crazygames.com/crazygames-sdk-v2.js"></script>
-</head>
 <body>
     <div id="map" class="enhanced-map"></div>
     <div class="gradient-overlay"></div>
@@ -288,7 +502,7 @@
     </div>
 
     <!-- Sidebar -->
-    <div class="sidebar bg-light shadow-sm" id="sidebar">
+    <div class="sidebar bg-dark shadow-sm" id="sidebar">
         <button class="btn close-sidebar" onclick="toggleSidebar()">
             <i class="fas fa-chevron-left"></i>
         </button>
@@ -304,6 +518,11 @@
             <i class="fas fa-sliders-h"></i>
             Settings
         </button>
+    </div>
+
+    <!-- Reopen Sidebar Button -->
+    <div class="reopen-sidebar" id="reopenSidebar" onclick="toggleSidebar()">
+        <i class="fas fa-chevron-right"></i>
     </div>
 
     <!-- Tab Content Areas -->
