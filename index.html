@@ -69,6 +69,62 @@
     color: #ffcc00;
 }
 
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: #1a1a1a;
+    color: #eaeaea;
+    overflow-x: hidden;
+    margin: 0;
+    padding: 0;
+    display: flex;
+}
+
+#map {
+    height: 100vh;
+    width: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1;
+}
+
+.resource-container {
+    position: fixed;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: rgba(40, 40, 40, 0.95);
+    border-radius: 15px;
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    width: 80%;
+    box-sizing: border-box;
+    z-index: 2;
+    color: #fff;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+    transition: top 0.3s ease-in-out;
+}
+
+.resource {
+    margin: 0 10px;
+    text-align: center;
+    flex: 1;
+    font-size: 12px;
+}
+
+.resource p {
+    margin: 2px 0;
+    font-size: 12px;
+    line-height: 1.2;
+}
+
+.resource span {
+    font-weight: bold;
+    color: #ffcc00;
+}
+
 .sidebar {
     position: fixed;
     top: 0;
@@ -138,6 +194,39 @@
 
 .reopen-sidebar i {
     color: #f1f1f1;
+}
+
+.tab-content {
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 160px; /* Adjusted to match sidebar width */
+    width: calc(100% - 160px); /* Adjusted to match sidebar width */
+    height: 100vh;
+    padding: 20px;
+    box-sizing: border-box;
+    overflow-y: auto;
+    background-color: rgba(40, 40, 40, 0.95);
+    color: #eaeaea;
+    z-index: 3;
+    border-radius: 0 15px 15px 0;
+    box-shadow: -8px 0 16px rgba(0, 0, 0, 0.3);
+    transition: transform 0.3s ease-in-out;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+#world-map-tab {
+    background-color: transparent;
+    padding: 0;
+    box-shadow: none;
+    border-radius: 0;
+    overflow: visible; /* Allow interactions */
+    pointer-events: none; /* Ensure map interactivity */
+    z-index: 1; /* Lower z-index to avoid overlay issues */
+    position: relative;
 }
 
 .tab-content {
