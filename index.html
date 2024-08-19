@@ -22,6 +22,7 @@
     margin: 0;
     padding: 0;
     display: flex;
+    flex-direction: column; /* Ensure proper stacking on mobile */
 }
 
 #map {
@@ -35,25 +36,24 @@
 
 .resource-container {
     position: fixed;
-    top: 10px;
-    left: 50%;
-    transform: translateX(-50%);
-    background-color: rgba(40, 40, 40, 0.95);
-    border-radius: 15px;
-    padding: 10px 20px;
+    top: 0;
+    left: 0;
+    background-color: rgba(33, 33, 33, 0.95);
+    border-radius: 0 0 10px 10px;
+    padding: 10px;
     display: flex;
     justify-content: space-around;
     align-items: center;
-    width: 80%;
+    width: 100%;
     box-sizing: border-box;
     z-index: 2;
     color: #fff;
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     transition: top 0.3s ease-in-out;
 }
 
 .resource {
-    margin: 0 10px;
+    margin: 0 5px;
     text-align: center;
     flex: 1;
     font-size: 12px;
@@ -67,7 +67,7 @@
 
 .resource span {
     font-weight: bold;
-    color: #ffcc00;
+    color: #ffd700;
 }
 
 .sidebar {
@@ -75,15 +75,15 @@
     top: 0;
     left: 0;
     height: 100vh;
-    width: 160px; /* Thin width */
-    background-color: rgba(43, 43, 43, 0.7); /* Transparent with some opacity */
-    backdrop-filter: blur(10px); /* Apply blur effect */
+    width: 60px; /* Adjusted for mobile */
+    background-color: rgba(43, 43, 43, 0.9); /* Slightly darker for clarity */
+    backdrop-filter: blur(10px);
     box-shadow: 2px 0 8px rgba(0, 0, 0, 0.3);
     z-index: 4;
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding-top: 10px; /* Reduced padding */
+    padding-top: 10px;
     transition: transform 0.3s ease-in-out;
 }
 
@@ -95,8 +95,8 @@
     background: none;
     border: none;
     width: 100%;
-    padding: 10px 0; /* Reduced padding */
-    font-size: 16px; /* Slightly smaller font size */
+    padding: 8px 0;
+    font-size: 12px;
     color: #f1f1f1;
     text-align: center;
     cursor: pointer;
@@ -106,7 +106,7 @@
 .sidebar button i {
     display: block;
     margin-bottom: 5px;
-    font-size: 20px; /* Slightly smaller icon size */
+    font-size: 18px; /* Adjusted for mobile */
     color: #f1f1f1;
 }
 
@@ -118,7 +118,7 @@
 
 .close-sidebar {
     align-self: flex-end;
-    padding: 10px;
+    padding: 8px;
     background-color: rgba(58, 58, 58, 0.5); /* Transparent background */
     color: #f1f1f1;
 }
@@ -129,7 +129,7 @@
     left: 0;
     transform: translateY(-50%);
     background-color: rgba(43, 43, 43, 0.7); /* Transparent with some opacity */
-    backdrop-filter: blur(10px); /* Apply blur effect */
+    backdrop-filter: blur(10px);
     padding: 10px;
     border-radius: 0 5px 5px 0;
     cursor: pointer;
@@ -145,10 +145,10 @@
     display: none;
     position: absolute;
     top: 0;
-    left: 160px; /* Adjusted to match sidebar width */
-    width: calc(100% - 160px); /* Adjusted to match sidebar width */
+    left: 60px; /* Adjusted for mobile */
+    width: calc(100% - 60px); /* Adjusted for mobile */
     height: 100vh;
-    padding: 20px;
+    padding: 10px;
     box-sizing: border-box;
     overflow-y: auto;
     background-color: rgba(40, 40, 40, 0.95);
@@ -164,14 +164,14 @@
 }
 
 #world-map-tab {
-    background-color: transparent; /* Keep background transparent */
-    padding: 0; /* No padding to ensure full map interaction */
-    box-shadow: none; /* No shadow */
-    border-radius: 0; /* No border radius */
-    overflow: visible; /* Ensure overflow is visible */
-    pointer-events: none; /* Allow interactions to pass through to the map */
-    z-index: 1; /* Ensure it doesn't overlap interactive elements */
-    position: relative; /* Keep it positioned correctly without interfering */
+    background-color: transparent;
+    padding: 0;
+    box-shadow: none;
+    border-radius: 0;
+    overflow: visible;
+    pointer-events: none;
+    z-index: 1;
+    position: relative;
 }
 
 .button-container {
@@ -349,8 +349,9 @@
     .resource-container {
         position: fixed;
         top: 0;
+        left: 0;
         background-color: rgba(33, 33, 33, 0.95);
-        border-radius: 10px;
+        border-radius: 0 0 10px 10px;
         padding: 10px;
         display: flex;
         justify-content: space-around;
