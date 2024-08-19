@@ -69,62 +69,6 @@
     color: #ffcc00;
 }
 
-body {
-    font-family: 'Roboto', sans-serif;
-    background-color: #1a1a1a;
-    color: #eaeaea;
-    overflow-x: hidden;
-    margin: 0;
-    padding: 0;
-    display: flex;
-}
-
-#map {
-    height: 100vh;
-    width: 100%;
-    position: fixed;
-    top: 0;
-    left: 0;
-    z-index: 1;
-}
-
-.resource-container {
-    position: fixed;
-    top: 10px;
-    left: 50%;
-    transform: translateX(-50%);
-    background-color: rgba(40, 40, 40, 0.95);
-    border-radius: 15px;
-    padding: 10px 20px;
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    width: 80%;
-    box-sizing: border-box;
-    z-index: 2;
-    color: #fff;
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
-    transition: top 0.3s ease-in-out;
-}
-
-.resource {
-    margin: 0 10px;
-    text-align: center;
-    flex: 1;
-    font-size: 12px;
-}
-
-.resource p {
-    margin: 2px 0;
-    font-size: 12px;
-    line-height: 1.2;
-}
-
-.resource span {
-    font-weight: bold;
-    color: #ffcc00;
-}
-
 .sidebar {
     position: fixed;
     top: 0;
@@ -219,39 +163,6 @@ body {
 }
 
 #world-map-tab {
-    background-color: transparent;
-    padding: 0;
-    box-shadow: none;
-    border-radius: 0;
-    overflow: visible; /* Allow interactions */
-    pointer-events: none; /* Ensure map interactivity */
-    z-index: 1; /* Lower z-index to avoid overlay issues */
-    position: relative;
-}
-
-.tab-content {
-    display: none;
-    position: absolute;
-    top: 0;
-    left: 160px; /* Adjusted to match sidebar width */
-    width: calc(100% - 160px); /* Adjusted to match sidebar width */
-    height: 100vh;
-    padding: 20px;
-    box-sizing: border-box;
-    overflow-y: auto;
-    background-color: rgba(40, 40, 40, 0.95);
-    color: #eaeaea;
-    z-index: 3;
-    border-radius: 0 15px 15px 0;
-    box-shadow: -8px 0 16px rgba(0, 0, 0, 0.3);
-    transition: transform 0.3s ease-in-out;
-}
-
-.tab-content.active {
-    display: block;
-}
-
-#world-map-tab {
     background-color: transparent; /* Keep background transparent */
     padding: 0; /* No padding to ensure full map interaction */
     box-shadow: none; /* No shadow */
@@ -261,6 +172,7 @@ body {
     z-index: 1; /* Ensure it doesn't overlap interactive elements */
     position: relative; /* Keep it positioned correctly without interfering */
 }
+
 .button-container {
     display: flex;
     flex-wrap: wrap;
@@ -370,38 +282,86 @@ body {
         transform: translateY(10%);
     }
 }
-        .dollar-pop-up, .energy-pop-up {
-            position: absolute;
-            font-weight: bold;
-            font-size: 12px;
-            pointer-events: none;
-            z-index: 2000;
-            transition: transform 0.5s ease-out, opacity 0.5s ease-out;
-            filter: brightness(150%);
-            padding: 5px;
-            transform: translateY(-20px) scale(1);
-            opacity: 0;
-            animation: pop-up-animation 1s forwards;
-        }
 
-        @keyframes pop-up-animation {
-            0% {
-                transform: translateY(0) scale(0.8);
-                opacity: 0;
-            }
-            100% {
-                transform: translateY(-20px) scale(1);
-                opacity: 1;
-            }
-        }
+.dollar-pop-up, .energy-pop-up {
+    position: absolute;
+    font-weight: bold;
+    font-size: 12px;
+    pointer-events: none;
+    z-index: 2000;
+    transition: transform 0.5s ease-out, opacity 0.5s ease-out;
+    filter: brightness(150%);
+    padding: 5px;
+    transform: translateY(-20px) scale(1);
+    opacity: 0;
+    animation: pop-up-animation 1s forwards;
+}
 
-        .dollar-pop-up {
-            color: green;
-        }
+@keyframes pop-up-animation {
+    0% {
+        transform: translateY(0) scale(0.8);
+        opacity: 0;
+    }
+    100% {
+        transform: translateY(-20px) scale(1);
+        opacity: 1;
+    }
+}
 
-        .energy-pop-up {
-            color: yellow;
-        }
+.dollar-pop-up {
+    color: green;
+}
+
+.energy-pop-up {
+    color: yellow;
+}
+
+/* Mobile Styles */
+@media (max-width: 767px) {
+    /* Adjust the sidebar for mobile */
+    .sidebar {
+        width: 60px; /* Thinner sidebar for mobile */
+        padding-top: 5px;
+    }
+
+    .sidebar button {
+        padding: 8px 0;
+        font-size: 12px;
+    }
+
+    .sidebar button i {
+        font-size: 18px;
+    }
+
+    .close-sidebar {
+        padding: 8px;
+    }
+
+    /* Adjust the tab content for mobile */
+    .tab-content {
+        left: 60px; /* Adjusted to match the mobile sidebar width */
+        width: calc(100% - 60px); /* Adjusted to match the mobile sidebar width */
+        padding: 10px; /* Reduced padding for mobile */
+    }
+
+    /* Resource container adjustment */
+    .resource-container {
+        top: 5px;
+        width: 90%; /* Narrower width for mobile */
+        padding: 5px 10px;
+        font-size: 10px;
+    }
+
+    .resource {
+        font-size: 10px;
+    }
+
+    .resource p {
+        margin: 1px 0;
+    }
+
+    /* Adjust other elements as needed */
+}
     </style>
 </head>
 <script src="https://sdk.crazygames.com/crazygames-sdk-v2.js"></script>
