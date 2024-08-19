@@ -18,3 +18,17 @@
             margin: 4px;
             text-align: center;
         }
+resource-container {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 10px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.resource {
+    flex: 1;
+    text-align: center;
+    font-size: 12px;
+    padding: 0 5px;
+}
