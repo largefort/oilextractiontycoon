@@ -12,9 +12,8 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="src/leaflet-radar.css"></script>
     <link rel="stylesheet" href="css/index.css">
-    <link rel="stylesheet" href="styles.css">
     <style>
-  body {
+   body {
     font-family: 'Roboto', sans-serif;
     background-color: #1a1a1a;
     color: #eaeaea;
@@ -22,7 +21,6 @@
     margin: 0;
     padding: 0;
     display: flex;
-    flex-direction: column; /* Ensure proper stacking on mobile */
 }
 
 #map {
@@ -36,24 +34,25 @@
 
 .resource-container {
     position: fixed;
-    top: 0;
-    left: 0;
-    background-color: rgba(33, 33, 33, 0.95);
-    border-radius: 0 0 10px 10px;
-    padding: 10px;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: rgba(40, 40, 40, 0.95);
+    border-radius: 15px;
+    padding: 10px 20px;
     display: flex;
     justify-content: space-around;
     align-items: center;
-    width: 100%;
+    width: 80%;
     box-sizing: border-box;
     z-index: 2;
     color: #fff;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
     transition: top 0.3s ease-in-out;
 }
 
 .resource {
-    margin: 0 5px;
+    margin: 0 10px;
     text-align: center;
     flex: 1;
     font-size: 12px;
@@ -67,7 +66,63 @@
 
 .resource span {
     font-weight: bold;
-    color: #ffd700;
+    color: #ffcc00;
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: #1a1a1a;
+    color: #eaeaea;
+    overflow-x: hidden;
+    margin: 0;
+    padding: 0;
+    display: flex;
+}
+
+#map {
+    height: 100vh;
+    width: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1;
+}
+
+.resource-container {
+    position: fixed;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: rgba(40, 40, 40, 0.95);
+    border-radius: 15px;
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    width: 80%;
+    box-sizing: border-box;
+    z-index: 2;
+    color: #fff;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+    transition: top 0.3s ease-in-out;
+}
+
+.resource {
+    margin: 0 10px;
+    text-align: center;
+    flex: 1;
+    font-size: 12px;
+}
+
+.resource p {
+    margin: 2px 0;
+    font-size: 12px;
+    line-height: 1.2;
+}
+
+.resource span {
+    font-weight: bold;
+    color: #ffcc00;
 }
 
 .sidebar {
@@ -75,15 +130,15 @@
     top: 0;
     left: 0;
     height: 100vh;
-    width: 60px;
-    background-color: rgba(43, 43, 43, 0.9);
-    backdrop-filter: blur(10px);
+    width: 160px; /* Thin width */
+    background-color: rgba(43, 43, 43, 0.7); /* Transparent with some opacity */
+    backdrop-filter: blur(10px); /* Apply blur effect */
     box-shadow: 2px 0 8px rgba(0, 0, 0, 0.3);
     z-index: 4;
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding-top: 10px;
+    padding-top: 10px; /* Reduced padding */
     transition: transform 0.3s ease-in-out;
 }
 
@@ -91,40 +146,64 @@
     transform: translateX(-100%);
 }
 
-.toggle-sidebar {
-    position: absolute; /* Positioned within the sidebar */
-    top: 50%;
-    right: -20px; /* Adjusted to place the button at the edge of the sidebar */
-    transform: translateY(-50%);
-    background-color: #007bff;
+.sidebar button {
+    background: none;
+    border: none;
+    width: 100%;
+    padding: 10px 0; /* Reduced padding */
+    font-size: 16px; /* Slightly smaller font size */
+    color: #f1f1f1;
+    text-align: center;
+    cursor: pointer;
+    transition: color 0.3s, background 0.3s;
+}
+
+.sidebar button i {
+    display: block;
+    margin-bottom: 5px;
+    font-size: 20px; /* Slightly smaller icon size */
+    color: #f1f1f1;
+}
+
+.sidebar button:hover,
+.sidebar button:focus {
+    color: #00aaff;
+    background-color: rgba(58, 58, 58, 0.5); /* Hover background with transparency */
+}
+
+.close-sidebar {
+    align-self: flex-end;
     padding: 10px;
-    border-radius: 5px;
+    background-color: rgba(58, 58, 58, 0.5); /* Transparent background */
+    color: #f1f1f1;
+}
+
+.reopen-sidebar {
+    position: fixed;
+    top: 50%;
+    left: 0;
+    transform: translateY(-50%);
+    background-color: rgba(43, 43, 43, 0.7); /* Transparent with some opacity */
+    backdrop-filter: blur(10px); /* Apply blur effect */
+    padding: 10px;
+    border-radius: 0 5px 5px 0;
     cursor: pointer;
     z-index: 5;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    display: none;
 }
 
-.toggle-sidebar i {
+.reopen-sidebar i {
     color: #f1f1f1;
-    font-size: 18px;
-    transition: transform 0.3s ease-in-out;
-}
-
-.sidebar.hidden + .toggle-sidebar {
-    right: -20px;
-    transform: translateY(-50%) rotate(180deg); /* Rotate the arrow when sidebar is hidden */
 }
 
 .tab-content {
     display: none;
     position: absolute;
     top: 0;
-    left: 60px; /* Adjusted for mobile */
-    width: calc(100% - 60px); /* Adjusted for mobile */
+    left: 160px; /* Adjusted to match sidebar width */
+    width: calc(100% - 160px); /* Adjusted to match sidebar width */
     height: 100vh;
-    padding: 10px;
+    padding: 20px;
     box-sizing: border-box;
     overflow-y: auto;
     background-color: rgba(40, 40, 40, 0.95);
@@ -144,12 +223,44 @@
     padding: 0;
     box-shadow: none;
     border-radius: 0;
-    overflow: visible;
-    pointer-events: none;
-    z-index: 1;
+    overflow: visible; /* Allow interactions */
+    pointer-events: none; /* Ensure map interactivity */
+    z-index: 1; /* Lower z-index to avoid overlay issues */
     position: relative;
 }
 
+.tab-content {
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 160px; /* Adjusted to match sidebar width */
+    width: calc(100% - 160px); /* Adjusted to match sidebar width */
+    height: 100vh;
+    padding: 20px;
+    box-sizing: border-box;
+    overflow-y: auto;
+    background-color: rgba(40, 40, 40, 0.95);
+    color: #eaeaea;
+    z-index: 3;
+    border-radius: 0 15px 15px 0;
+    box-shadow: -8px 0 16px rgba(0, 0, 0, 0.3);
+    transition: transform 0.3s ease-in-out;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+#world-map-tab {
+    background-color: transparent; /* Keep background transparent */
+    padding: 0; /* No padding to ensure full map interaction */
+    box-shadow: none; /* No shadow */
+    border-radius: 0; /* No border radius */
+    overflow: visible; /* Ensure overflow is visible */
+    pointer-events: none; /* Allow interactions to pass through to the map */
+    z-index: 1; /* Ensure it doesn't overlap interactive elements */
+    position: relative; /* Keep it positioned correctly without interfering */
+}
 .button-container {
     display: flex;
     flex-wrap: wrap;
@@ -259,105 +370,38 @@
         transform: translateY(10%);
     }
 }
+        .dollar-pop-up, .energy-pop-up {
+            position: absolute;
+            font-weight: bold;
+            font-size: 12px;
+            pointer-events: none;
+            z-index: 2000;
+            transition: transform 0.5s ease-out, opacity 0.5s ease-out;
+            filter: brightness(150%);
+            padding: 5px;
+            transform: translateY(-20px) scale(1);
+            opacity: 0;
+            animation: pop-up-animation 1s forwards;
+        }
 
-.dollar-pop-up, .energy-pop-up {
-    position: absolute;
-    font-weight: bold;
-    font-size: 12px;
-    pointer-events: none;
-    z-index: 2000;
-    transition: transform 0.5s ease-out, opacity 0.5s ease-out;
-    filter: brightness(150%);
-    padding: 5px;
-    transform: translateY(-20px) scale(1);
-    opacity: 0;
-    animation: pop-up-animation 1s forwards;
-}
+        @keyframes pop-up-animation {
+            0% {
+                transform: translateY(0) scale(0.8);
+                opacity: 0;
+            }
+            100% {
+                transform: translateY(-20px) scale(1);
+                opacity: 1;
+            }
+        }
 
-@keyframes pop-up-animation {
-    0% {
-        transform: translateY(0) scale(0.8);
-        opacity: 0;
-    }
-    100% {
-        transform: translateY(-20px) scale(1);
-        opacity: 1;
-    }
-}
+        .dollar-pop-up {
+            color: green;
+        }
 
-.dollar-pop-up {
-    color: green;
-}
-
-.energy-pop-up {
-    color: yellow;
-}
-
-/* Mobile Styles */
-@media (max-width: 767px) {
-    /* Adjust the sidebar for mobile */
-    .sidebar {
-        width: 60px; /* Thinner sidebar for mobile */
-        padding-top: 5px;
-    }
-
-    .sidebar button {
-        padding: 8px 0;
-        font-size: 12px;
-    }
-
-    .sidebar button i {
-        font-size: 18px;
-    }
-
-    .close-sidebar {
-        padding: 8px;
-    }
-
-    /* Adjust the tab content for mobile */
-    .tab-content {
-        left: 60px; /* Adjusted to match the mobile sidebar width */
-        width: calc(100% - 60px); /* Adjusted to match the mobile sidebar width */
-        padding: 10px; /* Reduced padding for mobile */
-    }
-
-    /* Resource container adjustment for mobile */
-    .resource-container {
-        position: fixed;
-        top: 0;
-        left: 0;
-        background-color: rgba(33, 33, 33, 0.95);
-        border-radius: 0 0 10px 10px;
-        padding: 10px;
-        display: flex;
-        justify-content: space-around;
-        align-items: center;
-        width: 100%;
-        box-sizing: border-box;
-        z-index: 2;
-        color: #fff;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        transition: top 0.3s ease-in-out;
-    }
-
-    .resource {
-        margin: 0 1px;
-        text-align: center;
-        flex: 1;
-        font-size: 10px;
-    }
-
-    .resource p {
-        margin: 2px 0;
-        font-size: 10px;
-        line-height: 1.0;
-    }
-
-    .resource span {
-        font-weight: bold;
-        color: #ffd700;
-    }
-}
+        .energy-pop-up {
+            color: yellow;
+        }
     </style>
 </head>
 <script src="https://sdk.crazygames.com/crazygames-sdk-v2.js"></script>
@@ -384,63 +428,68 @@
         </div>
     </div>
 
-   <!-- Sidebar -->
-<div class="sidebar bg-dark shadow-sm" id="sidebar">
-    <button class="btn toggle-sidebar" id="toggleSidebarBtn" onclick="toggleSidebar()">
-        <i class="fas fa-chevron-left"></i>
-    </button>
-    <button class="btn" onclick="showTab('world-map-tab')">
-        <i class="fas fa-globe"></i>
-        World Map
-    </button>
-    <button class="btn" onclick="showTab('controls-tab')">
-        <i class="fas fa-cogs"></i>
-        Controls
-    </button>
-    <button class="btn" onclick="showTab('settings-tab')">
-        <i class="fas fa-sliders-h"></i>
-        Settings
-    </button>
-</div>
+    <!-- Sidebar -->
+    <div class="sidebar bg-dark shadow-sm" id="sidebar">
+        <button class="btn close-sidebar" onclick="toggleSidebar()">
+            <i class="fas fa-chevron-left"></i>
+        </button>
+        <button class="btn" onclick="showTab('world-map-tab')">
+            <i class="fas fa-globe"></i>
+            World Map
+        </button>
+        <button class="btn" onclick="showTab('controls-tab')">
+            <i class="fas fa-cogs"></i>
+            Controls
+        </button>
+        <button class="btn" onclick="showTab('settings-tab')">
+            <i class="fas fa-sliders-h"></i>
+            Settings
+        </button>
+    </div>
 
-<!-- Tab Content Areas -->
-<div id="world-map-tab" class="tab-content active"></div>
-<div id="controls-tab" class="tab-content container-fluid">
-    <div class="controls">
-        <h3 class="text-center my-4">GeoTycoon</h3>
-        <div class="button-container row justify-content-center">
-            <button class="btn btn-primary m-2 col-5" onclick="buyLand()">Buy Land ($100)</button>
-            <button class="btn btn-primary m-2 col-5" onclick="buyOilRig()">Buy Oil Rig ($500)</button>
-            <button class="btn btn-primary m-2 col-5" onclick="buyPowerPlant()">Buy Power Plant ($1000)</button>
-            <button class="btn btn-primary m-2 col-5" onclick="upgradeOilRig()">Upgrade Oil Rig ($300)</button>
-            <button class="btn btn-primary m-2 col-5" onclick="upgradePowerPlant()">Upgrade Power Plant ($600)</button>
-        </div>
-        <div class="weather-info mt-4">
-            <p class="text-center">Weather: <span id="weather">Fetching...</span></p>
+    <!-- Reopen Sidebar Button -->
+    <div class="reopen-sidebar" id="reopenSidebar" onclick="toggleSidebar()">
+        <i class="fas fa-chevron-right"></i>
+    </div>
+
+    <!-- Tab Content Areas -->
+    <div id="world-map-tab" class="tab-content active"></div>
+    <div id="controls-tab" class="tab-content container-fluid">
+        <div class="controls">
+            <h3 class="text-center my-4">GeoTycoon</h3>
+            <div class="button-container row justify-content-center">
+                <button class="btn btn-primary m-2 col-5" onclick="buyLand()">Buy Land ($100)</button>
+                <button class="btn btn-primary m-2 col-5" onclick="buyOilRig()">Buy Oil Rig ($500)</button>
+                <button class="btn btn-primary m-2 col-5" onclick="buyPowerPlant()">Buy Power Plant ($1000)</button>
+                <button class="btn btn-primary m-2 col-5" onclick="upgradeOilRig()">Upgrade Oil Rig ($300)</button>
+                <button class="btn btn-primary m-2 col-5" onclick="upgradePowerPlant()">Upgrade Power Plant ($600)</button>
+            </div>
+            <div class="weather-info mt-4">
+                <p class="text-center">Weather: <span id="weather">Fetching...</span></p>
+            </div>
         </div>
     </div>
-</div>
-<div id="settings-tab" class="tab-content container-fluid">
-    <div class="settings">
-        <h2 class="text-center my-4">Geo Map Settings</h2>
-        <div class="form-group">
-            <label for="animation-speed">Animation Speed:</label>
-            <input type="range" class="form-control-range" id="animation-speed" name="animation-speed" min="1" max="10" value="5" onchange="updateAnimationSpeed(this.value)">
-        </div>
-        <div class="form-group">
-            <label for="map-theme">Map Theme:</label>
-            <select class="form-control" id="map-theme" onchange="updateMapTheme(this.value)">
-                <option value="EsriWorldImagery">WorldImagery</option>
-                <option value="weatherlayer">WeatherLayer</option>
-                <option value="Radar">Radar</option>
-            </select>
-        </div>
-        <div class="form-group form-check">
-            <input type="checkbox" class="form-check-input" id="show-markers" checked onchange="toggleMarkers(this.checked)">
-            <label class="form-check-label" for="show-markers">Show Markers</label>
+    <div id="settings-tab" class="tab-content container-fluid">
+        <div class="settings">
+            <h2 class="text-center my-4">Geo Map Settings</h2>
+            <div class="form-group">
+                <label for="animation-speed">Animation Speed:</label>
+                <input type="range" class="form-control-range" id="animation-speed" name="animation-speed" min="1" max="10" value="5" onchange="updateAnimationSpeed(this.value)">
+            </div>
+            <div class="form-group">
+                <label for="map-theme">Map Theme:</label>
+                <select class="form-control" id="map-theme" onchange="updateMapTheme(this.value)">
+                    <option value="EsriWorldImagery">WorldImagery</option>
+                    <option value="weatherlayer">WeatherLayer</option>
+                    <option value="Radar">Radar</option>
+                </select>
+            </div>
+            <div class="form-group form-check">
+                <input type="checkbox" class="form-check-input" id="show-markers" checked onchange="toggleMarkers(this.checked)">
+                <label class="form-check-label" for="show-markers">Show Markers</label>
+            </div>
         </div>
     </div>
-</div>
 
     <script src="sidebar.js"></script>
 </body>
