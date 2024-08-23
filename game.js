@@ -41,6 +41,12 @@ var efficiency = 100;
 var weather = 'Fetching...';
 var weatherImpact = 1.0; // Multiplier for production rate
 
+var totalOilExtracted = 0;
+var totalEnergyGenerated = 0;
+var totalBuildingsPlaced = 0;
+var totalLandsOwned = 0;
+var totalMoneyProduced = 0;
+
 // Weather conditions and their impact
 var weatherConditions = {
     'thunderstorm': 0.5,
@@ -54,7 +60,6 @@ var weatherConditions = {
     'red weather alert': 0.3,
     'yellow weather alert': 0.5
 };
-
 
 // Function to format large numbers in a short format (e.g., 1K, 1M)
 function shortNumberFormat(num) {
@@ -145,6 +150,7 @@ function updateResourceCounters() {
     updateMoneyProduction();
     updateOilRigProduction();
     updatePowerPlantProduction();
+    updateStats();
 }
 
 // Function to show dollar pop-up
@@ -270,6 +276,7 @@ function saveGameState() {
                     var revenue = rig.revenue * weatherImpact;
                     money += revenue;
                     oil += rig.level; // Oil production increases with level
+                    totalOilExtracted += rig.level; // Track total oil extracted
                     updateMoney();
                     updateOil();
                     updateResourceCounters(); // Update resource counters
@@ -282,6 +289,7 @@ function saveGameState() {
                 powerPlants.forEach(plant => {
                     var production = plant.production * weatherImpact;
                     energy += production;
+                    totalEnergyGenerated += production; // Track total energy generated
                     updateEnergy();
                     updateResourceCounters(); // Update resource counters
 
@@ -336,6 +344,7 @@ function buyLand() {
             var marker = L.marker(latlng).addTo(map).bindPopup('Owned Land');
             ownedLand.push(marker);
             money -= 100;
+            totalLandsOwned++; // Track total lands owned
             calculateEfficiency();
             updateResourceCounters();
             saveGameState();
@@ -369,6 +378,7 @@ function buyOilRig() {
                 revenue: 10
             });
             money -= 500;
+            totalBuildingsPlaced++; // Track total buildings placed
             updateResourceCounters();
             saveGameState();
             updateAchievements(); // Check achievements
@@ -406,6 +416,7 @@ function buyPowerPlant() {
                 production: 20
             });
             money -= 1000;
+            totalBuildingsPlaced++; // Track total buildings placed
             updateResourceCounters();
             saveGameState();
             updateAchievements(); // Check achievements
@@ -451,124 +462,130 @@ function upgradePowerPlant(powerPlant) {
         alert("Not enough money to upgrade or no power plant found!");
     }
 }
-            // Function to handle 120Hz support for Samsung Galaxy A54 5G
-            function isSamsungGalaxyA54() {
-                const userAgent = navigator.userAgent || navigator.vendor || window.opera;
-                return /SM-A546/.test(userAgent);
+
+// Function to update stats
+function updateStats() {
+    document.getElementById('total-oil').innerText = shortNumberFormat(totalOilExtracted);
+    document.getElementById('total-energy').innerText = wattsFormat(totalEnergyGenerated);
+    document.getElementById('total-buildings').innerText = totalBuildingsPlaced;
+    document.getElementById('total-lands').innerText = totalLandsOwned;
+    document.getElementById('total-money-produced').innerText = shortNumberFormat(totalMoneyProduced);
+}
+
+// Function to load version number from GitHub
+async function loadVersionNumber() {
+    try {
+        const response = await fetch('https://api.github.com/repos/your-github-username/your-repo-name/releases/latest');
+        const data = await response.json();
+        const version = data.tag_name || '1.0.0';
+        document.getElementById('version').innerText = version;
+    } catch (error) {
+        console.error('Failed to fetch version number:', error);
+    }
+}
+
+// Toggle settings modal
+function toggleSettingsModal() {
+    var modal = document.getElementById('settings-modal');
+    if (modal.style.display === "none" || modal.style.display === "") {
+        modal.style.display = "block";
+    } else {
+        modal.style.display = "none";
+    }
+}
+
+// Update animation speed
+function updateAnimationSpeed(speed) {
+    // Implementation for updating animation speed
+    console.log("Animation speed set to: " + speed);
+}
+
+// Update map theme
+function updateMapTheme(theme) {
+    switch(theme) {
+        case 'street':
+            baseLayers["Street Map"].addTo(map);
+            break;
+        case 'satellite':
+            baseLayers.Satellite.addTo(map);
+            break;
+        case 'EsriWorldImagery':
+            baseLayers["EsriWorldImagery"].addTo(map);
+            break;
+    }
+    console.log("Map theme set to: " + theme);
+}
+
+// Toggle markers
+function toggleMarkers(show) {
+    if (show) {
+        ownedLand.forEach(marker => {
+            if (!map.hasLayer(marker)) {
+                marker.addTo(map);
             }
-
-            function setRefreshRate() {
-                if (isSamsungGalaxyA54()) {
-                    const style = document.createElement('style');
-                    style.innerHTML = `
-                        @media (min-refresh-rate: 60Hz) {
-                            * {
-                                scroll-behavior: smooth;
-                            }
-                        }
-                    `;
-                    document.head.appendChild(style);
-                }
+        });
+        oilRigs.forEach(rig => {
+            if (!map.hasLayer(rig.marker)) {
+                rig.marker.addTo(map);
             }
-
-            // Toggle settings modal
-            function toggleSettingsModal() {
-                var modal = document.getElementById('settings-modal');
-                if (modal.style.display === "none" || modal.style.display === "") {
-                    modal.style.display = "block";
-                } else {
-                    modal.style.display = "none";
-                }
+        });
+        powerPlants.forEach(plant => {
+            if (!map.hasLayer(plant.marker)) {
+                plant.marker.addTo(map);
             }
-
-            // Update animation speed
-            function updateAnimationSpeed(speed) {
-                // Implementation for updating animation speed
-                console.log("Animation speed set to: " + speed);
+        });
+    } else {
+        ownedLand.forEach(marker => {
+            if (map.hasLayer(marker)) {
+                marker.removeFrom(map);
             }
-
-            // Update map theme
-            function updateMapTheme(theme) {
-                switch(theme) {
-                    case 'street':
-                        baseLayers["Street Map"].addTo(map);
-                        break;
-                    case 'satellite':
-                        baseLayers.Satellite.addTo(map);
-                        break;
-                    case 'EsriWorldImagery':
-                        baseLayers["EsriWorldImagery"].addTo(map);
-                        break;
-                }
-                console.log("Map theme set to: " + theme);
+        });
+        oilRigs.forEach(rig => {
+            if (map.hasLayer(rig.marker)) {
+                rig.marker.removeFrom(map);
             }
-
-           // Toggle markers
-           function toggleMarkers(show) {
-               if (show) {
-                   ownedLand.forEach(marker => {
-                       if (!map.hasLayer(marker)) {
-                           marker.addTo(map);
-                       }
-                   });
-                   oilRigs.forEach(rig => {
-                       if (!map.hasLayer(rig.marker)) {
-                           rig.marker.addTo(map);
-                       }
-                   });
-                   powerPlants.forEach(plant => {
-                       if (!map.hasLayer(plant.marker)) {
-                           plant.marker.addTo(map);
-                       }
-                   });
-               } else {
-                   ownedLand.forEach(marker => {
-                       if (map.hasLayer(marker)) {
-                           marker.removeFrom(map);
-                       }
-                   });
-                   oilRigs.forEach(rig => {
-                       if (map.hasLayer(rig.marker)) {
-                           rig.marker.removeFrom(map);
-                       }
-                   });
-                   powerPlants.forEach(plant => {
-                       if (map.hasLayer(plant.marker)) {
-                           plant.marker.removeFrom(map);
-                       }
-                   });
-               }
-               console.log("Show markers: " + show);
-           }
-            // Toggle high fidelity
-            function toggleHighFidelity(enable) {
-                if (enable) {
-                    highFidelityLayer.addTo(map);
-                    console.log("High Fidelity enabled");
-                } else {
-                    map.removeLayer(highFidelityLayer);
-                    console.log("High Fidelity disabled");
-                }
+        });
+        powerPlants.forEach(plant => {
+            if (map.hasLayer(plant.marker)) {
+                plant.marker.removeFrom(map);
             }
+        });
+    }
+    console.log("Show markers: " + show);
+}
+// Toggle high fidelity
+function toggleHighFidelity(enable) {
+    if (enable) {
+        highFidelityLayer.addTo(map);
+        console.log("High Fidelity enabled");
+    } else {
+        map.removeLayer(highFidelityLayer);
+        console.log("High Fidelity disabled");
+    }
+}
 
-            setRefreshRate();
+setRefreshRate();
 
-            // Load game state on start
-            loadGameState();
+// Load game state on start
+loadGameState();
 
-            // Generate revenue every 10 seconds
-            setInterval(generateRevenue, 1000);
+// Generate revenue every 10 seconds
+setInterval(generateRevenue, 1000);
 
-            // Recalculate efficiency every 30 seconds
-            setInterval(() => {
-                calculateEfficiency();
-                updateEfficiency();
-            }, 30000);
+// Recalculate efficiency every 30 seconds
+setInterval(() => {
+    calculateEfficiency();
+    updateEfficiency();
+}, 30000);
 
-            // Fetch weather every 60 seconds
-            setInterval(() => {
-                fetchWeather();
-            }, 60000);
+// Fetch weather every 60 seconds
+setInterval(() => {
+    fetchWeather();
+}, 60000);
 
-            // Initial fetch weather
-            fetchWeather();
+// Initial fetch weather
+fetchWeather();
+
+// Fetch the latest version number on page load
+loadVersionNumber();
+
