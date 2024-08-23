@@ -370,6 +370,11 @@
             Settings
         </button>
     </div>
+     <button class="btn" onclick="showTab('stats-tab')">
+            <i class="fas fa-chart-bar"></i>
+            Stats
+        </button>
+    </div>
 
     <!-- Reopen Sidebar Button -->
     <div class="reopen-sidebar" id="reopenSidebar" onclick="toggleSidebar()">
@@ -412,6 +417,19 @@
                 <input type="checkbox" class="form-check-input" id="show-markers" checked onchange="toggleMarkers(this.checked)">
                 <label class="form-check-label" for="show-markers">Show Markers</label>
             </div>
+        </div>
+    </div>
+     <div id="stats-tab" class="tab-content container-fluid">
+        <div class="stats">
+            <h3 class="text-center my-4">Player Stats</h3>
+            <ul class="list-group">
+                <li class="list-group-item">Oil Extracted: <span id="total-oil">0</span> barrels</li>
+                <li class="list-group-item">Energy Generated: <span id="total-energy">0</span> watts</li>
+                <li class="list-group-item">Buildings Placed: <span id="total-buildings">0</span></li>
+                <li class="list-group-item">Lands Owned: <span id="total-lands">0</span></li>
+                <li class="list-group-item">Total Money Produced: $<span id="total-money-produced">0</span></li>
+            </ul>
+            <p class="text-center mt-4">Version: <span id="version">1.0.0</span></p>
         </div>
     </div>
 
