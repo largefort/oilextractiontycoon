@@ -352,87 +352,91 @@
         </div>
     </div>
 
-    <!-- Sidebar -->
-    <div class="sidebar" id="sidebar">
-        <button class="close-sidebar" onclick="toggleSidebar()">
-            <i class="fas fa-chevron-left"></i>
-        </button>
-        <button class="btn" onclick="showTab('world-map-tab')">
-            <i class="fas fa-globe"></i>
-            World Map
-        </button>
-        <button class="btn" onclick="showTab('controls-tab')">
-            <i class="fas fa-cogs"></i>
-            Controls
-        </button>
-        <button class="btn" onclick="showTab('settings-tab')">
-            <i class="fas fa-sliders-h"></i>
-            Settings
-        </button>
-    </div>
-     <button class="btn" onclick="showTab('stats-tab')">
-            <i class="fas fa-chart-bar"></i>
-            Stats
-        </button>
-    </div>
+<!-- Sidebar -->
+<div class="sidebar" id="sidebar">
+    <button class="close-sidebar" onclick="toggleSidebar()">
+        <i class="fas fa-chevron-left"></i>
+    </button>
+    <button class="btn" onclick="showTab('world-map-tab')">
+        <i class="fas fa-globe"></i>
+        World Map
+    </button>
+    <button class="btn" onclick="showTab('controls-tab')">
+        <i class="fas fa-cogs"></i>
+        Controls
+    </button>
+    <button class="btn" onclick="showTab('settings-tab')">
+        <i class="fas fa-sliders-h"></i>
+        Settings
+    </button>
+    <button class="btn" onclick="showTab('stats-tab')">
+        <i class="fas fa-chart-bar"></i>
+        Stats
+    </button>
+</div>
 
     <!-- Reopen Sidebar Button -->
     <div class="reopen-sidebar" id="reopenSidebar" onclick="toggleSidebar()">
         <i class="fas fa-chevron-right"></i>
     </div>
 
-    <!-- Tab Content Areas -->
-    <div id="world-map-tab" class="tab-content active"></div>
-    <div id="controls-tab" class="tab-content container-fluid">
-        <div class="controls">
-            <h3 class="text-center my-4">GeoTycoon</h3>
-            <div class="button-container row justify-content-center">
-                <button class="btn btn-primary m-2 col-5" onclick="buyLand()">Buy Land ($100)</button>
-                <button class="btn btn-primary m-2 col-5" onclick="buyOilRig()">Buy Oil Rig ($500)</button>
-                <button class="btn btn-primary m-2 col-5" onclick="buyPowerPlant()">Buy Power Plant ($1000)</button>
-                <button class="btn btn-primary m-2 col-5" onclick="upgradeOilRig()">Upgrade Oil Rig ($300)</button>
-                <button class="btn btn-primary m-2 col-5" onclick="upgradePowerPlant()">Upgrade Power Plant ($600)</button>
-            </div>
-            <div class="weather-info mt-4">
-                <p class="text-center">Weather: <span id="weather">Fetching...</span></p>
-            </div>
-        </div>
-    </div>
-    <div id="settings-tab" class="tab-content container-fluid">
-        <div class="settings">
-            <h2 class="text-center my-4">Geo Map Settings</h2>
-            <div class="form-group">
-                <label for="animation-speed">Animation Speed:</label>
-                <input type="range" class="form-control-range" id="animation-speed" name="animation-speed" min="1" max="10" value="5" onchange="updateAnimationSpeed(this.value)">
-            </div>
-            <div class="form-group">
-                <label for="map-theme">Map Theme:</label>
-                <select class="form-control" id="map-theme" onchange="updateMapTheme(this.value)">
-                    <option value="EsriWorldImagery">WorldImagery</option>
-                    <option value="weatherlayer">WeatherLayer</option>
-                    <option value="Radar">Radar</option>
-                </select>
-            </div>
-            <div class="form-group form-check">
-                <input type="checkbox" class="form-check-input" id="show-markers" checked onchange="toggleMarkers(this.checked)">
-                <label class="form-check-label" for="show-markers">Show Markers</label>
-            </div>
-        </div>
-    </div>
-     <div id="stats-tab" class="tab-content container-fluid">
-        <div class="stats">
-            <h3 class="text-center my-4">Player Stats</h3>
-            <ul class="list-group">
-                <li class="list-group-item">Oil Extracted: <span id="total-oil">0</span> barrels</li>
-                <li class="list-group-item">Energy Generated: <span id="total-energy">0</span> watts</li>
-                <li class="list-group-item">Buildings Placed: <span id="total-buildings">0</span></li>
-                <li class="list-group-item">Lands Owned: <span id="total-lands">0</span></li>
-                <li class="list-group-item">Total Money Produced: $<span id="total-money-produced">0</span></li>
-            </ul>
-            <p class="text-center mt-4">Version: <span id="version">1.0.0</span></p>
-        </div>
-    </div>
+  <!-- Sidebar Tab Content Areas -->
+<div id="world-map-tab" class="tab-content active">
+    <!-- World Map Tab Content -->
+    <div id="map" class="enhanced-map"></div>
+</div>
 
+<div id="controls-tab" class="tab-content container-fluid">
+    <div class="controls">
+        <h3 class="text-center my-4">GeoTycoon</h3>
+        <div class="button-container row justify-content-center">
+            <button class="btn btn-primary m-2 col-5" onclick="buyLand()">Buy Land ($100)</button>
+            <button class="btn btn-primary m-2 col-5" onclick="buyOilRig()">Buy Oil Rig ($500)</button>
+            <button class="btn btn-primary m-2 col-5" onclick="buyPowerPlant()">Buy Power Plant ($1000)</button>
+            <button class="btn btn-primary m-2 col-5" onclick="upgradeOilRig()">Upgrade Oil Rig ($300)</button>
+            <button class="btn btn-primary m-2 col-5" onclick="upgradePowerPlant()">Upgrade Power Plant ($600)</button>
+        </div>
+        <div class="weather-info mt-4">
+            <p class="text-center">Weather: <span id="weather">Fetching...</span></p>
+        </div>
+    </div>
+</div>
+
+<div id="settings-tab" class="tab-content container-fluid">
+    <div class="settings">
+        <h2 class="text-center my-4">Geo Map Settings</h2>
+        <div class="form-group">
+            <label for="animation-speed">Animation Speed:</label>
+            <input type="range" class="form-control-range" id="animation-speed" name="animation-speed" min="1" max="10" value="5" onchange="updateAnimationSpeed(this.value)">
+        </div>
+        <div class="form-group">
+            <label for="map-theme">Map Theme:</label>
+            <select class="form-control" id="map-theme" onchange="updateMapTheme(this.value)">
+                <option value="EsriWorldImagery">World Imagery</option>
+                <option value="street">Street Map</option>
+                <option value="satellite">Satellite</option>
+            </select>
+        </div>
+        <div class="form-group form-check">
+            <input type="checkbox" class="form-check-input" id="show-markers" checked onchange="toggleMarkers(this.checked)">
+            <label class="form-check-label" for="show-markers">Show Markers</label>
+        </div>
+    </div>
+</div>
+
+<div id="stats-tab" class="tab-content container-fluid">
+    <div class="stats">
+        <h3 class="text-center my-4">Player Stats</h3>
+        <ul class="list-group">
+            <li class="list-group-item">Oil Extracted: <span id="total-oil">0</span> barrels</li>
+            <li class="list-group-item">Energy Generated: <span id="total-energy">0</span> watts</li>
+            <li class="list-group-item">Buildings Placed: <span id="total-buildings">0</span></li>
+            <li class="list-group-item">Lands Owned: <span id="total-lands">0</span></li>
+            <li class="list-group-item">Total Money Produced: $<span id="total-money-produced">0</span></li>
+        </ul>
+        <p class="text-center mt-4">Version: <span id="version">1.0.0</span></p>
+    </div>
+</div>
     <script>
         function showTab(tabId) {
             document.querySelectorAll('.tab-content').forEach(tab => {
