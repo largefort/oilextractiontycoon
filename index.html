@@ -34,41 +34,50 @@
             z-index: 1;
         }
 
-        .resource-container {
+                .resource-container {
             position: fixed;
             top: 10px;
             left: 50%;
             transform: translateX(-50%);
-            background-color: rgba(20, 20, 20, 0.95);
-            border-radius: 15px;
-            padding: 10px 20px;
+            background-color: rgba(15, 15, 15, 0.9); /* Slightly darker background for contrast */
+            border-radius: 20px; /* Smooth rounded edges */
+            padding: 15px 25px; /* Enhanced padding for better spacing */
             display: flex;
             justify-content: space-around;
             align-items: center;
-            width: 80%;
+            width: 70%; /* Slightly narrower to fit better on screen */
             box-sizing: border-box;
             z-index: 2;
-            color: #dcdcdc;
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5);
+            color: #ffffff;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5); /* Stronger shadow for emphasis */
             transition: top 0.3s ease-in-out;
         }
 
         .resource {
-            margin: 0 10px;
+            margin: 0 15px;
             text-align: center;
             flex: 1;
-            font-size: 14px; /* Adjusted font size for better readability */
+            font-size: 16px; /* Increased font size for readability */
+            color: #ffffff; /* Ensures text stands out on dark background */
         }
 
         .resource p {
-            margin: 2px 0;
-            font-size: 14px;
-            line-height: 1.2;
+            margin: 4px 0;
+            font-size: 16px;
+            line-height: 1.4; /* Improved line height for readability */
         }
 
         .resource span {
             font-weight: bold;
-            color: #ffd700;
+            color: #ffd700; /* Gold color for emphasis */
+            font-size: 18px; /* Slightly larger for key resource values */
+        }
+
+        .resource-icon {
+            display: block;
+            font-size: 24px; /* Large icons for better visibility */
+            margin-bottom: 5px; /* Space between icon and text */
+            color: #00aaff; /* Bright color for icons */
         }
 
         .sidebar {
