@@ -564,8 +564,6 @@ function toggleHighFidelity(enable) {
     }
 }
 
-setRefreshRate();
-
 // Load game state on start
 loadGameState();
 
