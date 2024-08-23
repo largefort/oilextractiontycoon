@@ -260,6 +260,22 @@
         </div>
     </div>
     <script>
+         function showTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.getElementById(tabId).classList.add('active');
+
+            // Enable pointer events on the map when World Map tab is active
+            if (tabId === 'world-map-tab') {
+                document.getElementById('map').style.pointerEvents = 'auto';
+                setTimeout(() => {
+                    map.invalidateSize();
+                }, 100);
+            } else {
+                document.getElementById('map').style.pointerEvents = 'none';
+            }
+        }
 // Create a full-screen canvas for particle effects
 const particleCanvas = document.createElement('canvas');
 particleCanvas.style.position = 'fixed';
