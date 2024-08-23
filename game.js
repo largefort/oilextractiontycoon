@@ -45,7 +45,7 @@ var totalOilExtracted = 0;
 var totalEnergyGenerated = 0;
 var totalBuildingsPlaced = 0;
 var totalLandsOwned = 0;
-var totalMoneyProduced = 0;
+var totalMoneyProduced = 0; // This tracks the total money produced by oil rigs
 
 // Weather conditions and their impact
 var weatherConditions = {
@@ -207,100 +207,103 @@ function saveGameState() {
             latlng: plant.marker.getLatLng(),
             level: plant.level,
             production: plant.production
-                    }))
-                };
-                localStorage.setItem('oilExtractionGameState', JSON.stringify(gameState));
-            }
+        }))
+    };
+    localStorage.setItem('oilExtractionGameState', JSON.stringify(gameState));
+}
 
-            // Function to load game state
-            function loadGameState() {
-                var gameState = JSON.parse(localStorage.getItem('oilExtractionGameState'));
-                if (gameState) {
-                    money = gameState.money;
-                    oil = gameState.oil;
-                    energy = gameState.energy;
-                    efficiency = gameState.efficiency;
-                    weather = gameState.weather;
-                    updateResourceCounters();
+// Function to load game state
+function loadGameState() {
+    var gameState = JSON.parse(localStorage.getItem('oilExtractionGameState'));
+    if (gameState) {
+        money = gameState.money;
+        oil = gameState.oil;
+        energy = gameState.energy;
+        efficiency = gameState.efficiency;
+        weather = gameState.weather;
+        updateResourceCounters();
 
-                    gameState.ownedLand.forEach(latlng => {
-                        var marker = L.marker(latlng).addTo(map).bindPopup('Owned Land');
-                        ownedLand.push(marker);
-                    });
+        gameState.ownedLand.forEach(latlng => {
+            var marker = L.marker(latlng).addTo(map).bindPopup('Owned Land');
+            ownedLand.push(marker);
+        });
 
-                    gameState.oilRigs.forEach(rigData => {
-                        var oilRig = L.marker(rigData.latlng, {
-                            icon: L.icon({
-                                iconUrl: 'pump.gif',
-                                iconSize: [32, 32],
-                                iconAnchor: [16, 32],
-                                popupAnchor: [0, -32]
-                            }),
-                            draggable: true
-                        }).addTo(map).bindPopup('Oil Rig (Level ' + rigData.level + ')');
-                        oilRig.on('click', function() {
-                            upgradeOilRig(oilRig);
-                        });
-                        oilRigs.push({
-                            marker: oilRig,
-                            level: rigData.level,
-                            revenue: rigData.revenue
-                        });
-                    });
+        gameState.oilRigs.forEach(rigData => {
+            var oilRig = L.marker(rigData.latlng, {
+                icon: L.icon({
+                    iconUrl: 'pump.gif',
+                    iconSize: [32, 32],
+                    iconAnchor: [16, 32],
+                    popupAnchor: [0, -32]
+                }),
+                draggable: true
+            }).addTo(map).bindPopup('Oil Rig (Level ' + rigData.level + ')');
+            oilRig.on('click', function() {
+                upgradeOilRig(oilRig);
+            });
+            oilRigs.push({
+                marker: oilRig,
+                level: rigData.level,
+                revenue: rigData.revenue
+            });
+        });
 
-                    gameState.powerPlants.forEach(plantData => {
-                        var powerPlant = L.marker(plantData.latlng, {
-                            icon: L.icon({
-                                iconUrl: 'windturbine.gif',
-                                iconSize: [32, 32],
-                                iconAnchor: [16, 32],
-                                popupAnchor: [0, -32]
-                            }),
-                            draggable: true
-                        }).addTo(map).bindPopup('Power Plant (Level ' + plantData.level + ')');
-                        powerPlant.on('click', function() {
-                            upgradePowerPlant(powerPlant);
-                        });
-                        powerPlants.push({
-                            marker: powerPlant,
-                            level: plantData.level,
-                            production: plantData.production
-                        });
-                    });
-                }
-            }
+        gameState.powerPlants.forEach(plantData => {
+            var powerPlant = L.marker(plantData.latlng, {
+                icon: L.icon({
+                    iconUrl: 'windturbine.gif',
+                    iconSize: [32, 32],
+                    iconAnchor: [16, 32],
+                    popupAnchor: [0, -32]
+                }),
+                draggable: true
+            }).addTo(map).bindPopup('Power Plant (Level ' + plantData.level + ')');
+            powerPlant.on('click', function() {
+                upgradePowerPlant(powerPlant);
+            });
+            powerPlants.push({
+                marker: powerPlant,
+                level: plantData.level,
+                production: plantData.production
+            });
+        });
+    }
+}
 
-            // Function to generate revenue
-            function generateRevenue() {
-                oilRigs.forEach(rig => {
-                    var revenue = rig.revenue * weatherImpact;
-                    money += revenue;
-                    oil += rig.level; // Oil production increases with level
-                    totalOilExtracted += rig.level; // Track total oil extracted
-                    updateMoney();
-                    updateOil();
-                    updateResourceCounters(); // Update resource counters
+// Function to generate revenue
+function generateRevenue() {
+    oilRigs.forEach(rig => {
+        var revenue = rig.revenue * weatherImpact;
+        money += revenue;
+        oil += rig.level; // Oil production increases with level
+        totalOilExtracted += rig.level; // Track total oil extracted
 
-                    // Show dollar pop-up effect
-                    var latlng = map.latLngToContainerPoint(rig.marker.getLatLng());
-                    showDollarPopUp(revenue.toFixed(2), latlng);
-                });
+        totalMoneyProduced += revenue; // Track total money produced
 
-                powerPlants.forEach(plant => {
-                    var production = plant.production * weatherImpact;
-                    energy += production;
-                    totalEnergyGenerated += production; // Track total energy generated
-                    updateEnergy();
-                    updateResourceCounters(); // Update resource counters
+        updateMoney();
+        updateOil();
+        updateResourceCounters(); // Update resource counters
 
-                    // Show energy pop-up effect
-                    var latlng = map.latLngToContainerPoint(plant.marker.getLatLng());
-                    showEnergyPopUp(production.toFixed(2), latlng);
-                });
+        // Show dollar pop-up effect
+        var latlng = map.latLngToContainerPoint(rig.marker.getLatLng());
+        showDollarPopUp(revenue.toFixed(2), latlng);
+    });
 
-                saveGameState();
-            }
+    powerPlants.forEach(plant => {
+        var production = plant.production * weatherImpact;
+        energy += production;
+        totalEnergyGenerated += production; // Track total energy generated
 
+        updateEnergy();
+        updateResourceCounters(); // Update resource counters
+
+        // Show energy pop-up effect
+        var latlng = map.latLngToContainerPoint(plant.marker.getLatLng());
+        showEnergyPopUp(production.toFixed(2), latlng);
+    });
+
+    saveGameState();
+}
 
 // Function to calculate efficiency
 function calculateEfficiency() {
@@ -335,7 +338,8 @@ async function fetchWeather() {
         console.error('Error fetching weather data:', error);
     }
 }
-         // Function to buy land
+
+// Function to buy land
 function buyLand() {
     if (money >= 100) {
         alert("Tap on the map to buy land.");
@@ -553,6 +557,7 @@ function toggleMarkers(show) {
     }
     console.log("Show markers: " + show);
 }
+
 // Toggle high fidelity
 function toggleHighFidelity(enable) {
     if (enable) {
@@ -586,4 +591,3 @@ fetchWeather();
 
 // Fetch the latest version number on page load
 loadVersionNumber();
-
