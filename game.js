@@ -207,7 +207,14 @@ function saveGameState() {
             latlng: plant.marker.getLatLng(),
             level: plant.level,
             production: plant.production
-        }))
+        })),
+        stats: {
+            totalOilExtracted: totalOilExtracted,
+            totalEnergyGenerated: totalEnergyGenerated,
+            totalBuildingsPlaced: totalBuildingsPlaced,
+            totalLandsOwned: totalLandsOwned,
+            totalMoneyProduced: totalMoneyProduced
+        }
     };
     localStorage.setItem('oilExtractionGameState', JSON.stringify(gameState));
 }
@@ -221,6 +228,13 @@ function loadGameState() {
         energy = gameState.energy;
         efficiency = gameState.efficiency;
         weather = gameState.weather;
+
+        totalOilExtracted = gameState.stats.totalOilExtracted || 0;
+        totalEnergyGenerated = gameState.stats.totalEnergyGenerated || 0;
+        totalBuildingsPlaced = gameState.stats.totalBuildingsPlaced || 0;
+        totalLandsOwned = gameState.stats.totalLandsOwned || 0;
+        totalMoneyProduced = gameState.stats.totalMoneyProduced || 0;
+
         updateResourceCounters();
 
         gameState.ownedLand.forEach(latlng => {
@@ -413,7 +427,7 @@ function buyPowerPlant() {
 
         newPowerPlant.on('dragend', function() {
             var latlng = newPowerPlant.getLatLng();
-            newPowerPlant.bindPopup('Power Plant (Level 1)').openPopup();
+            newPowerPlant.bindPopup('Power Plant (Level 1)'). openPopup();
             powerPlants.push({
                 marker: newPowerPlant,
                 level: 1,
@@ -474,6 +488,8 @@ function updateStats() {
     document.getElementById('total-buildings').innerText = totalBuildingsPlaced;
     document.getElementById('total-lands').innerText = totalLandsOwned;
     document.getElementById('total-money-produced').innerText = shortNumberFormat(totalMoneyProduced);
+
+    saveGameState(); // Auto-save stats whenever they are updated
 }
 
 // Function to load version number from GitHub
@@ -568,6 +584,8 @@ function toggleHighFidelity(enable) {
         console.log("High Fidelity disabled");
     }
 }
+
+setRefreshRate();
 
 // Load game state on start
 loadGameState();
