@@ -1,0 +1,13 @@
+ .stats {
+            text-align: center;
+        }
+
+        .list-group-item {
+            background-color: rgba(20, 20, 20, 0.9);
+            color: #dcdcdc;
+        }
+
+        .list-group-item span {
+            font-weight: bold;
+            color: #ffd700;
+        }

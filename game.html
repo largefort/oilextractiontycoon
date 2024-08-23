@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>GeoTycoon Mobile</title>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap">
+     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap">
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
@@ -25,8 +25,7 @@
             flex-direction: column;
             font-size: 16px;
         }
-
-        #map {
+             #map {
             height: 100%;
             width: 100%;
             position: absolute;
@@ -35,39 +34,39 @@
             z-index: 1;
         }
 
-        /* Resource Container */
-        .resource-container {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            background-color: rgba(40, 40, 40, 0.95);
-            border-radius: 0;
-            padding: 8px 15px;
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
-            width: 100%;
-            box-sizing: border-box;
-            z-index: 2;
-            color: #fff;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-            font-size: 13px;
-        }
+     /* Resource Container */
+.resource-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background-color: rgba(40, 40, 40, 0.95);
+    border-radius: 0; /* Remove border radius to fit edge-to-edge */
+    padding: 8px 15px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    width: 100%; /* Full width */
+    box-sizing: border-box;
+    z-index: 2;
+    color: #fff;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    font-size: 13px; /* Slightly smaller font size for mobile */
+}
 
-        .resource {
-            margin: 0 5px;
-            text-align: center;
-            flex: 1;
-            font-size: 12px;
-        }
+.resource {
+    margin: 0 5px;
+    text-align: center;
+    flex: 1;
+    font-size: 12px; /* Adjusted font size */
+}
 
-        .resource p {
-            margin: 0;
-            line-height: 1.2;
-            font-size: 12px;
-        }
-
+/* Optional: Adjust specific elements inside the resource container */
+.resource p {
+    margin: 0;
+    line-height: 1.2;
+    font-size: 12px; /* Ensure text fits well */
+}
         /* Sidebar */
         .sidebar {
             position: fixed;
@@ -188,46 +187,10 @@
             box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
             color: #fff;
         }
-
-        /* Dollar and Energy Pop-ups */
-        .dollar-pop-up, 
-        .energy-pop-up {
-            position: absolute;
-            font-weight: bold;
-            font-size: 12px;
-            pointer-events: none;
-            z-index: 2000;
-            transition: transform 0.5s ease-out, opacity 0.5s ease-out;
-            filter: brightness(150%);
-            padding: 5px;
-            transform: translateY(-20px) scale(1);
-            opacity: 0;
-            animation: pop-up-animation 1s forwards;
-        }
-
-        @keyframes pop-up-animation {
-            0% {
-                transform: translateY(0) scale(0.8);
-                opacity: 0;
-            }
-            100% {
-                transform: translateY(-20px) scale(1);
-                opacity: 1;
-            }
-        }
-
-        .dollar-pop-up {
-            color: green;
-        }
-
-        .energy-pop-up {
-            color: yellow;
-        }
-
     </style>
 </head>
 <body>
-    <div id="map"></div>
+    <div id="enhanced-map"></div>
 
     <div class="resource-container">
         <div class="resource">
@@ -270,16 +233,16 @@
         </button>
     </div>
 
-    <!-- Reopen Sidebar Button -->
+     <!-- Reopen Sidebar Button -->
     <div class="reopen-sidebar" id="reopenSidebar" onclick="toggleSidebar()">
         <i class="fas fa-chevron-right"></i>
     </div>
 
-    <!-- Sidebar Tab Content Areas -->
-    <div id="world-map-tab" class="tab-content active">
-        <!-- World Map Tab Content -->
-        <div id="map" class="enhanced-map"></div>
-    </div>
+  <!-- Sidebar Tab Content Areas -->
+<div id="world-map-tab" class="tab-content active">
+    <!-- World Map Tab Content -->
+    <div id="map" class="enhanced-map"></div>
+</div>
 
     <div id="controls-tab" class="tab-content container-fluid">
         <div class="controls">
@@ -332,9 +295,8 @@
             <p class="text-center mt-4">Version: <span id="version">1.0.0</span></p>
         </div>
     </div>
-
     <script>
-        function showTab(tabId) {
+ function showTab(tabId) {
             document.querySelectorAll('.tab-content').forEach(tab => {
                 tab.classList.remove('active');
             });
@@ -352,24 +314,24 @@
         }
 
         // Add touch-specific interactions with visual feedback
-        document.addEventListener('touchstart', function(event) {
-            const touch = event.touches[0];
-            createTouchParticle(touch.clientX, touch.clientY);
-        });
+document.addEventListener('touchstart', function(event) {
+    const touch = event.touches[0];
+    createTouchParticle(touch.clientX, touch.clientY);
+});
 
-        // Function to create touch particle effect
-        function createTouchParticle(x, y) {
-            const particle = document.createElement('div');
-            particle.className = 'touch-particle';
-            particle.style.left = `${x}px`;
-            particle.style.top = `${y}px`;
-            document.body.appendChild(particle);
+// Function to create touch particle effect
+function createTouchParticle(x, y) {
+    const particle = document.createElement('div');
+    particle.className = 'touch-particle';
+    particle.style.left = `${x}px`;
+    particle.style.top = `${y}px`;
+    document.body.appendChild(particle);
 
-            // Remove the particle after animation ends
-            particle.addEventListener('animationend', () => {
-                document.body.removeChild(particle);
-            });
-        }
+    // Remove the particle after animation ends
+    particle.addEventListener('animationend', () => {
+        document.body.removeChild(particle);
+    });
+}
 
         // Replace hover effects with click/tap effects
         document.querySelectorAll('.sidebar button').forEach(button => {
@@ -377,8 +339,8 @@
                 showTab(button.getAttribute('onclick').match(/'([^']+)'/)[1]);
             });
         });
-
-        function toggleSidebar() {
+        
+         function toggleSidebar() {
             const sidebar = document.getElementById('sidebar');
             const reopenSidebar = document.getElementById('reopenSidebar');
             if (sidebar.classList.contains('hidden')) {
@@ -390,8 +352,8 @@
             }
         }
     </script>
-
-    <script src="https://unpkg.com/leaflet@latest/dist/leaflet.js"></script>
+    
+<script src="https://unpkg.com/leaflet@latest/dist/leaflet.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.js"></script>
     <script src="https://unpkg.com/leaflet-tilelayer-pan@1.0.0/dist/leaflet-tilelayer-pan.min.js"></script>
     <script src="https://unpkg.com/leaflet.vectorgrid/dist/Leaflet.VectorGrid.bundled.js"></script>
