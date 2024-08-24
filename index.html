@@ -33,42 +33,42 @@
             left: 0;
             z-index: 1;
         }
+ /* Resource Container */
+        .resource-container {
+            position: fixed;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: rgba(40, 40, 40, 0.95);
+            border-radius: 8px;
+            padding: 5px 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 95%;
+            max-width: 90%; /* Limit width relative to screen size */
+            box-sizing: border-box;
+            z-index: 2;
+            color: #fff;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            font-size: calc(10px + 0.5vw); /* Responsive font size based on viewport width */
+            transition: top 0.3s ease-in-out;
+        }
 
-/* Resource Container */
-.resource-container {
-    position: fixed;
-    top: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    background-color: rgba(40, 40, 40, 0.95);
-    border-radius: 8px;
-    padding: 5px 10px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 95%;
-    max-width: 600px; /* Limits width for larger screens */
-    box-sizing: border-box;
-    z-index: 2;
-    color: #fff;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-    font-size: 13px; /* Smaller font size for mobile */
-    transition: top 0.3s ease-in-out;
-}
+        .resource {
+            margin: 0 5px;
+            text-align: center;
+            flex: 1;
+            font-size: calc(9px + 0.5vw); /* Responsive font size for mobile */
+        }
 
-.resource {
-    margin: 0 5px;
-    text-align: center;
-    flex: 1;
-    font-size: 11px; /* Adjusted font size for mobile */
-}
+        /* Optional: Adjust specific elements inside the resource container */
+        .resource p {
+            margin: 0;
+            line-height: 1.2;
+            font-size: calc(9px + 0.5vw); /* Responsive font size */
+        }
 
-/* Optional: Adjust specific elements inside the resource container */
-.resource p {
-    margin: 0;
-    line-height: 1.2;
-    font-size: 11px; /* Ensure text fits well */
-}
         .sidebar {
             position: fixed;
             top: 0;
