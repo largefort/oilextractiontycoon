@@ -22,3 +22,4 @@ function generateAdventure() {
 function chooseOption(option) {
   alert(`You chose: ${option}`);
 }
+webViewAd.addAd({
