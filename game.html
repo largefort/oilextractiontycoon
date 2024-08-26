@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="https://js.arcgis.com/4.29/esri/themes/light/main.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="stats.css">
     <style>
         /* Global Styles */
         body, html {
@@ -67,60 +68,7 @@
     line-height: 1.2;
     font-size: 12px; /* Ensure text fits well */
 }
-        /* Sidebar */
-        .sidebar {
-            position: fixed;
-            top: 0;
-            left: 0;
-            height: 100vh;
-            width: 80px;
-            background-color: rgba(43, 43, 43, 0.9);
-            backdrop-filter: blur(10px);
-            box-shadow: 2px 0 8px rgba(0, 0, 0, 0.3);
-            z-index: 4;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding-top: 10px;
-            transition: transform 0.3s ease-in-out;
-        }
 
-        .sidebar button {
-            background: none;
-            border: none;
-            width: 100%;
-            padding: 10px 0;
-            font-size: 14px;
-            color: #f1f1f1;
-            text-align: center;
-            cursor: pointer;
-            transition: color 0.3s, background 0.3s;
-        }
-
-        .sidebar button i {
-            display: block;
-            margin-bottom: 5px;
-            font-size: 18px;
-            color: #f1f1f1;
-        }
-
-        .sidebar.hidden {
-            transform: translateX(-100%);
-        }
-
-        /* Reopen Sidebar Button */
-        .reopen-sidebar {
-            position: fixed;
-            top: 50%;
-            left: 0;
-            transform: translateY(-50%);
-            background-color: rgba(43, 43, 43, 0.9);
-            backdrop-filter: blur(10px);
-            padding: 10px;
-            border-radius: 0 5px 5px 0;
-            cursor: pointer;
-            z-index: 5;
-            display: none;
         }
 
         .reopen-sidebar i {
@@ -296,61 +244,58 @@
         </div>
     </div>
     <script>
- function showTab(tabId) {
-            document.querySelectorAll('.tab-content').forEach(tab => {
-                tab.classList.remove('active');
-            });
-            document.getElementById(tabId).classList.add('active');
+        function showTab(tabId) {
+           document.querySelectorAll('.tab-content').forEach(tab => {
+               tab.classList.remove('active');
+           });
+           document.getElementById(tabId).classList.add('active');
 
-            // Enable pointer events on the map when World Map tab is active
-            if (tabId === 'world-map-tab') {
-                document.getElementById('map').style.pointerEvents = 'auto';
-                setTimeout(() => {
-                    map.invalidateSize();
-                }, 100);
-            } else {
-                document.getElementById('map').style.pointerEvents = 'none';
-            }
-        }
+           // Enable pointer events on the map when World Map tab is active
+           if (tabId === 'world-map-tab') {
+               document.getElementById('map').style.pointerEvents = 'auto';
+               setTimeout(() => {
+                   map.invalidateSize();
+               }, 100);
+           } else {
+               document.getElementById('map').style.pointerEvents = 'none';
+           }
+       }
 
-        // Add touch-specific interactions with visual feedback
-document.addEventListener('touchstart', function(event) {
-    const touch = event.touches[0];
-    createTouchParticle(touch.clientX, touch.clientY);
-});
+       // Mobile User Interface Stabilizer (MUIS)
+       function stabilizeUI() {
+           map.invalidateSize();
+           document.querySelectorAll('.tab-content').forEach(tab => {
+               tab.classList.remove('active');
+           });
+           document.getElementById('world-map-tab').classList.add('active');
+       }
 
-// Function to create touch particle effect
-function createTouchParticle(x, y) {
-    const particle = document.createElement('div');
-    particle.className = 'touch-particle';
-    particle.style.left = `${x}px`;
-    particle.style.top = `${y}px`;
-    document.body.appendChild(particle);
+       map.on('movestart', function() {
+           stabilizeUI();
+       });
 
-    // Remove the particle after animation ends
-    particle.addEventListener('animationend', () => {
-        document.body.removeChild(particle);
-    });
-}
+       map.on('moveend', function() {
+           stabilizeUI();
+       });
 
-        // Replace hover effects with click/tap effects
-        document.querySelectorAll('.sidebar button').forEach(button => {
-            button.addEventListener('touchend', function() {
-                showTab(button.getAttribute('onclick').match(/'([^']+)'/)[1]);
-            });
-        });
-        
-         function toggleSidebar() {
-            const sidebar = document.getElementById('sidebar');
-            const reopenSidebar = document.getElementById('reopenSidebar');
-            if (sidebar.classList.contains('hidden')) {
-                sidebar.classList.remove('hidden');
-                reopenSidebar.style.display = 'none';
-            } else {
-                sidebar.classList.add('hidden');
-                reopenSidebar.style.display = 'block';
-            }
-        }
+       window.addEventListener('resize', function() {
+           stabilizeUI();
+       });
+
+       window.addEventListener('orientationchange', function() {
+           stabilizeUI();
+       });
+
+       // PWA Service Worker Registration
+       if ('serviceWorker' in navigator) {
+           window.addEventListener('load', () => {
+               navigator.serviceWorker.register('/service-worker.js').then(registration => {
+                   console.log('ServiceWorker registration successful with scope: ', registration.scope);
+               }, error => {
+                   console.log('ServiceWorker registration failed: ', error);
+               });
+           });
+       }
     </script>
     
 <script src="https://unpkg.com/leaflet@latest/dist/leaflet.js"></script>
@@ -373,6 +318,7 @@ function createTouchParticle(x, y) {
     <script src="https://cdnjs.cloudflare.com/ajax/libs/mobilizejs/0.9/mobilize.min.js"></script>
     <script src="https://unpkg.com/leaflet@1.4.0/dist/leaflet-src.js"></script>
     <script src="game.js"></script>
+    <script src="tapfeedback.js"></script>
     <script src="sidebar.js"></script>
     <script src="guide.js"></script>
     <script src="js/index.js"></script>

@@ -14,7 +14,6 @@ var baseLayers = {
         maxZoom: 18,
     }),
     "EsriWorldImagery": L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
-        attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community',
         maxZoom: 18,
     })
 };
@@ -22,12 +21,21 @@ var baseLayers = {
 // Weather layer
 var apiKey = 'd84afbbe625f95c7ac07c52f081f1da6';
 var weatherLayer = L.tileLayer(`https://tile.openweathermap.org/map/precipitation_new/{z}/{x}/{y}.png?appid=${apiKey}`, {
-    attribution: '&copy; <a href="https://www.openweathermap.org/">OpenWeatherMap</a>',
     maxZoom: 18
 });
 
 baseLayers["EsriWorldImagery"].addTo(map);
+
 weatherLayer.addTo(map); // Add weather layer to the map
+// Initialize World Mini Map
+var worldMiniMap = L.control.worldMiniMap({
+    position: 'bottomleft',
+    style: {
+        opacity: 0.9,
+        borderRadius: '0px',
+        backgroundColor: 'lightblue'
+    }
+}).addTo(map);
 
 var money = 1000;
 var oil = 0;
