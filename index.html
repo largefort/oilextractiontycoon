@@ -240,6 +240,19 @@
                 font-size: 18px;
             }
         }
+        /* Enhanced Geo Map HD Quality Visual Effects */
+.enhanced-map {
+    filter: none;
+    transition: filter 0.5s ease-in-out, transform 0.5s ease-in-out;
+    perspective: 1000px;
+    transform-style: preserve-3d;
+}
+
+.enhanced-map.hd-quality-on {
+    filter: contrast(1.5) brightness(1.2) saturate(1.8) drop-shadow(0 0 10px rgba(255, 255, 255, 0.2));
+    transform: scale(1.02);
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.3), 0 0 30px rgba(255, 255, 255, 0.2);
+}
     </style>
 </head>
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7136613030546059"
@@ -326,6 +339,13 @@
         <div class="form-group form-check">
             <input type="checkbox" class="form-check-input" id="show-markers" checked onchange="toggleMarkers(this.checked)">
             <label class="form-check-label" for="show-markers">Show Markers</label>
+        </div>
+        <div class="form-group">
+            <label for="geo-hd-visual-effects">Enable HD Quality Visual Effects:</label>
+            <label class="switch">
+                <input type="checkbox" id="geo-hd-visual-effects" onchange="toggleGeoVisualEffects(this.checked)">
+                <span class="slider round"></span>
+            </label>
         </div>
     </div>
 </div>
