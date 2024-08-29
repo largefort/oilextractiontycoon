@@ -71,24 +71,40 @@ const newsHeadlines = [
     "Emerging markets see rapid growth in industrial capacity and exports."
 ];
 
+let lastIndex = -1;
+
 // Function to update the news ticker
 function updateNewsTicker() {
     const newsTicker = document.getElementById('newsTicker');
-    const randomIndex = Math.floor(Math.random() * newsHeadlines.length);
-    newsTicker.innerText = newsHeadlines[randomIndex];
-    
-    // Calculate the duration based on the length of the text and container width
     const tickerContainer = document.querySelector('.news-ticker-container');
+    
+    // Determine the next index, ensuring it's different from the last one
+    let nextIndex;
+    do {
+        nextIndex = Math.floor(Math.random() * newsHeadlines.length);
+    } while (nextIndex === lastIndex);
+    lastIndex = nextIndex;
+
+    const selectedNews = newsHeadlines[nextIndex];
+    
+    // Set the news text and reset the animation
+    newsTicker.innerText = selectedNews;
+    newsTicker.style.animation = 'none';
+    
+    // Force reflow (flush the CSS changes)
+    void newsTicker.offsetWidth;
+    
+    // Calculate the animation duration based on the text length
     const tickerWidth = tickerContainer.offsetWidth;
     const textWidth = newsTicker.offsetWidth;
-    
-    // Set the animation duration dynamically
     const duration = (textWidth + tickerWidth) / 100; // Adjust speed by dividing by a constant
-    newsTicker.style.animationDuration = `${duration}s`;
+    
+    // Set the animation with the correct duration
+    newsTicker.style.animation = `scroll-left ${duration}s linear infinite`;
 }
 
 // Initialize the news ticker with the first news item
 updateNewsTicker();
 
-// Update the news ticker after the animation completes
-document.getElementById('newsTicker').addEventListener('animationend', updateNewsTicker);
+// Update the news ticker every time the animation ends
+document.getElementById('newsTicker').addEventListener('animationiteration', updateNewsTicker);
