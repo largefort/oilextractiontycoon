@@ -274,4 +274,3 @@ updateNewsTicker();
 
 // Update the news ticker every time the animation ends
 document.getElementById('newsTicker').addEventListener('animationiteration', updateNewsTicker);
-
