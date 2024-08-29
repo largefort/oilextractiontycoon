@@ -71,6 +71,39 @@
             font-size: 11px;
         }
 
+        /* News Ticker */
+        .news-ticker-container {
+            position: fixed;
+            top: 5px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: rgba(20, 20, 20, 0.9);
+            padding: 5px 15px;
+            border-radius: 8px;
+            z-index: 3;
+            width: 100%;
+            max-width: 600px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        .news-ticker {
+            white-space: nowrap;
+            display: inline-block;
+            animation: scroll-left 15s linear infinite;
+            font-size: 14px;
+            color: #f1f1f1;
+        }
+
+        @keyframes scroll-left {
+            0% {
+                transform: translateX(100%);
+            }
+            100% {
+                transform: translateX(-100%);
+            }
+        }
+
         /* Bottom Navigation Bar */
         .bottom-nav {
             position: fixed;
@@ -241,63 +274,63 @@
             }
         }
         /* Enhanced Geo Map HD Quality Visual Effects */
-.enhanced-map {
-    filter: none;
-    transition: filter 0.5s ease-in-out, transform 0.5s ease-in-out;
-    perspective: 1000px;
-    transform-style: preserve-3d;
-}
+        .enhanced-map {
+            filter: none;
+            transition: filter 0.5s ease-in-out, transform 0.5s ease-in-out;
+            perspective: 1000px;
+            transform-style: preserve-3d;
+        }
 
-.enhanced-map.hd-quality-on {
-    filter: contrast(1.5) brightness(1.2) saturate(1.8) drop-shadow(0 0 10px rgba(255, 255, 255, 0.2));
-    transform: scale(1.02);
-    box-shadow: 0 0 15px rgba(255, 255, 255, 0.3), 0 0 30px rgba(255, 255, 255, 0.2);
-}
+        .enhanced-map.hd-quality-on {
+            filter: contrast(1.5) brightness(1.2) saturate(1.8) drop-shadow(0 0 10px rgba(255, 255, 255, 0.2));
+            transform: scale(1.02);
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.3), 0 0 30px rgba(255, 255, 255, 0.2);
+        }
         /* Toggle Switch Styles */
-.switch {
-    position: relative;
-    display: inline-block;
-    width: 60px;
-    height: 34px;
-}
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 34px;
+        }
 
-.switch input {
-    opacity: 0;
-    width: 0;
-    height: 0;
-}
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
 
-.slider {
-    position: absolute;
-    cursor: pointer;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: #ccc;
-    transition: 0.4s;
-    border-radius: 34px;
-}
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: 0.4s;
+            border-radius: 34px;
+        }
 
-.slider:before {
-    position: absolute;
-    content: "";
-    height: 26px;
-    width: 26px;
-    left: 4px;
-    bottom: 4px;
-    background-color: white;
-    transition: 0.4s;
-    border-radius: 50%;
-}
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 26px;
+            width: 26px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: 0.4s;
+            border-radius: 50%;
+        }
 
-input:checked + .slider {
-    background-color: #007bff;
-}
+        input:checked + .slider {
+            background-color: #007bff;
+        }
 
-input:checked + .slider:before {
-    transform: translateX(26px);
-}
+        input:checked + .slider:before {
+            transform: translateX(26px);
+        }
     </style>
 </head>
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7136613030546059"
@@ -322,6 +355,11 @@ input:checked + .slider:before {
     <div class="resource">
         <p>Efficiency: <span id="efficiency">100%</span></p>
     </div>
+</div>
+
+<!-- News Ticker -->
+<div class="news-ticker-container">
+    <div id="newsTicker" class="news-ticker"></div>
 </div>
 
 <!-- Bottom Navigation Bar -->
@@ -476,8 +514,7 @@ input:checked + .slider:before {
 <script src="tapfeedback.js"></script>
 <script src="sidebar.js"></script>
 <script src="guide.js"></script>
-<script src="js/index.js"></script>
-<script src="weather.js"></script>
-<script src="dist/Control.WorldMiniMap.js"></script>
+<script src="news.js"></script> <!-- Include the news.js script -->
+<script src="weather.js"></script> <!-- Include the news.js script -->
 </body>
 </html>
