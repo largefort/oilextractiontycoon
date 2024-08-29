@@ -1,6 +1,6 @@
 // news.js
 
-// Expanded array of industrial-themed news headlines
+// Array of industrial-themed news headlines
 const newsHeadlines = [
     "Oil prices surge as new reserves are discovered in the Arctic.",
     "Energy crisis looms as demand outpaces renewable supply.",
@@ -68,23 +68,7 @@ const newsHeadlines = [
     "Heavy industry begins transition to hydrogen fuel in bid to reduce carbon footprint.",
     "Environmental groups call for stricter controls on mining in protected areas.",
     "Investment in quantum computing accelerates innovation in industrial processes.",
-    "Emerging markets see rapid growth in industrial capacity and exports.",
-    "Global industrial output hits record highs as economies rebound.",
-    "Recycling initiatives increase as raw material costs soar.",
-    "The rise of microfactories reshapes local manufacturing landscapes.",
-    "Renewable energy projects attract major investments in developing nations.",
-    "Technological advances in robotics enhance productivity in factories.",
-    "Industrial waste-to-fuel conversion becomes a new trend in energy generation.",
-    "New high-efficiency solar panels set to revolutionize renewable energy.",
-    "Global supply chain bottlenecks lead to manufacturing delays.",
-    "AI-powered supply chain management reduces logistics costs by 25%.",
-    "Leading aerospace company announces plans for eco-friendly aircraft.",
-    "Industrial automation firms report record demand for smart systems.",
-    "New regulations mandate stricter emissions standards for heavy industry.",
-    "Revolutionary water purification technology promises to solve global water crisis.",
-    "Global leaders agree on new climate targets affecting industrial sectors.",
-    "Cybersecurity becomes a top priority for industrial control systems.",
-    "Digital twins technology adopted to optimize industrial processes."
+    "Emerging markets see rapid growth in industrial capacity and exports."
 ];
 
 // Function to update the news ticker
@@ -92,10 +76,19 @@ function updateNewsTicker() {
     const newsTicker = document.getElementById('newsTicker');
     const randomIndex = Math.floor(Math.random() * newsHeadlines.length);
     newsTicker.innerText = newsHeadlines[randomIndex];
+    
+    // Calculate the duration based on the length of the text and container width
+    const tickerContainer = document.querySelector('.news-ticker-container');
+    const tickerWidth = tickerContainer.offsetWidth;
+    const textWidth = newsTicker.offsetWidth;
+    
+    // Set the animation duration dynamically
+    const duration = (textWidth + tickerWidth) / 100; // Adjust speed by dividing by a constant
+    newsTicker.style.animationDuration = `${duration}s`;
 }
 
 // Initialize the news ticker with the first news item
 updateNewsTicker();
 
-// Update the news ticker every 10 seconds
-setInterval(updateNewsTicker, 10000);
+// Update the news ticker after the animation completes
+document.getElementById('newsTicker').addEventListener('animationend', updateNewsTicker);
