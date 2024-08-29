@@ -87,23 +87,38 @@
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
         }
 
-        .news-ticker {
-            white-space: nowrap;
-            display: inline-block;
-            animation: scroll-left 15s linear infinite;
-            font-size: 14px;
-            color: #f1f1f1;
-        }
+/* News Ticker */
+.news-ticker-container {
+    position: fixed;
+    top: 45px; /* Adjusted to place below the resource container */
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: rgba(20, 20, 20, 0.9);
+    padding: 5px 15px;
+    border-radius: 8px;
+    z-index: 2;
+    width: 100%;
+    max-width: 600px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
 
-        @keyframes scroll-left {
-            0% {
-                transform: translateX(100%);
-            }
-            100% {
-                transform: translateX(-100%);
-            }
-        }
+.news-ticker {
+    white-space: nowrap;
+    display: inline-block;
+    animation: scroll-left 15s linear infinite;
+    font-size: 14px;
+    color: #f1f1f1;
+}
 
+@keyframes scroll-left {
+    0% {
+        transform: translateX(100%);
+    }
+    100% {
+        transform: translateX(-100%);
+    }
+}
         /* Bottom Navigation Bar */
         .bottom-nav {
             position: fixed;
@@ -331,6 +346,22 @@
         input:checked + .slider:before {
             transform: translateX(26px);
         }
+        /* News Ticker */
+.news-ticker-container {
+    position: fixed;
+    top: 45px; /* Adjusted to place below the resource container */
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: rgba(20, 20, 20, 0.9);
+    padding: 5px 15px;
+    border-radius: 8px;
+    z-index: 2;
+    width: 100%;
+    max-width: 600px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
     </style>
 </head>
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7136613030546059"
@@ -338,12 +369,8 @@
 </head>
 <body>
 <body>
+<body>
 <div id="map"></div>
-
-<!-- News Ticker -->
-<div class="news-ticker-container">
-    <div id="newsTicker" class="news-ticker"></div>
-</div>
 
 <!-- Resource Container -->
 <div class="resource-container">
@@ -362,6 +389,11 @@
     <div class="resource">
         <p>Efficiency: <span id="efficiency">100%</span></p>
     </div>
+</div>
+
+<!-- News Ticker -->
+<div class="news-ticker-container">
+    <div id="newsTicker" class="news-ticker"></div>
 </div>
 
 <!-- Bottom Navigation Bar -->
