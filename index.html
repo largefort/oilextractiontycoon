@@ -37,45 +37,10 @@
             z-index: 1;
         }
 
-        /* Resource Container */
-        .resource-container {
-            position: fixed;
-            top: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            background-color: rgba(40, 40, 40, 0.95);
-            border-radius: 8px;
-            padding: 5px 10px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            width: 95%;
-            max-width: 600px;
-            box-sizing: border-box;
-            z-index: 2;
-            color: #fff;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-            font-size: 13px;
-            transition: top 0.3s ease-in-out;
-        }
-
-        .resource {
-            margin: 0 5px;
-            text-align: center;
-            flex: 1;
-            font-size: 11px;
-        }
-
-        .resource p {
-            margin: 0;
-            line-height: 1.2;
-            font-size: 11px;
-        }
-
-/* Improved Resource Container */
+       /* Improved Resource Container */
 .resource-container {
-    position: fixed;
-    top: 50px; /* Keep it closer to the top */
+    position: absolute;
+    top: 19px; /* Keep it closer to the top */
     left: 50%;
     transform: translateX(-50%);
     background-color: rgba(30, 30, 30, 0.95); /* Darker shade for better contrast */
@@ -92,42 +57,19 @@
     align-items: center;
 }
 
-/* Improved News Ticker */
-.news-ticker-container {
-    position: fixed;
-    top: 10px; /* Adjust position above the resource container */
-    left: 50%;
-    transform: translateX(-20%);
-    background-color: rgba(35, 35, 35, 0.9); /* Slightly different shade for visual distinction */
-    padding: 8px 20px; /* More spacious padding */
-    border-radius: 10px;
-    z-index: 3; /* Higher z-index to make it appear above the resource container */
-    width: 100%;
-    max-width: 600px;
-    overflow: hidden;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
+        .resource {
+            margin: 0 5px;
+            text-align: center;
+            flex: 1;
+            font-size: 11px;
+        }
 
-/* News Ticker Animation */
-.news-ticker {
-    white-space: nowrap;
-    display: inline-block;
-    animation: scroll-left 15s linear infinite;
-    font-size: 14px;
-    color: #f1f1f1;
-}
-
-@keyframes scroll-left {
-    0% {
-        transform: translateX(100%);
-    }
-    100% {
-        transform: translateX(-100%);
-    }
-}
+        .resource p {
+            margin: 0;
+            line-height: 1.2;
+            font-size: 11px;
+        }
+       
 
         /* Upgraded Bottom Navigation Bar */
 .bottom-nav {
@@ -408,21 +350,43 @@
         input:checked + .slider:before {
             transform: translateX(26px);
         }
-        /* News Ticker */
+ /* Improved News Ticker */
 .news-ticker-container {
     position: fixed;
-    top: 45px; /* Adjusted to place below the resource container */
+    top: 0px; /* Adjust position above the resource container */
     left: 50%;
     transform: translateX(-50%);
-    background-color: rgba(20, 20, 20, 0.9);
-    padding: 5px 15px;
-    border-radius: 8px;
-    z-index: 2;
+    background-color: rgba(35, 35, 35, 0.9); /* Slightly different shade for visual distinction */
+    padding: 8px 20px; /* More spacious padding */
+    border-radius: 10px;
+    z-index: 2; /* Higher z-index to make it appear above the resource container */
     width: 100%;
     max-width: 600px;
     overflow: hidden;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
+
+/* News Ticker Animation */
+.news-ticker {
+    white-space: nowrap;
+    display: inline-block;
+    animation: scroll-left 15s linear infinite;
+    font-size: 14px;
+    color: #f1f1f1;
+}
+
+@keyframes scroll-left {
+    0% {
+        transform: translateX(100%);
+    }
+    100% {
+        transform: translateX(-100%);
+    }
+}
+
 
     </style>
 </head>
@@ -605,6 +569,7 @@
 <script src="https://cdn.jsdelivr.net/gh/maneoverland/leaflet.WorldMiniMap@1.0.0/dist/Control.WorldMiniMap.js" integrity="sha512-PFw8St3qenU1/dmwCfiYYN/bRcqY1p3+sBATR+rZ6622eyXOk/8izVtlmm/k8qW7KbRIJsku838WCV5LMs6FCg==" crossorigin=""></script>
 <script src="https://code.createjs.com/1.0.0/createjs.min.js"></script>
 <script src="game.js"></script>
+<script src="tabanimations.js"></script>
 <script src="switch.js"></script>
 <script src="tapfeedback.js"></script>
 <script src="sidebar.js"></script>
