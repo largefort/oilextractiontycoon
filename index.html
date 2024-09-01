@@ -72,38 +72,46 @@
             font-size: 11px;
         }
 
-        /* News Ticker */
-        .news-ticker-container {
-            position: fixed;
-            top: 5px;
-            left: 50%;
-            transform: translateX(-50%);
-            background-color: rgba(20, 20, 20, 0.9);
-            padding: 5px 15px;
-            border-radius: 8px;
-            z-index: 3;
-            width: 100%;
-            max-width: 600px;
-            overflow: hidden;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-        }
-
-/* News Ticker */
-.news-ticker-container {
+/* Improved Resource Container */
+.resource-container {
     position: fixed;
-    top: 45px; /* Adjusted to place below the resource container */
+    top: 10px; /* Keep it closer to the top */
     left: 50%;
     transform: translateX(-50%);
-    background-color: rgba(20, 20, 20, 0.9);
-    padding: 5px 15px;
-    border-radius: 8px;
-    z-index: 2;
+    background-color: rgba(30, 30, 30, 0.95); /* Darker shade for better contrast */
+    border-radius: 12px; /* Smoother rounded corners */
+    padding: 10px 15px; /* Increase padding for better touch targets */
+    width: 95%;
+    max-width: 600px;
+    box-sizing: border-box;
+    z-index: 1; /* Lower z-index to keep it below the news ticker */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    display: flex;
+    gap: 10px; /* Add some space between resources */
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Improved News Ticker */
+.news-ticker-container {
+    position: fixed;
+    top: 5px; /* Adjust position above the resource container */
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: rgba(35, 35, 35, 0.9); /* Slightly different shade for visual distinction */
+    padding: 8px 20px; /* More spacious padding */
+    border-radius: 10px;
+    z-index: 2; /* Higher z-index to make it appear above the resource container */
     width: 100%;
     max-width: 600px;
     overflow: hidden;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
+/* News Ticker Animation */
 .news-ticker {
     white-space: nowrap;
     display: inline-block;
@@ -120,6 +128,7 @@
         transform: translateX(-100%);
     }
 }
+
         /* Upgraded Bottom Navigation Bar */
 .bottom-nav {
     position: fixed;
@@ -424,7 +433,6 @@
 <body>
 <body>
 <div id="map"></div>
-
 <!-- Resource Container -->
 <div class="resource-container">
     <div class="resource">
