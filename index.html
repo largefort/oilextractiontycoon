@@ -362,28 +362,49 @@
     overflow: hidden;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
-         /* Promotion Banner */
-        .promo-banner {
-            position: fixed;
-            top: 60px; /* Adjusted to place below the resource container */
-            left: 50%;
-            transform: translateX(-50%);
-            background-color: #ffcc00; /* Bright yellow for visibility */
-            color: #000; /* Black text color */
-            padding: 10px 20px;
-            border-radius: 8px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-            z-index: 5; /* Higher z-index to ensure it's on top */
-            text-align: center;
-            cursor: pointer;
-            width: 90%;
-            max-width: 600px;
-            font-weight: bold;
-        }
+/* DLC Announcement Banner */
+.dlc-banner {
+    position: fixed;
+    top: 10%;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #333;
+    color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    text-align: center;
+    z-index: 1000;
+}
 
-        .promo-banner:hover {
-            background-color: #e6b800; /* Slightly darker on hover */
-        }
+.dlc-banner h2 {
+    margin: 0 0 10px;
+}
+
+.dlc-banner p {
+    margin: 5px 0;
+}
+
+.dlc-banner a {
+    display: inline-block;
+    margin-top: 10px;
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
+
+.dlc-banner a.disabled-link {
+    background-color: #666; /* Disabled link color */
+    pointer-events: none; /* Prevent clicking */
+    cursor: not-allowed;
+}
+
+.dlc-banner a:not(.disabled-link):hover {
+    background-color: #0056b3; /* Hover effect for active link */
+}
 
     </style>
 </head>
@@ -392,10 +413,44 @@
 </head>
 <body>
     
-<!-- Promotion Banner -->
-<div class="promo-banner" onclick="window.location.href='dlc.html';">
-    New London DLC Available! Click here to explore the Industrial Revolution.
+<!-- DLC Announcement Banner -->
+<div id="dlc-banner" class="dlc-banner">
+    <h2>GeoTycoon: London DLC Coming Soon!</h2>
+    <p>Releases on: October 1st, 2024</p>
+    <p id="countdown-timer">Loading countdown...</p>
+    <a id="dlc-link" href="dlc.html" class="disabled-link">Check out the London DLC (Available Soon)</a>
 </div>
+
+<!-- Countdown and Link Enabling Script -->
+<script>
+    // Set the release date for the countdown
+    const releaseDate = new Date("October 1, 2024 00:00:00").getTime();
+
+    // Update the countdown every second
+    const countdownInterval = setInterval(function () {
+        const now = new Date().getTime();
+        const timeLeft = releaseDate - now;
+
+        // Time calculations for days, hours, minutes, and seconds
+        const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
+
+        // Display the countdown in the element with id="countdown-timer"
+        document.getElementById("countdown-timer").innerHTML =
+            days + "d " + hours + "h " + minutes + "m " + seconds + "s ";
+
+        // If the countdown is over, update the link and stop the countdown
+        if (timeLeft < 0) {
+            clearInterval(countdownInterval);
+            document.getElementById("countdown-timer").innerHTML = "The DLC is now available!";
+            document.getElementById("dlc-link").classList.remove("disabled-link");
+            document.getElementById("dlc-link").innerText = "Check out the London DLC!";
+        }
+    }, 1000);
+</script>
+
     
 <div id="map"></div>
 
