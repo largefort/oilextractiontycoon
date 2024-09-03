@@ -207,7 +207,7 @@
 
 <body>
     <!-- Background Music -->
-    <audio id="background-music" src="path/to/smokestacks-and-steam.mp3" autoplay loop></audio>
+    <audio id="background-music" src="soundtracks/smokestacksandsteam.mp3" autoplay loop></audio>
 
     <div id="map"></div>
 
