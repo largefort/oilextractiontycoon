@@ -74,7 +74,7 @@
             font-size: 11px;
         }
 
-  /* Bottom Navigation Bar */
+        /* Bottom Navigation Bar */
         .bottom-nav {
             position: fixed;
             bottom: 0;
@@ -170,105 +170,56 @@
             padding: 10px;
             font-size: 14px;
         }
-      
-      /* Dollar and Energy Pop-ups */
-.dollar-pop-up,
-.energy-pop-up,
-.jenny-pop-up,
-.steam-engine-pop-up,
-.steamboat-pop-up,
-.locomotive-pop-up,
-.electric-engine-pop-up {
-    position: absolute;
-    font-weight: bold;
-    font-size: 12px;
-    pointer-events: none;
-    z-index: 2000;
-    transition: transform 0.5s ease-out, opacity 0.5s ease-out;
-    filter: brightness(150%);
-    padding: 5px;
-    transform: translateY(-20px) scale(1);
-    opacity: 0;
-    animation: pop-up-animation 1s forwards;
-}
 
-@keyframes pop-up-animation {
-    0% {
-        transform: translateY(0) scale(0.8);
-        opacity: 0;
-    }
-    100% {
-        transform: translateY(-20px) scale(1);
-        opacity: 1;
-    }
-}
+        /* DLC Building Pop-ups */
+        .jenny-pop-up, .steam-engine-pop-up, .steamboat-pop-up, .locomotive-pop-up, .electric-engine-pop-up {
+            position: absolute;
+            font-weight: bold;
+            font-size: 12px;
+            pointer-events: none;
+            z-index: 2000;
+            transition: transform 0.5s ease-out, opacity 0.5s ease-out;
+            filter: brightness(150%);
+            padding: 5px;
+            transform: translateY(-20px) scale(1);
+            opacity: 0;
+            animation: pop-up-animation 1s forwards;
+        }
 
-/* Dollar Pop-up */
-.dollar-pop-up {
-    color: green;
-}
+        @keyframes pop-up-animation {
+            0% {
+                transform: translateY(0) scale(0.8);
+                opacity: 0;
+            }
+            100% {
+                transform: translateY(-20px) scale(1);
+                opacity: 1;
+            }
+        }
 
-/* Energy Pop-up */
-.energy-pop-up {
-    color: yellow;
-}
-
-/* DLC Building Pop-ups */
-
-/* Spinning Jenny Pop-up */
-.jenny-pop-up {
-    color: #8B4513; /* SaddleBrown color */
-    background-color: rgba(245, 222, 179, 0.8); /* Wheat background */
-    border-radius: 5px;
-}
-
-/* Steam Engine Pop-up */
-.steam-engine-pop-up {
-    color: #4682B4; /* SteelBlue color */
-    background-color: rgba(240, 248, 255, 0.8); /* AliceBlue background */
-    border-radius: 5px;
-}
-
-/* Steamboat Pop-up */
-.steamboat-pop-up {
-    color: #2E8B57; /* SeaGreen color */
-    background-color: rgba(144, 238, 144, 0.8); /* LightGreen background */
-    border-radius: 5px;
-}
-
-/* Locomotive Pop-up */
-.locomotive-pop-up {
-    color: #A52A2A; /* Brown color */
-    background-color: rgba(255, 228, 225, 0.8); /* MistyRose background */
-    border-radius: 5px;
-}
-
-/* Electric Engine Pop-up */
-.electric-engine-pop-up {
-    color: #FFD700; /* Gold color */
-    background-color: rgba(255, 255, 224, 0.8); /* LightYellow background */
-    border-radius: 5px;
-}
-
+        .jenny-pop-up { color: #8B4513; background-color: rgba(245, 222, 179, 0.8); border-radius: 5px; }
+        .steam-engine-pop-up { color: #4682B4; background-color: rgba(240, 248, 255, 0.8); border-radius: 5px; }
+        .steamboat-pop-up { color: #2E8B57; background-color: rgba(144, 238, 144, 0.8); border-radius: 5px; }
+        .locomotive-pop-up { color: #A52A2A; background-color: rgba(255, 228, 225, 0.8); border-radius: 5px; }
+        .electric-engine-pop-up { color: #FFD700; background-color: rgba(255, 255, 224, 0.8); border-radius: 5px; }
     </style>
 </head>
 
 <body>
+    <!-- Background Music -->
+    <audio id="background-music" src="path/to/smokestacks-and-steam.mp3" autoplay loop></audio>
+
     <div id="map"></div>
 
     <!-- Resource Container -->
     <div class="resource-container">
         <div class="resource">
-            <p> $<span id="money">1000</span></p>
-            <p><span id="money-production">0</span> $/s</p>
+            <p>£<span id="money">1000</span></p>
+            <p><span id="money-production">0</span> £/s</p>
         </div>
         <div class="resource">
-            <p> <span id="oil">0</span> </p>
-            <p><span id="oil-rig-production">0</span> barrels/s</p>
-        </div>
-        <div class="resource">
-            <p> <span id="energy">0</span></p>
-            <p><span id="power-plant-production">0</span></p>
+            <p><span id="energy">0</span></p>
+            <p><span id="energy-production">0</span> watts</p>
         </div>
         <div class="resource">
             <p>Efficiency: <span id="efficiency">100%</span></p>
@@ -302,7 +253,6 @@
 
     <!-- Tab Content Areas -->
     <div id="world-map-tab" class="tab-content active">
-        <!-- World Map Tab Content -->
         <div id="map" class="enhanced-map"></div>
     </div>
 
@@ -311,9 +261,6 @@
         <div class="controls">
             <h3 class="text-center my-4">GeoTycoon: London DLC</h3>
             <div class="button-container row justify-content-center">
-                <button class="btn btn-primary m-2 col-5" onclick="buyLand()">Buy Land ($100)</button>
-                <button class="btn btn-primary m-2 col-5" onclick="buyOilRig()">Buy Oil Rig ($500)</button>
-                <button class="btn btn-primary m-2 col-5" onclick="buyPowerPlant()">Buy Power Plant ($1000)</button>
                 <!-- DLC-specific buttons -->
                 <button class="dlc-button col-5" onclick="buySpinningJenny()">Buy Spinning Jenny (£100)</button>
                 <button class="dlc-button col-5" onclick="buySteamEngine()">Buy Steam Engine (£300)</button>
@@ -324,88 +271,47 @@
         </div>
     </div>
 
-<div id="settings-tab" class="tab-content container-fluid">
-    <div class="settings">
-        <h2 class="text-center my-4">Geo Map Settings</h2>
-        <div class="form-group">
-            <label for="animation-speed">Animation Speed:</label>
-            <input type="range" class="form-control-range" id="animation-speed" name="animation-speed" min="1" max="10" value="5" onchange="updateAnimationSpeed(this.value)">
-        </div>
-        <div class="form-group">
-            <label for="map-theme">Map Theme:</label>
-            <select class="form-control" id="map-theme" onchange="updateMapTheme(this.value)">
-                <option value="EsriWorldImagery">World Imagery</option>
-                <option value="street">Street Map</option>
-                <option value="satellite">Satellite</option>
-            </select>
-        </div>
-        <div class="form-group form-check">
-            <input type="checkbox" class="form-check-input" id="show-markers" checked onchange="toggleMarkers(this.checked)">
-            <label class="form-check-label" for="show-markers">Show Markers</label>
-        </div>
-        <div class="form-group">
-            <label for="geo-hd-visual-effects">Enable HD Quality Visual Effects:</label>
-            <label class="switch">
-                <input type="checkbox" id="geo-hd-visual-effects" onchange="toggleGeoVisualEffects(this.checked)">
-                <span class="slider round"></span>
-            </label>
+    <!-- Settings Tab -->
+    <div id="settings-tab" class="tab-content container-fluid">
+        <div class="settings">
+            <h2 class="text-center my-4">Geo Map Settings</h2>
+            <div class="form-group">
+                <label for="animation-speed">Animation Speed:</label>
+                <input type="range" class="form-control-range" id="animation-speed" name="animation-speed" min="1" max="10" value="5" onchange="updateAnimationSpeed(this.value)">
+            </div>
+            <div class="form-group">
+                <label for="map-theme">Map Theme:</label>
+                <select class="form-control" id="map-theme" onchange="updateMapTheme(this.value)">
+                    <option value="EsriWorldImagery">World Imagery</option>
+                    <option value="street">Street Map</option>
+                    <option value="satellite">Satellite</option>
+                </select>
+            </div>
+            <div class="form-group form-check">
+                <input type="checkbox" class="form-check-input" id="show-markers" checked onchange="toggleMarkers(this.checked)">
+                <label class="form-check-label" for="show-markers">Show Markers</label>
+            </div>
+            <div class="form-group">
+                <label for="geo-hd-visual-effects">Enable HD Quality Visual Effects:</label>
+                <label class="switch">
+                    <input type="checkbox" id="geo-hd-visual-effects" onchange="toggleGeoVisualEffects(this.checked)">
+                    <span class="slider round"></span>
+                </label>
+            </div>
         </div>
     </div>
-</div>
 
+    <!-- Stats Tab -->
     <div id="stats-tab" class="tab-content container-fluid">
-        <!-- Your existing stats tab content -->
         <h3 class="text-center my-4">Player Stats</h3>
         <ul class="list-group">
-            <li class="list-group-item">Oil Extracted: <span id="total-oil">0</span> barrels</li>
             <li class="list-group-item">Energy Generated: <span id="total-energy">0</span> watts</li>
             <li class="list-group-item">Buildings Placed: <span id="total-buildings">0</span></li>
             <li class="list-group-item">Lands Owned: <span id="total-lands">0</span></li>
-            <li class="list-group-item">Total Money Produced: $<span id="total-money-produced">0</span></li>
+            <li class="list-group-item">Total Money Produced: £<span id="total-money-produced">0</span></li>
         </ul>
         <p class="text-center mt-4">Version: <span id="version">1.0.0</span></p>
     </div>
-
-    <script>
-        function showTab(tabId) {
-            document.querySelectorAll('.tab-content').forEach(tab => {
-                tab.classList.remove('active');
-            });
-            document.getElementById(tabId).classList.add('active');
-
-            if (tabId === 'world-map-tab') {
-                document.getElementById('map').style.pointerEvents = 'auto';
-                setTimeout(() => {
-                    map.invalidateSize();
-                }, 100);
-            } else {
-                document.getElementById('map').style.pointerEvents = 'none';
-            }
-        }
-
-        document.addEventListener('touchstart', function(event) {
-            const touch = event.touches[0];
-            createTouchParticle(touch.clientX, touch.clientY);
-        });
-
-        function createTouchParticle(x, y) {
-            const particle = document.createElement('div');
-            particle.className = 'touch-particle';
-            particle.style.left = `${x}px`;
-            particle.style.top = `${y}px`;
-            document.body.appendChild(particle);
-
-            particle.addEventListener('animationend', () => {
-                document.body.removeChild(particle);
-            });
-        }
-
-        document.querySelectorAll('.bottom-nav button').forEach(button => {
-            button.addEventListener('click', function() {
-                showTab(button.getAttribute('onclick').match(/'([^']+)'/)[1]);
-            });
-        });
-    </script>
 
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.js"></script>
@@ -433,8 +339,8 @@
     <script src="tapfeedback.js"></script>
     <script src="sidebar.js"></script>
     <script src="guide.js"></script>
-    <script src="news.js"></script> <!-- Include the news.js script -->
-    <script src="weather.js"></script> <!-- Include the news.js script -->
+    <script src="news.js"></script>
+    <script src="weather.js"></script>
 </body>
 
 </html>
