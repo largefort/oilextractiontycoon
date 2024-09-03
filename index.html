@@ -362,6 +362,28 @@
     overflow: hidden;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
+         /* Promotion Banner */
+        .promo-banner {
+            position: fixed;
+            top: 60px; /* Adjusted to place below the resource container */
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #ffcc00; /* Bright yellow for visibility */
+            color: #000; /* Black text color */
+            padding: 10px 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            z-index: 5; /* Higher z-index to ensure it's on top */
+            text-align: center;
+            cursor: pointer;
+            width: 90%;
+            max-width: 600px;
+            font-weight: bold;
+        }
+
+        .promo-banner:hover {
+            background-color: #e6b800; /* Slightly darker on hover */
+        }
 
     </style>
 </head>
@@ -369,8 +391,12 @@
         crossorigin="anonymous"></script>
 </head>
 <body>
-<body>
-<body>
+    
+<!-- Promotion Banner -->
+<div class="promo-banner" onclick="window.location.href='dlc.html';">
+    New London DLC Available! Click here to explore the Industrial Revolution.
+</div>
+    
 <div id="map"></div>
 
 <!-- Resource Container -->
