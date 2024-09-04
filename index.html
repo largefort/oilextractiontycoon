@@ -427,45 +427,6 @@
 
 <body>
 
-    <!-- DLC Announcement Banner -->
-    <div id="dlc-banner" class="dlc-banner">
-        <h2>GeoTycoon: London DLC Coming Soon!</h2>
-        <p>Releases on: October 1st, 2024</p>
-        <p id="countdown-timer">Loading countdown...</p>
-        <a id="dlc-link" href="dlc.html" class="disabled-link">Check out the London DLC (Available Soon)</a>
-    </div>
-
-    <!-- Countdown and Link Enabling Script -->
-    <script>
-        // Set the release date for the countdown
-        const releaseDate = new Date("October 1, 2024 00:00:00").getTime();
-
-        // Update the countdown every second
-        const countdownInterval = setInterval(function() {
-            const now = new Date().getTime();
-            const timeLeft = releaseDate - now;
-
-            // Time calculations for days, hours, minutes, and seconds
-            const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
-            const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
-            const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
-
-            // Display the countdown in the element with id="countdown-timer"
-            document.getElementById("countdown-timer").innerHTML =
-                days + "d " + hours + "h " + minutes + "m " + seconds + "s ";
-
-            // If the countdown is over, update the link and stop the countdown
-            if (timeLeft < 0) {
-                clearInterval(countdownInterval);
-                document.getElementById("countdown-timer").innerHTML = "The DLC is now available!";
-                document.getElementById("dlc-link").classList.remove("disabled-link");
-                document.getElementById("dlc-link").innerText = "Check out the London DLC!";
-            }
-        }, 1000);
-    </script>
-
-
     <div id="map"></div>
 
     <!-- Resource Container -->
