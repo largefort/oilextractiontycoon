@@ -235,6 +235,7 @@ const newsHeadlines = [
     "Electric shipping vessels reduce emissions in global trade.",
     "AI-enhanced supply chains improve resilience and reduce costs.",
     "Global leaders push for a circular economy to reduce waste."
+    "GeoTycoon Wiki: Visit https://geotycoon.wiki.gg for guides and info."
 ];
 
 let lastIndex = -1;
