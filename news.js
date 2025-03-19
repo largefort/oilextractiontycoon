@@ -2,6 +2,7 @@
 
 // Array of industrial-themed news headlines
 const newsHeadlines = [
+    "GeoTycoon Wiki: Visit https://geotycoon.wiki.gg for guides and info."
     "Oil prices surge as new reserves are discovered in the Arctic.",
     "Energy crisis looms as demand outpaces renewable supply.",
     "New technology promises 50% increase in mining efficiency.",
@@ -235,7 +236,6 @@ const newsHeadlines = [
     "Electric shipping vessels reduce emissions in global trade.",
     "AI-enhanced supply chains improve resilience and reduce costs.",
     "Global leaders push for a circular economy to reduce waste."
-    "GeoTycoon Wiki: Visit https://geotycoon.wiki.gg for guides and info."
 ];
 
 let lastIndex = -1;
