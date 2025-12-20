@@ -1,68 +1,276 @@
-// news.js — FIXED & STABLE
+// news.js
 
+// Array of industrial-themed news headlines
 const newsHeadlines = [
-    "GeoTycoon Wiki: Visit https://geotycoon.wiki.gg for guides and info.",
     "Oil prices surge as new reserves are discovered in the Arctic.",
     "Energy crisis looms as demand outpaces renewable supply.",
     "New technology promises 50% increase in mining efficiency.",
     "Government imposes new tariffs on imported steel.",
     "Mega-factory opens in China, expected to dominate global production.",
-    "Record profits reported by major oil companies this quarter.",
+    "Record profits for the leading oil company this quarter.",
     "Major power outage affects millions in the northeast.",
-    "Environmental regulations tighten, impacting heavy industry.",
-    "Automation revolutionizes manufacturing, cutting operational costs.",
-    "Breakthrough in battery technology boosts energy storage capacity.",
-    "Solar energy production hits record highs worldwide.",
+    "Environmental regulations tighten, impacting coal industry.",
+    "Automation revolutionizes manufacturing, cuts jobs by 30%.",
+    "Breakthrough in battery technology could end energy storage issues.",
+    "Massive oil spill in the Gulf causes environmental concerns.",
+    "Solar energy production hits record highs amid sunny season.",
+    "New deal signed for global lithium supply, boosting electric vehicle production.",
+    "Industrial espionage case uncovered in leading tech firm.",
+    "Rare earth metals found in remote region, sparking mining rush.",
     "Wind farm expansion promises to double clean energy output.",
-    "Global demand for copper surges as infrastructure expands.",
-    "Investment in green hydrogen reaches record levels.",
-    "Industrial automation adoption accelerates across sectors.",
-    "New carbon capture technologies reduce industrial emissions.",
-    "Supply chain disruptions force innovation in logistics.",
-    "Smart factories increase productivity with AI integration.",
-    "Global push for renewable energy reshapes industrial markets."
+    "Steel production in Europe faces disruption due to supply chain issues.",
+    "Groundbreaking ceremony held for world's largest solar power plant.",
+    "Industrial accident at a major refinery leads to safety overhaul.",
+    "Advancements in AI reduce factory downtime by 20%.",
+    "Global demand for copper surges as electric infrastructure expands.",
+    "Investment in green hydrogen tech reaches new heights.",
+    "New regulations mandate 80% recycling of industrial waste.",
+    "Electric vehicle sales soar, pushing battery production to capacity.",
+    "Pioneering desalination plant opens, promising to ease water shortages.",
+    "Heavy machinery manufacturer launches AI-driven equipment line.",
+    "International trade tensions threaten to slow global industrial growth.",
+    "Fossil fuel divestment movement gains momentum, affecting major oil firms.",
+    "Breakthrough in carbon capture technology offers hope for emissions reduction.",
+    "Logistics firms invest in autonomous delivery trucks to cut costs.",
+    "Massive investment in nuclear fusion research sparks hope for limitless energy.",
+    "Demand for skilled workers in tech manufacturing hits all-time high.",
+    "Global semiconductor shortage continues to impact electronics production.",
+    "Water scarcity in key regions forces industries to rethink usage strategies.",
+    "New material discovered, poised to revolutionize construction industry.",
+    "First fully automated port opens, signaling future of shipping logistics.",
+    "Industrial drone technology sees rapid adoption in agriculture.",
+    "New deal between major oil producers aims to stabilize global prices.",
+    "Waste-to-energy plants gain popularity as cities struggle with landfill space.",
+    "Countries race to secure rare minerals for battery production.",
+    "Robotics advancements slash costs in automotive manufacturing.",
+    "Plans announced for smart city powered entirely by renewable energy.",
+    "Climate change impacts force rethinking of industrial supply chains.",
+    "Global steel demand expected to rise sharply over the next decade.",
+    "Advances in biofuel technology could reduce dependency on oil.",
+    "3D printing revolutionizes the manufacturing of spare parts in the aerospace industry.",
+    "Shipping companies invest heavily in greener, more efficient vessels.",
+    "Industrial giants pledge to reduce carbon emissions by 50% by 2030.",
+    "Major mining company shifts focus to sustainable extraction methods.",
+    "Energy storage breakthroughs promise to stabilize renewable energy supply.",
+    "New international regulations aim to curtail industrial pollution in oceans.",
+    "Smart factories utilize IoT to streamline production and reduce waste.",
+    "Uranium prices spike as nuclear energy gains favor in energy mix.",
+    "AI-driven predictive maintenance reduces factory downtime by 35%.",
+    "Construction industry faces shortages in key materials amid global demand surge.",
+    "Vertical farming gains traction as a solution to urban food production challenges.",
+    "Automakers ramp up electric vehicle production to meet rising consumer demand.",
+    "New regulations require industrial plants to use 100% recycled water.",
+    "Telecommunication companies expand 5G networks to support industrial automation.",
+    "World's largest wind turbine begins operation, providing power to 50,000 homes.",
+    "Bio-based plastics industry sees rapid growth as consumer demand for sustainability rises.",
+    "High-speed rail projects accelerate, boosting infrastructure development.",
+    "Hydropower plants upgrade technology to increase efficiency and reduce environmental impact.",
+    "Heavy industry begins transition to hydrogen fuel in bid to reduce carbon footprint.",
+    "Environmental groups call for stricter controls on mining in protected areas.",
+    "Investment in quantum computing accelerates innovation in industrial processes.",
+    "Emerging markets see rapid growth in industrial capacity and exports.",
+    "Global industrial output hits record highs as economies rebound.",
+    "Recycling initiatives increase as raw material costs soar.",
+    "The rise of microfactories reshapes local manufacturing landscapes.",
+    "Renewable energy projects attract major investments in developing nations.",
+    "Technological advances in robotics enhance productivity in factories.",
+    "Industrial waste-to-fuel conversion becomes a new trend in energy generation.",
+    "New high-efficiency solar panels set to revolutionize renewable energy.",
+    "Global supply chain bottlenecks lead to manufacturing delays.",
+    "AI-powered supply chain management reduces logistics costs by 25%.",
+    "Leading aerospace company announces plans for eco-friendly aircraft.",
+    "Industrial automation firms report record demand for smart systems.",
+    "New regulations mandate stricter emissions standards for heavy industry.",
+    "Revolutionary water purification technology promises to solve global water crisis.",
+    "Global leaders agree on new climate targets affecting industrial sectors.",
+    "Cybersecurity becomes a top priority for industrial control systems.",
+    "Digital twins technology adopted to optimize industrial processes.",
+    "Factory robots set to increase production capacity by 40%.",
+    "Sustainable packaging becomes the new norm in the industry.",
+    "Innovations in green tech lead to cleaner manufacturing processes.",
+    "Major breakthrough in carbon-neutral cement production.",
+    "Government incentives boost investments in clean energy.",
+    "Smart grids enable more efficient energy distribution.",
+    "Automated mining technology reduces human risk factors.",
+    "Global push for electric vehicles drives battery technology innovation.",
+    "New desalination technology aims to alleviate global water shortages.",
+    "Industrial 3D printing advances, reducing waste and material costs.",
+    "Supply chain disruptions lead to innovation in logistics.",
+    "Renewable energy targets accelerate in major economies.",
+    "First wave of autonomous cargo ships set to launch next year.",
+    "Recycled materials industry sees significant growth amid sustainability trends.",
+    "AI-driven supply chain optimization slashes delivery times.",
+    "Electric aircraft take flight in major test, paving the way for greener aviation.",
+    "Heavy industry faces new carbon tax as governments push for net-zero.",
+    "Massive renewable energy project announced for the Sahara Desert.",
+    "Advanced robotics deployed in major warehouses to meet growing e-commerce demands.",
+    "Breakthrough in fusion power generation marks a turning point in energy production.",
+    "Global shortage of rare earth elements sparks innovation in material science.",
+    "Industrial giants invest in blockchain technology to secure supply chains.",
+    "Wind energy capacity set to double in the next decade.",
+    "New AI regulations impact development of industrial automation systems.",
+    "Water crisis leads to increased investment in desalination plants worldwide.",
+    "Solar power overtakes coal as the world's largest source of energy.",
+    "Revolutionary new battery tech promises to charge EVs in 5 minutes.",
+    "Major strides made in biodegradable plastic production.",
+    "International trade agreements focus on reducing carbon footprints.",
+    "Urban farming boom driven by advances in vertical agriculture.",
+    "Automation in the textile industry reduces waste and boosts efficiency.",
+    "Smart manufacturing technologies gain traction in developing countries.",
+    "Global demand for sustainable products drives change in manufacturing.",
+    "New AI tools revolutionize predictive maintenance in factories.",
+    "Countries collaborate on new infrastructure for green energy distribution.",
+    "Industrial recycling processes make significant strides in reducing waste.",
+    "Electric grid upgrades prepare cities for increased renewable energy use.",
+    "Ocean-based industries turn to wave and tidal power for sustainable energy.",
+    "3D printing technology advances to create industrial-scale structures.",
+    "Factory efficiency improves with new AI-driven workflow optimizations.",
+    "Global supply chain transparency improves with blockchain adoption.",
+    "Electric ships are set to become the norm in maritime shipping.",
+    "Construction industry embraces prefabrication to cut costs and waste.",
+    "Innovative AI systems optimize energy use in large-scale manufacturing.",
+    "Recycling initiatives expand as industries seek to reduce environmental impact.",
+    "Massive expansion of wind farms planned in offshore areas.",
+    "Next-generation solar panels offer higher efficiency at lower costs.",
+    "Robotics and AI transform the logistics industry.",
+    "Biodegradable packaging gains traction as consumers demand eco-friendly products.",
+    "Global efforts to reduce plastic waste lead to new material innovations.",
+    "New AI models predict and prevent equipment failures in factories.",
+    "Sustainable fashion gains momentum as brands adopt eco-friendly practices.",
+    "Industry 4.0 technologies drive automation in small and medium enterprises.",
+    "Innovative cooling systems reduce energy consumption in data centers.",
+    "AI-driven industrial design tools accelerate product development.",
+    "Mass timber construction gains popularity as a sustainable building material.",
+    "Solar farms expand in deserts, providing vast amounts of renewable energy.",
+    "Hydrogen-powered trains begin operations in Europe.",
+    "Global leaders commit to phasing out coal by 2030.",
+    "Breakthroughs in recycling technology reduce dependency on raw materials.",
+    "Smart city projects integrate renewable energy sources for sustainability.",
+    "Electric aviation industry takes off with new battery breakthroughs.",
+    "Industrial sectors embrace circular economy principles to minimize waste.",
+    "Global investment in carbon capture technology reaches new heights.",
+    "AI-enhanced supply chains improve efficiency and reduce costs.",
+    "Industrial robots become more affordable, boosting adoption in all sectors.",
+    "New safety regulations for autonomous industrial vehicles released.",
+    "Advanced materials extend the lifespan of industrial machinery.",
+    "Smart sensors transform industrial maintenance practices.",
+    "Global push for green hydrogen production intensifies.",
+    "New AI-driven energy management systems reduce industrial energy consumption.",
+    "Electric buses replace diesel fleets in major cities worldwide.",
+    "Factory workers increasingly collaborate with AI and robots.",
+    "Global demand for lithium surges as battery production scales up.",
+    "Renewable energy projects lead to record investment in clean technologies.",
+    "Innovative carbon-neutral fuels developed for heavy industry.",
+    "Vertical wind turbines gain popularity in urban areas.",
+    "Next-gen AI chips boost the efficiency of industrial automation.",
+    "Sustainable mining practices reduce environmental impact in key regions.",
+    "Electric cargo planes set to revolutionize air freight.",
+    "New regulations promote the use of eco-friendly materials in construction.",
+    "AI-driven logistics systems optimize global supply chains.",
+    "Electric trucks hit the roads, reducing emissions in the transport sector.",
+    "Sustainable forestry practices gain traction as wood demand rises.",
+    "New AI algorithms enhance industrial safety measures.",
+    "Global initiatives promote the adoption of renewable energy in industry.",
+    "Smart grids improve energy distribution in renewable-heavy networks.",
+    "Recycling of e-waste expands as new technologies recover valuable materials.",
+    "Industrial exoskeletons enhance worker safety and productivity.",
+    "Renewable energy investments outpace fossil fuels for the first time.",
+    "New AI tools help factories reduce energy consumption.",
+    "Global semiconductor production ramps up to meet growing demand.",
+    "Construction industry adopts green technologies to reduce emissions.",
+    "Electric vehicle production surpasses traditional vehicles for the first time.",
+    "Global leaders push for zero-emission shipping by 2050.",
+    "Innovative water treatment technologies address global water scarcity.",
+    "AI-powered robots take over hazardous jobs in industrial sectors.",
+    "Sustainable agriculture practices reduce environmental impact of farming.",
+    "Electric ferry fleets expand in coastal cities.",
+    "New technologies enable recycling of previously unrecyclable plastics.",
+    "Global push for carbon-neutral steel production gains momentum.",
+    "AI-driven predictive analytics revolutionize supply chain management.",
+    "New battery recycling technologies reduce waste in EV production.",
+    "Global leaders commit to expanding renewable energy infrastructure.",
+    "AI-enhanced automation drives efficiency in industrial processes.",
+    "New biodegradable materials replace single-use plastics in packaging.",
+    "Global initiatives promote the use of renewable energy in transportation.",
+    "Robotic automation increases productivity in agriculture.",
+    "AI-driven logistics optimize global trade routes.",
+    "Global collaboration leads to breakthroughs in renewable energy storage.",
+    "Sustainable urban planning integrates green technologies into city design.",
+    "Electric construction equipment gains popularity as emissions regulations tighten.",
+    "Advanced AI tools predict and prevent equipment failures.",
+    "Global semiconductor shortage spurs innovation in chip manufacturing.",
+    "New AI-driven tools enhance industrial cybersecurity.",
+    "Global shift to renewable energy creates new job opportunities.",
+    "AI-powered tools improve industrial design efficiency.",
+    "Electric aviation industry poised for rapid growth.",
+    "Innovative green technologies reduce the carbon footprint of manufacturing.",
+    "AI-enhanced tools optimize factory production schedules.",
+    "Global push for renewable energy spurs innovation in solar technology.",
+    "New recycling technologies reduce industrial waste.",
+    "AI-driven tools enhance worker safety in hazardous environments.",
+    "Global investment in renewable energy hits record levels.",
+    "Advanced materials reduce the weight and cost of industrial components.",
+    "Electric rail networks expand as countries push for low-emission transport.",
+    "AI-powered drones enhance efficiency in agriculture and logistics.",
+    "New AI-driven tools optimize energy consumption in factories.",
+    "Electric shipping vessels reduce emissions in global trade.",
+    "AI-enhanced supply chains improve resilience and reduce costs.",
+    "Global leaders push for a circular economy to reduce waste.",
+    "AI-driven tools enhance the efficiency of industrial processes.",
+    "Electric vehicles dominate the global automotive market.",
+    "New AI tools revolutionize product design in manufacturing.",
+    "Renewable energy projects lead to record investment in clean technologies.",
+    "Advanced AI tools optimize global supply chains.",
+    "Electric aviation industry poised for rapid growth.",
+    "Innovative green technologies reduce the carbon footprint of manufacturing.",
+    "AI-enhanced tools optimize factory production schedules.",
+    "Global push for renewable energy spurs innovation in solar technology.",
+    "New recycling technologies reduce industrial waste.",
+    "AI-driven tools enhance worker safety in hazardous environments.",
+    "Global investment in renewable energy hits record levels.",
+    "Advanced materials reduce the weight and cost of industrial components.",
+    "Electric rail networks expand as countries push for low-emission transport.",
+    "AI-powered drones enhance efficiency in agriculture and logistics.",
+    "New AI-driven tools optimize energy consumption in factories.",
+    "Electric shipping vessels reduce emissions in global trade.",
+    "AI-enhanced supply chains improve resilience and reduce costs.",
+    "Global leaders push for a circular economy to reduce waste."
 ];
 
 let lastIndex = -1;
 
-/**
- * Updates the scrolling news ticker safely
- */
+// Function to update the news ticker
 function updateNewsTicker() {
-    const ticker = document.getElementById('newsTicker');
-    const container = document.querySelector('.news-ticker-container');
-
-    if (!ticker || !container) return;
-
-    let index;
+    const newsTicker = document.getElementById('newsTicker');
+    const tickerContainer = document.querySelector('.news-ticker-container');
+    
+    // Determine the next index, ensuring it's different from the last one
+    let nextIndex;
     do {
-        index = Math.floor(Math.random() * newsHeadlines.length);
-    } while (index === lastIndex && newsHeadlines.length > 1);
+        nextIndex = Math.floor(Math.random() * newsHeadlines.length);
+    } while (nextIndex === lastIndex);
+    lastIndex = nextIndex;
 
-    lastIndex = index;
-    ticker.textContent = newsHeadlines[index];
-
-    // Reset animation cleanly
-    ticker.style.animation = 'none';
-    ticker.offsetHeight; // force reflow
-
-    // Calculate duration with sane limits
-    const textWidth = ticker.offsetWidth;
-    const containerWidth = container.offsetWidth;
-    const pixelsPerSecond = 80; // speed control
-
-    let duration = (textWidth + containerWidth) / pixelsPerSecond;
-    duration = Math.min(Math.max(duration, 8), 25); // clamp 8–25s
-
-    ticker.style.animation = `scroll ${duration}s linear infinite`;
+    const selectedNews = newsHeadlines[nextIndex];
+    
+    // Set the news text and reset the animation
+    newsTicker.innerText = selectedNews;
+    newsTicker.style.animation = 'none';
+    
+    // Force reflow (flush the CSS changes)
+    void newsTicker.offsetWidth;
+    
+    // Calculate the animation duration based on the text length
+    const tickerWidth = tickerContainer.offsetWidth;
+    const textWidth = newsTicker.offsetWidth;
+    const duration = (textWidth + tickerWidth) / 100; // Adjust speed by dividing by a constant
+    
+    // Set the animation with the correct duration
+    newsTicker.style.animation = `scroll-left ${duration}s linear infinite`;
 }
 
-// Initial load
-document.addEventListener('DOMContentLoaded', () => {
-    updateNewsTicker();
+// Initialize the news ticker with the first news item
+updateNewsTicker();
 
-    const ticker = document.getElementById('newsTicker');
-    if (ticker) {
-        ticker.addEventListener('animationiteration', updateNewsTicker);
-    }
-});
+// Update the news ticker every time the animation ends
+document.getElementById('newsTicker').addEventListener('animationiteration', updateNewsTicker);
