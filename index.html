@@ -1,11 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>GeoTycoon Mobile</title>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap">
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&amp;display=swap">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="https://js.arcgis.com/4.29/esri/themes/light/main.css">
@@ -14,7 +15,8 @@
     <link rel="stylesheet" href="styles.css">
     <style>
         /* Global Styles */
-        body, html {
+        body,
+        html {
             margin: 0;
             padding: 0;
             width: 100%;
@@ -29,7 +31,8 @@
         }
 
         #map {
-            height: calc(100% - 60px); /* Adjust height to accommodate the bottom nav bar */
+            height: calc(100% - 60px);
+            /* Adjust height to accommodate the bottom nav bar */
             width: 100%;
             position: absolute;
             top: 0;
@@ -37,25 +40,27 @@
             z-index: 1;
         }
 
-       /* Improved Resource Container */
-.resource-container {
-    position: absolute;
-    top: 19px; /* Keep it closer to the top */
-    left: 50%;
-    transform: translateX(-50%);
-    background-color: rgba(30, 30, 30, 0.95); /* Darker shade for better contrast */
-    border-radius: 12px; /* Smoother rounded corners */
-    padding: 10px 15px; /* Increase padding for better touch targets */
-    width: 95%;
-    max-width: 600px;
-    box-sizing: border-box;
-    z-index: 1; /* Lower z-index to keep it below the news ticker */
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-    display: flex;
-    gap: 10px; /* Add some space between resources */
-    justify-content: space-between;
-    align-items: center;
-}
+        /* Resource Container */
+        .resource-container {
+            position: fixed;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: rgba(40, 40, 40, 0.95);
+            border-radius: 8px;
+            padding: 5px 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 95%;
+            max-width: 600px;
+            box-sizing: border-box;
+            z-index: 2;
+            color: #fff;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            font-size: 13px;
+            transition: top 0.3s ease-in-out;
+        }
 
         .resource {
             margin: 0 5px;
@@ -69,102 +74,101 @@
             line-height: 1.2;
             font-size: 11px;
         }
-       
 
-        /* Upgraded Bottom Navigation Bar */
-.bottom-nav {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 70px; /* Increased height for a more prominent bar */
-    background-color: rgba(50, 50, 50, 0.95); /* Enhanced background color */
-    backdrop-filter: blur(15px); /* Stronger blur effect for a modern look */
-    box-shadow: 0 -3px 10px rgba(0, 0, 0, 0.4); /* Enhanced shadow for depth */
-    z-index: 4;
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    padding: 5px 0; /* Added padding for better spacing */
-}
+        /* News Ticker */
+        .news-ticker-container {
+            position: fixed;
+            top: 5px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: rgba(20, 20, 20, 0.9);
+            padding: 5px 15px;
+            border-radius: 8px;
+            z-index: 3;
+            width: 100%;
+            max-width: 600px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
 
-/* Bottom Nav Button Styles */
-.bottom-nav button {
-    background: none;
-    border: none;
-    color: #f1f1f1;
-    font-size: 14px;
-    text-align: center;
-    cursor: pointer;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    transition: transform 0.3s ease, color 0.3s ease; /* Added transition for hover effect */
-    position: relative; /* For label animation */
-}
+        /* News Ticker */
+        .news-ticker-container {
+            position: fixed;
+            top: 45px;
+            /* Adjusted to place below the resource container */
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: rgba(20, 20, 20, 0.9);
+            padding: 5px 15px;
+            border-radius: 8px;
+            z-index: 2;
+            width: 100%;
+            max-width: 600px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
 
-/* Bottom Nav Icon and Label Styles */
-.bottom-nav button i {
-    font-size: 28px; /* Slightly larger icon size */
-    margin-bottom: 5px;
-    color: #f1f1f1;
-    transition: transform 0.2s ease; /* Smooth animation for bounce and hover */
-}
+        .news-ticker {
+            white-space: nowrap;
+            display: inline-block;
+            animation: scroll-left 15s linear infinite;
+            font-size: 14px;
+            color: #f1f1f1;
+        }
 
-.bottom-nav button span {
-    font-size: 12px;
-    transition: transform 0.2s ease; /* Smooth animation for bounce and hover */
-}
+        @keyframes scroll-left {
+            0% {
+                transform: translateX(100%);
+            }
 
-/* Bounce Effect on Click */
-.bottom-nav button:active i,
-.bottom-nav button:active span {
-    animation: bounce 0.4s ease; /* Bounce animation */
-}
+            100% {
+                transform: translateX(-100%);
+            }
+        }
 
-/* Hover Effect */
-.bottom-nav button:hover i,
-.bottom-nav button:hover span {
-    transform: scale(1.1); /* Scale up on hover */
-    color: #007bff; /* Change color on hover */
-}
+        /* Bottom Navigation Bar */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 60px;
+            background-color: rgba(43, 43, 43, 0.9);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.3);
+            z-index: 4;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+        }
 
-/* Bounce Animation Keyframes */
-@keyframes bounce {
-    0%, 20%, 50%, 80%, 100% {
-        transform: translateY(0);
-    }
-    40% {
-        transform: translateY(-10px);
-    }
-    60% {
-        transform: translateY(-5px);
-    }
-}
+        .bottom-nav button {
+            background: none;
+            border: none;
+            font-size: 14px;
+            color: #f1f1f1;
+            text-align: center;
+            cursor: pointer;
+            transition: color 0.3s, background 0.3s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
 
-/* Active Tab Highlight */
-.bottom-nav button.active {
-    color: #007bff; /* Highlight active tab */
-}
+        .bottom-nav button i {
+            font-size: 24px;
+            margin-bottom: 2px;
+            color: #f1f1f1;
+        }
 
-.bottom-nav button.active i {
-    color: #007bff; /* Highlight active icon */
-}
-
-/* Bottom Nav Button Feedback for Mobile */
-@media (hover: none) {
-    .bottom-nav button:active i,
-    .bottom-nav button:active span {
-        transform: scale(0.9); /* Smaller scale for feedback on touch */
-    }
-}
         /* Tab Content */
         .tab-content {
             display: none;
             position: absolute;
             top: 0;
             width: 100%;
-            height: calc(100% - 60px); /* Adjust height to accommodate the bottom nav bar */
+            height: calc(100% - 60px);
+            /* Adjust height to accommodate the bottom nav bar */
             padding: 10px;
             box-sizing: border-box;
             overflow-y: auto;
@@ -239,6 +243,7 @@
                 transform: translateY(0) scale(0.8);
                 opacity: 0;
             }
+
             100% {
                 transform: translateY(-20px) scale(1);
                 opacity: 1;
@@ -292,6 +297,7 @@
                 font-size: 18px;
             }
         }
+
         /* Enhanced Geo Map HD Quality Visual Effects */
         .enhanced-map {
             filter: none;
@@ -305,6 +311,7 @@
             transform: scale(1.02);
             box-shadow: 0 0 15px rgba(255, 255, 255, 0.3), 0 0 30px rgba(255, 255, 255, 0.2);
         }
+
         /* Toggle Switch Styles */
         .switch {
             position: relative;
@@ -343,238 +350,267 @@
             border-radius: 50%;
         }
 
-        input:checked + .slider {
+        input:checked+.slider {
             background-color: #007bff;
         }
 
-        input:checked + .slider:before {
+        input:checked+.slider:before {
             transform: translateX(26px);
         }
- /* Improved News Ticker */
-.news-ticker-container {
-    position: fixed;
-    top: 0px; /* Adjust position above the resource container */
-    left: 50%;
-    transform: translateX(-50%);
-    background-color: rgba(35, 35, 35, 0.9); /* Slightly different shade for visual distinction */
-    padding: 8px 20px; /* More spacious padding */
-    border-radius: 10px;
-    z-index: 2; /* Higher z-index to make it appear above the resource container */
-    width: 100%;
-    max-width: 600px;
-    overflow: hidden;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
 
-/* News Ticker Animation */
-.news-ticker {
-    white-space: nowrap;
-    display: inline-block;
-    animation: scroll-left 15s linear infinite;
-    font-size: 14px;
-    color: #f1f1f1;
-}
+        /* News Ticker */
+        .news-ticker-container {
+            position: fixed;
+            top: 45px;
+            /* Adjusted to place below the resource container */
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: rgba(20, 20, 20, 0.9);
+            padding: 5px 15px;
+            border-radius: 8px;
+            z-index: 2;
+            width: 100%;
+            max-width: 600px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
 
-@keyframes scroll-left {
-    0% {
-        transform: translateX(100%);
-    }
-    100% {
-        transform: translateX(-100%);
-    }
-}
+        /* DLC Announcement Banner */
+        .dlc-banner {
+            position: fixed;
+            top: 10%;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #333;
+            color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            z-index: 1000;
+        }
 
+        .dlc-banner h2 {
+            margin: 0 0 10px;
+        }
 
+        .dlc-banner p {
+            margin: 5px 0;
+        }
+
+        .dlc-banner a {
+            display: inline-block;
+            margin-top: 10px;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        .dlc-banner a.disabled-link {
+            background-color: #666;
+            /* Disabled link color */
+            pointer-events: none;
+            /* Prevent clicking */
+            cursor: not-allowed;
+        }
+
+        .dlc-banner a:not(.disabled-link):hover {
+            background-color: #0056b3;
+            /* Hover effect for active link */
+        }
     </style>
 </head>
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7136613030546059"
-        crossorigin="anonymous"></script>
-</head>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7136613030546059" crossorigin="anonymous"></script>
+
 <body>
-<body>
-<body>
-<div id="map"></div>
-<!-- Resource Container -->
-<div class="resource-container">
-    <div class="resource">
-        <p> $<span id="money">1000</span></p>
-        <p><span id="money-production">0</span> $/s</p>
-    </div>
-    <div class="resource">
-        <p> <span id="oil">0</span> </p>
-        <p><span id="oil-rig-production">0</span> barrels/s</p>
-    </div>
-    <div class="resource">
-        <p> <span id="energy">0</span></p>
-        <p><span id="power-plant-production">0</span></p>
-    </div>
-    <div class="resource">
-        <p>Efficiency: <span id="efficiency">100%</span></p>
-    </div>
-</div>
 
-<!-- News Ticker -->
-<div class="news-ticker-container">
-    <div id="newsTicker" class="news-ticker"></div>
-</div>
+    <div id="map"></div>
 
-<!-- Bottom Navigation Bar -->
-<div class="bottom-nav" id="bottomNav">
-    <button class="btn" onclick="showTab('world-map-tab')">
-        <i class="fas fa-globe"></i>
-        <span>World Map</span>
-    </button>
-    <button class="btn" onclick="showTab('controls-tab')">
-        <i class="fas fa-cogs"></i>
-        <span>Controls</span>
-    </button>
-    <button class="btn" onclick="showTab('settings-tab')">
-        <i class="fas fa-sliders-h"></i>
-        <span>Settings</span>
-    </button>
-    <button class="btn" onclick="showTab('stats-tab')">
-        <i class="fas fa-chart-bar"></i>
-        <span>Stats</span>
-    </button>
-</div>
-
-<!-- Tab Content Areas -->
-<div id="world-map-tab" class="tab-content active">
-    <!-- World Map Tab Content -->
-    <div id="map" class="enhanced-map"></div>
-</div>
-
-<div id="controls-tab" class="tab-content container-fluid">
-    <div class="controls">
-        <h3 class="text-center my-4">GeoTycoon</h3>
-        <div class="button-container row justify-content-center">
-            <button class="btn btn-primary m-2 col-5" onclick="buyLand()">Buy Land ($100)</button>
-            <button class="btn btn-primary m-2 col-5" onclick="buyOilRig()">Buy Oil Rig ($500)</button>
-            <button class="btn btn-primary m-2 col-5" onclick="buyPowerPlant()">Buy Power Plant ($1000)</button>
-            <button class="btn btn-primary m-2 col-5" onclick="upgradeOilRig()">Upgrade Oil Rig ($300)</button>
-            <button class="btn btn-primary m-2 col-5" onclick="upgradePowerPlant()">Upgrade Power Plant ($600)</button>
+    <!-- Resource Container -->
+    <div class="resource-container">
+        <div class="resource">
+            <p> $<span id="money">1000</span></p>
+            <p><span id="money-production">0</span> $/s</p>
         </div>
-        <div class="weather-info mt-4">
-            <p class="text-center">Weather: <span id="weather">Fetching...</span></p>
+        <div class="resource">
+            <p> <span id="oil">0</span> </p>
+            <p><span id="oil-rig-production">0</span> barrels/s</p>
+        </div>
+        <div class="resource">
+            <p> <span id="energy">0</span></p>
+            <p><span id="power-plant-production">0</span></p>
+        </div>
+        <div class="resource">
+            <p>Efficiency: <span id="efficiency">100%</span></p>
         </div>
     </div>
-</div>
 
-<div id="settings-tab" class="tab-content container-fluid">
-    <div class="settings">
-        <h2 class="text-center my-4">Geo Map Settings</h2>
-        <div class="form-group">
-            <label for="animation-speed">Animation Speed:</label>
-            <input type="range" class="form-control-range" id="animation-speed" name="animation-speed" min="1" max="10" value="5" onchange="updateAnimationSpeed(this.value)">
-        </div>
-        <div class="form-group">
-            <label for="map-theme">Map Theme:</label>
-            <select class="form-control" id="map-theme" onchange="updateMapTheme(this.value)">
-                <option value="EsriWorldImagery">World Imagery</option>
-                <option value="street">Street Map</option>
-                <option value="satellite">Satellite</option>
-            </select>
-        </div>
-        <div class="form-group form-check">
-            <input type="checkbox" class="form-check-input" id="show-markers" checked onchange="toggleMarkers(this.checked)">
-            <label class="form-check-label" for="show-markers">Show Markers</label>
-        </div>
-        <div class="form-group">
-            <label for="geo-hd-visual-effects">Enable HD Quality Visual Effects:</label>
-            <label class="switch">
-                <input type="checkbox" id="geo-hd-visual-effects" onchange="toggleGeoVisualEffects(this.checked)">
-                <span class="slider round"></span>
-            </label>
+    <!-- News Ticker -->
+    <div class="news-ticker-container">
+        <div id="newsTicker" class="news-ticker"></div>
+    </div>
+
+    <!-- Bottom Navigation Bar -->
+    <div class="bottom-nav" id="bottomNav">
+        <button class="btn" onclick="showTab('world-map-tab')">
+            <i class="fas fa-globe"></i>
+            <span>World Map</span>
+        </button>
+        <button class="btn" onclick="showTab('controls-tab')">
+            <i class="fas fa-cogs"></i>
+            <span>Controls</span>
+        </button>
+        <button class="btn" onclick="showTab('settings-tab')">
+            <i class="fas fa-sliders-h"></i>
+            <span>Settings</span>
+        </button>
+        <button class="btn" onclick="showTab('stats-tab')">
+            <i class="fas fa-chart-bar"></i>
+            <span>Stats</span>
+        </button>
+    </div>
+
+    <!-- Tab Content Areas -->
+    <div id="world-map-tab" class="tab-content active">
+        <!-- World Map Tab Content -->
+        <div id="map" class="enhanced-map"></div>
+    </div>
+
+    <div id="controls-tab" class="tab-content container-fluid">
+        <div class="controls">
+            <h3 class="text-center my-4">GeoTycoon</h3>
+            <div class="button-container row justify-content-center">
+                <button class="btn btn-primary m-2 col-5" onclick="buyLand()">Buy Land ($100)</button>
+                <button class="btn btn-primary m-2 col-5" onclick="buyOilRig()">Buy Oil Rig ($500)</button>
+                <button class="btn btn-primary m-2 col-5" onclick="buyPowerPlant()">Buy Power Plant ($1000)</button>
+                <button class="btn btn-primary m-2 col-5" onclick="upgradeOilRig()">Upgrade Oil Rig ($300)</button>
+                <button class="btn btn-primary m-2 col-5" onclick="upgradePowerPlant()">Upgrade Power Plant ($600)</button>
+            </div>
+            <div class="weather-info mt-4">
+                <p class="text-center">Weather: <span id="weather">Fetching...</span></p>
+            </div>
         </div>
     </div>
-</div>
 
-<div id="stats-tab" class="tab-content container-fluid">
-    <div class="stats">
-        <h3 class="text-center my-4">Player Stats</h3>
-        <ul class="list-group">
-            <li class="list-group-item">Oil Extracted: <span id="total-oil">0</span> barrels</li>
-            <li class="list-group-item">Energy Generated: <span id="total-energy">0</span> watts</li>
-            <li class="list-group-item">Buildings Placed: <span id="total-buildings">0</span></li>
-            <li class="list-group-item">Lands Owned: <span id="total-lands">0</span></li>
-            <li class="list-group-item">Total Money Produced: $<span id="total-money-produced">0</span></li>
-        </ul>
-        <p class="text-center mt-4">Version: <span id="version">1.0.0</span></p>
+    <div id="settings-tab" class="tab-content container-fluid">
+        <div class="settings">
+            <h2 class="text-center my-4">Geo Map Settings</h2>
+            <div class="form-group">
+                <label for="animation-speed">Animation Speed:</label>
+                <input type="range" class="form-control-range" id="animation-speed" name="animation-speed" min="1" max="10" value="5" onchange="updateAnimationSpeed(this.value)">
+            </div>
+            <div class="form-group">
+                <label for="map-theme">Map Theme:</label>
+                <select class="form-control" id="map-theme" onchange="updateMapTheme(this.value)">
+                    <option value="EsriWorldImagery">World Imagery</option>
+                    <option value="street">Street Map</option>
+                    <option value="satellite">Satellite</option>
+                </select>
+            </div>
+            <div class="form-group form-check">
+                <input type="checkbox" class="form-check-input" id="show-markers" checked onchange="toggleMarkers(this.checked)">
+                <label class="form-check-label" for="show-markers">Show Markers</label>
+            </div>
+            <div class="form-group">
+                <label for="geo-hd-visual-effects">Enable HD Quality Visual Effects:</label>
+                <label class="switch">
+                    <input type="checkbox" id="geo-hd-visual-effects" onchange="toggleGeoVisualEffects(this.checked)">
+                    <span class="slider round"></span>
+                </label>
+            </div>
+        </div>
     </div>
-</div>
 
-<script>
-    function showTab(tabId) {
-        document.querySelectorAll('.tab-content').forEach(tab => {
-            tab.classList.remove('active');
-        });
-        document.getElementById(tabId).classList.add('active');
+    <div id="stats-tab" class="tab-content container-fluid">
+        <div class="stats">
+            <h3 class="text-center my-4">Player Stats</h3>
+            <ul class="list-group">
+                <li class="list-group-item">Oil Extracted: <span id="total-oil">0</span> barrels</li>
+                <li class="list-group-item">Energy Generated: <span id="total-energy">0</span> watts</li>
+                <li class="list-group-item">Buildings Placed: <span id="total-buildings">0</span>
+                </li>
+                <li class="list-group-item">Lands Owned: <span id="total-lands">0</span>
+                </li>
+                <li class="list-group-item">Total Money Produced: $<span id="total-money-produced">0</span>
+                </li>
+            </ul>
+            <p class="text-center mt-4">Version: <span id="version">1.0.0</span></p>
+        </div>
+    </div>
 
-        if (tabId === 'world-map-tab') {
-            document.getElementById('map').style.pointerEvents = 'auto';
-            setTimeout(() => {
-                map.invalidateSize();
-            }, 100);
-        } else {
-            document.getElementById('map').style.pointerEvents = 'none';
+    <script>
+        function showTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.getElementById(tabId).classList.add('active');
+
+            if (tabId === 'world-map-tab') {
+                document.getElementById('map').style.pointerEvents = 'auto';
+                setTimeout(() => {
+                    map.invalidateSize();
+                }, 100);
+            } else {
+                document.getElementById('map').style.pointerEvents = 'none';
+            }
         }
-    }
 
-    document.addEventListener('touchstart', function(event) {
-        const touch = event.touches[0];
-        createTouchParticle(touch.clientX, touch.clientY);
-    });
-
-    function createTouchParticle(x, y) {
-        const particle = document.createElement('div');
-        particle.className = 'touch-particle';
-        particle.style.left = `${x}px`;
-        particle.style.top = `${y}px`;
-        document.body.appendChild(particle);
-
-        particle.addEventListener('animationend', () => {
-            document.body.removeChild(particle);
+        document.addEventListener('touchstart', function(event) {
+            const touch = event.touches[0];
+            createTouchParticle(touch.clientX, touch.clientY);
         });
-    }
 
-    document.querySelectorAll('.bottom-nav button').forEach(button => {
-        button.addEventListener('click', function() {
-            showTab(button.getAttribute('onclick').match(/'([^']+)'/)[1]);
+        function createTouchParticle(x, y) {
+            const particle = document.createElement('div');
+            particle.className = 'touch-particle';
+            particle.style.left = `${x}px`;
+            particle.style.top = `${y}px`;
+            document.body.appendChild(particle);
+
+            particle.addEventListener('animationend', () => {
+                document.body.removeChild(particle);
+            });
+        }
+
+        document.querySelectorAll('.bottom-nav button').forEach(button => {
+            button.addEventListener('click', function() {
+                showTab(button.getAttribute('onclick').match(/'([^']+)'/)[1]);
+            });
         });
-    });
-</script>
+    </script>
 
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.js"></script>
-<script src="https://unpkg.com/leaflet-tilelayer-pan@1.0.0/dist/leaflet-tilelayer-pan.min.js"></script>
-<script src="https://unpkg.com/leaflet.vectorgrid/dist/Leaflet.VectorGrid.bundled.js"></script>
-<script src="https://unpkg.com/leaflet-providers@latest/leaflet-providers.js"></script>
-<script src="https://js.arcgis.com/4.29/"></script>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.0.0/d3.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/lodash/lodash.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/three@0.136.0/build/three.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/dexie@3.0.3/dist/dexie.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/mobilizejs/0.9/mobilize.min.js"></script>
-<script src="https://unpkg.com/leaflet@1.4.0/dist/leaflet-src.js"></script>
-<script src="https://cdn.jsdelivr.net/gh/maneoverland/leaflet.WorldMiniMap@1.0.0/dist/Control.WorldMiniMap.js" integrity="sha512-PFw8St3qenU1/dmwCfiYYN/bRcqY1p3+sBATR+rZ6622eyXOk/8izVtlmm/k8qW7KbRIJsku838WCV5LMs6FCg==" crossorigin=""></script>
-<script src="https://code.createjs.com/1.0.0/createjs.min.js"></script>
-<script src="game.js"></script>
-<script src="tabanimations.js"></script>
-<script src="switch.js"></script>
-<script src="tapfeedback.js"></script>
-<script src="sidebar.js"></script>
-<script src="guide.js"></script>
-<script src="news.js"></script> <!-- Include the news.js script -->
-<script src="weather.js"></script> <!-- Include the news.js script -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.js"></script>
+    <script src="https://unpkg.com/leaflet-tilelayer-pan@1.0.0/dist/leaflet-tilelayer-pan.min.js"></script>
+    <script src="https://unpkg.com/leaflet.vectorgrid/dist/Leaflet.VectorGrid.bundled.js"></script>
+    <script src="https://unpkg.com/leaflet-providers@latest/leaflet-providers.js"></script>
+    <script src="https://js.arcgis.com/4.29/"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.0.0/d3.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/lodash/lodash.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.136.0/build/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/dexie@3.0.3/dist/dexie.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mobilizejs/0.9/mobilize.min.js"></script>
+    <script src="https://unpkg.com/leaflet@1.4.0/dist/leaflet-src.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/maneoverland/leaflet.WorldMiniMap@1.0.0/dist/Control.WorldMiniMap.js" integrity="sha512-PFw8St3qenU1/dmwCfiYYN/bRcqY1p3+sBATR+rZ6622eyXOk/8izVtlmm/k8qW7KbRIJsku838WCV5LMs6FCg==" crossorigin=""></script>
+    <script src="https://code.createjs.com/1.0.0/createjs.min.js"></script>
+    <script src="game.js"></script>
+    <script src="switch.js"></script>
+    <script src="tapfeedback.js"></script>
+    <script src="leaflet.js"></script>
+    <script src="sidebar.js"></script>
+    <script src="guide.js"></script>
+    <script src="news.js"></script> <!-- Include the news.js script -->
+    <script src="weather.js"></script> <!-- Include the news.js script -->
 </body>
+
 </html>

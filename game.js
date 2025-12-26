@@ -374,7 +374,6 @@ function buyLand() {
             calculateEfficiency();
             updateResourceCounters();
             saveGameState();
-            updateAchievements(); // Check achievements
         });
     } else {
         alert("Not enough money!");
