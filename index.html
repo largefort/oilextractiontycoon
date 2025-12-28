@@ -40,28 +40,28 @@
             z-index: 1;
         }
 
-        /* Resource Container */
-        .resource-container {
-            position: fixed;
-            top: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            background-color: rgba(40, 40, 40, 0.95);
-            border-radius: 8px;
-            padding: 5px 10px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            width: 95%;
-            max-width: 600px;
-            box-sizing: border-box;
-            z-index: 1000;
-            color: #fff;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-            font-size: 13px;
-            transition: top 0.3s ease-in-out;
-        }
-
+/* Resource Container */
+.resource-container {
+    position: fixed;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: rgba(40, 40, 40, 0.95);
+    border-radius: 8px;
+    padding: 5px 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 95%;
+    max-width: 600px;
+    box-sizing: border-box;
+    z-index: 1000;
+    color: #fff;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    font-size: 13px;
+    transition: top 0.3s ease-in-out;
+    pointer-events: none; /* ADD THIS LINE - Makes resource container non-interactive */
+}
         .resource {
             margin: 0 5px;
             text-align: center;
@@ -75,29 +75,31 @@
             font-size: 11px;
         }
 
-        /* News Ticker */
-        .news-ticker-container {
-            position: fixed;
-            top: 45px;
-            left: 50%;
-            transform: translateX(-50%);
-            background-color: rgba(20, 20, 20, 0.9);
-            padding: 5px 15px;
-            border-radius: 8px;
-            z-index: 999;
-            width: 100%;
-            max-width: 600px;
-            overflow: hidden;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-        }
+/* News Ticker */
+.news-ticker-container {
+    position: fixed;
+    top: 45px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: rgba(20, 20, 20, 0.9);
+    padding: 5px 15px;
+    border-radius: 8px;
+    z-index: 999;
+    width: 100%;
+    max-width: 600px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    pointer-events: none; /* ADD THIS LINE - Makes ticker non-interactive */
+}
 
-        .news-ticker {
-            white-space: nowrap;
-            display: inline-block;
-            animation: scroll-left 15s linear infinite;
-            font-size: 14px;
-            color: #f1f1f1;
-        }
+.news-ticker {
+    white-space: nowrap;
+    display: inline-block;
+    animation: scroll-left 15s linear infinite;
+    font-size: 14px;
+    color: #f1f1f1;
+    pointer-events: none;
+}
 
         @keyframes scroll-left {
             0% {
@@ -573,4 +575,4 @@
     <script src="weather.js"></script>
 </body>
 
-</html>
+    </html>
